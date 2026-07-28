@@ -141,7 +141,12 @@ function DetailModal({ entry, color, onClose }: { entry: Entry; color: string; o
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    // モーダル表示中は背景スクロールを止める(モバイルで重要)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
   }, [onClose])
 
   return (
@@ -161,7 +166,7 @@ function DetailModal({ entry, color, onClose }: { entry: Entry; color: string; o
             <p className="tags">{entry.tags.join(' · ')}</p>
             <p className="hint">click the icon to replay</p>
           </div>
-          <button className="codebtn" onClick={onClose}>close</button>
+          <button className="closebtn" onClick={onClose} aria-label="close">✕</button>
         </div>
         <div className="tabbar">
           {(['react', 'vue', 'html', 'cli'] as Tab[]).map((t) => (
