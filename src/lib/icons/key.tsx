@@ -45,3 +45,13 @@ export function KeyIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'key',
+  gesture: 'it turns in the lock',
+  family: 'rigid' as const,
+  section: 'Objects',
+  tags: ['api', 'password', 'auth', 'unlock', 'credential'],
+}
+
+export default KeyIcon

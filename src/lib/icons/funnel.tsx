@@ -57,3 +57,13 @@ export function FunnelIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'funnel',
+  gesture: 'something passes through',
+  family: 'travel' as const,
+  section: 'Data',
+  tags: ['filter', 'sort', 'refine'],
+}
+
+export default FunnelIcon

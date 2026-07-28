@@ -54,3 +54,13 @@ export function BellIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'bell',
+  gesture: 'it rings',
+  family: 'rigid' as const,
+  section: 'Objects',
+  tags: ['notification', 'alarm', 'ring', 'alert'],
+}
+
+export default BellIcon

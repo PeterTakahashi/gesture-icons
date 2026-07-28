@@ -78,3 +78,13 @@ export function MuscleIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'muscle',
+  gesture: 'the arm flexes',
+  family: 'morph' as const,
+  section: 'Hands',
+  tags: ['arm', 'flex', 'strength', 'gym', 'power', 'bicep'],
+}
+
+export default MuscleIcon

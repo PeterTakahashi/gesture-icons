@@ -40,3 +40,13 @@ export function HeartIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'heart',
+  gesture: 'it beats, lub-dub',
+  family: 'rigid' as const,
+  section: 'Commerce & feedback',
+  tags: ['like', 'love', 'favorite', 'health'],
+}
+
+export default HeartIcon

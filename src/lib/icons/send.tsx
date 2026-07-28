@@ -44,3 +44,13 @@ export function SendIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'send',
+  gesture: 'the plane actually leaves',
+  family: 'travel' as const,
+  section: 'Communication',
+  tags: ['plane', 'paper', 'message', 'submit'],
+}
+
+export default SendIcon

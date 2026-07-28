@@ -40,3 +40,13 @@ export function SearchIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'search',
+  gesture: 'the lens scans',
+  family: 'rigid' as const,
+  section: 'Data',
+  tags: ['find', 'magnifier', 'lookup', 'zoom'],
+}
+
+export default SearchIcon

@@ -62,3 +62,13 @@ export function DownloadIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'download',
+  gesture: 'the arrow lands in the tray',
+  family: 'rigid' as const,
+  section: 'Workspace',
+  tags: ['save', 'arrow', 'tray', 'get'],
+}
+
+export default DownloadIcon

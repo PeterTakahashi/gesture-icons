@@ -1,9 +1,10 @@
 # gesture-icons
 
-Semantic animated icons for React. Each icon performs **the gesture it already
-means, happening once** — a bell rings, a key turns in its lock, a paper plane
-actually leaves the frame, an arm flexes. Nothing spins because spinning looks
-alive; if an icon is a noun with no verb, it stays still.
+Semantic animated icons for React — 100+ of them, searchable. Each icon
+performs **the gesture it already means, happening once** — a bell rings, a
+key turns in its lock, a paper plane actually leaves the frame, an arm flexes.
+Nothing spins because spinning looks alive; if an icon is a noun with no verb,
+it stays still.
 
 Built with [Motion](https://motion.dev). Base glyphs from
 [Lucide](https://lucide.dev) (ISC). Philosophy and one adapted drawing (the
@@ -88,7 +89,9 @@ gesture is and why. To add an icon:
 4. Author keyframes that end on rest. Steal curves from `easings.ts`.
 5. Run the checklist in `skill/verification.md` — screenshot rest before and
    after, scrub the frames, fix the worst frame, repeat.
-6. Export it from `index.ts`, add it to the demo grid.
+6. Export `meta` + a default component from the file — the demo grid and
+   search discover it automatically. Then run `node scripts/gen-index.mjs` to
+   refresh the named exports in `index.ts`.
 
 ## Why Motion and not CSS?
 

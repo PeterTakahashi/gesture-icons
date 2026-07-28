@@ -1,71 +1,99 @@
-import { useRef, useState, type ComponentType } from 'react'
+import { useEffect, useMemo, useRef, useState, type ComponentType } from 'react'
 import type { GestureHandle } from '../lib/core/useGesture'
 import type { GestureIconProps } from '../lib/core/types'
-import {
-  BellIcon, CartIcon, ChatIcon, DownloadIcon, FunnelIcon, GitBranchIcon,
-  HeartIcon, KeyIcon, LayersIcon, MuscleIcon, SearchIcon, SendIcon,
-  StarIcon, TrashIcon, WaveIcon,
-} from '../lib'
 import './styles.css'
 
-// Vite: per-icon raw source for the code view
-const sources = import.meta.glob('../lib/icons/*.tsx', { query: '?raw', import: 'default', eager: true }) as Record<string, string>
-
-interface Entry {
+// ── auto-registry ──────────────────────────────────────────────────────────
+// Every icon file exports `meta` + a default component; the demo discovers
+// them all here. Adding an icon = adding a file. アイコン追加＝ファイル追加。
+interface IconMeta {
   name: string
-  file: string
   gesture: string
   family: string
+  section: string
+  tags: string[]
+}
+interface IconModule {
+  default: ComponentType<GestureIconProps>
+  meta: IconMeta
+}
+const modules = import.meta.glob('../lib/icons/*.tsx', { eager: true }) as Record<string, IconModule>
+const sources = import.meta.glob('../lib/icons/*.tsx', { query: '?raw', import: 'default', eager: true }) as Record<string, string>
+
+interface Entry extends IconMeta {
   Icon: ComponentType<GestureIconProps>
+  source: string
 }
 
-const SECTIONS: { title: string; entries: Entry[] }[] = [
-  {
-    title: 'Hands',
-    entries: [
-      { name: 'muscle', file: 'muscle', gesture: 'the arm flexes', family: 'morph', Icon: MuscleIcon },
-      { name: 'wave', file: 'wave', gesture: 'the hand waves hello', family: 'rigid', Icon: WaveIcon },
-    ],
-  },
-  {
-    title: 'Objects',
-    entries: [
-      { name: 'bell', file: 'bell', gesture: 'it rings', family: 'rigid', Icon: BellIcon },
-      { name: 'key', file: 'key', gesture: 'it turns in the lock', family: 'rigid', Icon: KeyIcon },
-      { name: 'trash', file: 'trash', gesture: 'the lid opens', family: 'rigid', Icon: TrashIcon },
-    ],
-  },
-  {
-    title: 'Communication',
-    entries: [
-      { name: 'send', file: 'send', gesture: 'the plane actually leaves', family: 'travel', Icon: SendIcon },
-      { name: 'chat', file: 'chat', gesture: 'someone is typing', family: 'secondary', Icon: ChatIcon },
-    ],
-  },
-  {
-    title: 'Workspace',
-    entries: [
-      { name: 'git-branch', file: 'git-branch', gesture: 'it rewrites itself', family: 'draw-on', Icon: GitBranchIcon },
-      { name: 'layers', file: 'layers', gesture: 'the stack takes the drop', family: 'rigid', Icon: LayersIcon },
-      { name: 'download', file: 'download', gesture: 'the arrow lands in the tray', family: 'rigid', Icon: DownloadIcon },
-    ],
-  },
-  {
-    title: 'Data',
-    entries: [
-      { name: 'search', file: 'search', gesture: 'the lens scans', family: 'rigid', Icon: SearchIcon },
-      { name: 'funnel', file: 'funnel', gesture: 'something passes through', family: 'travel', Icon: FunnelIcon },
-    ],
-  },
-  {
-    title: 'Commerce & feedback',
-    entries: [
-      { name: 'cart', file: 'cart', gesture: 'it is pushed', family: 'rigid', Icon: CartIcon },
-      { name: 'heart', file: 'heart', gesture: 'it beats, lub-dub', family: 'rigid', Icon: HeartIcon },
-      { name: 'star', file: 'star', gesture: 'it gathers and blooms', family: 'rigid', Icon: StarIcon },
-    ],
-  },
+const ALL: Entry[] = Object.entries(modules)
+  .filter(([, m]) => m.meta && m.default)
+  .map(([path, m]) => ({ ...m.meta, Icon: m.default, source: sources[path] ?? '' }))
+  .sort((a, b) => a.name.localeCompare(b.name))
+
+const SECTION_ORDER = [
+  'Hands', 'Interface', 'Objects', 'Communication', 'Media', 'Workspace',
+  'Files & time', 'Data', 'Nature', 'Transport', 'Commerce & feedback', 'People',
 ]
+
+function matches(e: Entry, q: string) {
+  const hay = `${e.name} ${e.gesture} ${e.family} ${e.section} ${e.tags.join(' ')}`.toLowerCase()
+  return q.split(/\s+/).every((w) => hay.includes(w))
+}
+
+// ── UI ─────────────────────────────────────────────────────────────────────
+
+function Card({ entry, onCode }: { entry: Entry; onCode: (e: Entry) => void }) {
+  const handle = useRef<GestureHandle>(null)
+  return (
+    <div className="card">
+      <button
+        className="stage"
+        onPointerEnter={() => handle.current?.play()}
+        onClick={() => handle.current?.play()}
+        aria-label={`play ${entry.name}`}
+      >
+        <entry.Icon size={44} trigger="manual" handleRef={handle} />
+      </button>
+      <div className="meta">
+        <div>
+          <div className="name">{entry.name}</div>
+          <div className="gesture">{entry.gesture}</div>
+        </div>
+        <div className="actions">
+          <span className="family">{entry.family}</span>
+          <button className="codebtn" onClick={() => onCode(entry)}>code</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function CodeModal({ entry, onClose }: { entry: Entry; onClose: () => void }) {
+  const [copied, setCopied] = useState(false)
+  return (
+    <div className="overlay" onClick={onClose}>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
+        <div className="modalbar">
+          <span className="modaltitle">{entry.name}.tsx</span>
+          <div>
+            <button
+              className="codebtn"
+              onClick={() => {
+                navigator.clipboard.writeText(entry.source)
+                setCopied(true)
+                setTimeout(() => setCopied(false), 1200)
+              }}
+            >
+              {copied ? 'copied' : 'copy'}
+            </button>
+            <button className="codebtn" onClick={onClose}>close</button>
+          </div>
+        </div>
+        <pre>{entry.source}</pre>
+      </div>
+    </div>
+  )
+}
 
 const USAGE_QUICKSTART = `# 1. grab the engine (3 small files) + any icon file
 src/lib/core/useGesture.ts   # trigger discipline
@@ -142,7 +170,8 @@ function Usage() {
             it → end every track on its rest value. The full rules (taxonomy,
             mechanics, morphing, verification checklist — and the prompts to
             generate icons with a model) live in the repo&apos;s{' '}
-            <code>skill/</code> directory and README.
+            <code>skill/</code> directory and README. Export <code>meta</code> and
+            a default component and the icon appears here automatically.
           </p>
         </div>
       </div>
@@ -150,81 +179,82 @@ function Usage() {
   )
 }
 
-function Card({ entry, onCode }: { entry: Entry; onCode: (e: Entry) => void }) {
-  const handle = useRef<GestureHandle>(null)
-  return (
-    <div className="card">
-      <button
-        className="stage"
-        onPointerEnter={() => handle.current?.play()}
-        onClick={() => handle.current?.play()}
-        aria-label={`play ${entry.name}`}
-      >
-        <entry.Icon size={44} trigger="manual" handleRef={handle} />
-      </button>
-      <div className="meta">
-        <div>
-          <div className="name">{entry.name}</div>
-          <div className="gesture">{entry.gesture}</div>
-        </div>
-        <div className="actions">
-          <span className="family">{entry.family}</span>
-          <button className="codebtn" onClick={() => onCode(entry)}>code</button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function CodeModal({ entry, onClose }: { entry: Entry; onClose: () => void }) {
-  const src = sources[`../lib/icons/${entry.file}.tsx`] ?? '// source not found'
-  const [copied, setCopied] = useState(false)
-  return (
-    <div className="overlay" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <div className="modalbar">
-          <span className="modaltitle">{entry.file}.tsx</span>
-          <div>
-            <button
-              className="codebtn"
-              onClick={() => {
-                navigator.clipboard.writeText(src)
-                setCopied(true)
-                setTimeout(() => setCopied(false), 1200)
-              }}
-            >
-              {copied ? 'copied' : 'copy'}
-            </button>
-            <button className="codebtn" onClick={onClose}>close</button>
-          </div>
-        </div>
-        <pre>{src}</pre>
-      </div>
-    </div>
-  )
-}
-
 export default function App() {
   const [code, setCode] = useState<Entry | null>(null)
+  const [query, setQuery] = useState('')
+  const searchRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === '/' && document.activeElement?.tagName !== 'INPUT') {
+        e.preventDefault()
+        searchRef.current?.focus()
+      }
+      if (e.key === 'Escape') searchRef.current?.blur()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  const q = query.trim().toLowerCase()
+  const filtered = useMemo(() => (q ? ALL.filter((e) => matches(e, q)) : ALL), [q])
+  const sections = useMemo(() => {
+    if (q) return null
+    const by = new Map<string, Entry[]>()
+    for (const e of ALL) {
+      if (!by.has(e.section)) by.set(e.section, [])
+      by.get(e.section)!.push(e)
+    }
+    return [...by.entries()].sort(
+      (a, b) => (SECTION_ORDER.indexOf(a[0]) + 99) - (SECTION_ORDER.indexOf(b[0]) + 99) ||
+        SECTION_ORDER.indexOf(a[0]) - SECTION_ORDER.indexOf(b[0]),
+    )
+  }, [q])
+
   return (
     <main>
       <header>
         <h1>gesture‑icons</h1>
         <p className="lede">
-          Icons that do the thing they already mean, once. Hover a tile to play its
-          gesture; every animation ends exactly on the resting picture. Morph when the
-          material bends, transform when it is rigid, dash when a line is drawn,
-          leave the frame when something goes away — never a fade.
+          {ALL.length} icons that do the thing they already mean, once. Hover a tile
+          to play its gesture; every animation ends exactly on the resting picture.
+          Morph when the material bends, transform when it is rigid, dash when a
+          line is drawn, leave the frame when something goes away — never a fade.
         </p>
       </header>
-      {SECTIONS.map((s) => (
-        <section key={s.title}>
-          <h2>{s.title}</h2>
+
+      <div className="searchbar">
+        <input
+          ref={searchRef}
+          type="search"
+          placeholder={`Search ${ALL.length} icons…  ( / )`}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          aria-label="Search icons"
+        />
+        {q && <span className="count">{filtered.length} result{filtered.length === 1 ? '' : 's'}</span>}
+      </div>
+
+      {q ? (
+        <section>
           <div className="grid">
-            {s.entries.map((e) => <Card key={e.name} entry={e} onCode={setCode} />)}
+            {filtered.map((e) => <Card key={e.name} entry={e} onCode={setCode} />)}
           </div>
+          {filtered.length === 0 && (
+            <p className="empty">No gesture for “{query}” yet — the skill in the repo shows how to make one.</p>
+          )}
         </section>
-      ))}
+      ) : (
+        sections!.map(([title, entries]) => (
+          <section key={title}>
+            <h2>{title}</h2>
+            <div className="grid">
+              {entries.map((e) => <Card key={e.name} entry={e} onCode={setCode} />)}
+            </div>
+          </section>
+        ))
+      )}
+
       <Usage />
       <footer>
         Built with <a href="https://motion.dev">Motion</a>. Base glyphs from{' '}

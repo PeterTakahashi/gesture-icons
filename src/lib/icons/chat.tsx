@@ -64,3 +64,13 @@ export function ChatIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'chat',
+  gesture: 'someone is typing',
+  family: 'secondary' as const,
+  section: 'Communication',
+  tags: ['message', 'bubble', 'typing', 'talk'],
+}
+
+export default ChatIcon

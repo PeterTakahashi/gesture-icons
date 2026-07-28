@@ -62,3 +62,13 @@ export function TrashIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'trash',
+  gesture: 'the lid opens',
+  family: 'rigid' as const,
+  section: 'Objects',
+  tags: ['delete', 'remove', 'bin', 'garbage'],
+}
+
+export default TrashIcon

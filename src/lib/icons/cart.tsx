@@ -69,3 +69,13 @@ export function CartIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'cart',
+  gesture: 'it is pushed',
+  family: 'rigid' as const,
+  section: 'Commerce & feedback',
+  tags: ['shopping', 'buy', 'checkout', 'store'],
+}
+
+export default CartIcon

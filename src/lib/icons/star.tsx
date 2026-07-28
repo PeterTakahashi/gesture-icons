@@ -43,3 +43,13 @@ export function StarIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'star',
+  gesture: 'it gathers and blooms',
+  family: 'rigid' as const,
+  section: 'Commerce & feedback',
+  tags: ['favorite', 'rate', 'bookmark', 'sparkle'],
+}
+
+export default StarIcon

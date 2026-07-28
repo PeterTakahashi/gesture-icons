@@ -64,3 +64,13 @@ export function GitBranchIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'git-branch',
+  gesture: 'it rewrites itself',
+  family: 'draw-on' as const,
+  section: 'Workspace',
+  tags: ['git', 'branch', 'vcs', 'fork'],
+}
+
+export default GitBranchIcon

@@ -39,3 +39,13 @@ export function WaveIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'wave',
+  gesture: 'the hand waves hello',
+  family: 'rigid' as const,
+  section: 'Hands',
+  tags: ['hand', 'hello', 'greeting', 'bye'],
+}
+
+export default WaveIcon

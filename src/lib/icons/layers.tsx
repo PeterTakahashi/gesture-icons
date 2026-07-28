@@ -67,3 +67,13 @@ export function LayersIcon({
     </svg>
   )
 }
+
+export const meta = {
+  name: 'layers',
+  gesture: 'the stack takes the drop',
+  family: 'rigid' as const,
+  section: 'Workspace',
+  tags: ['stack', 'sheets', 'levels'],
+}
+
+export default LayersIcon
