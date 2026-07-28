@@ -190,6 +190,16 @@ h2 {
   flex: 1;
 }
 
+.codehtml { overflow: auto; flex: 1; }
+
+.codehtml pre.shiki {
+  padding: 16px;
+  font-family: ui-monospace, 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.55;
+  min-width: max-content;
+}
+
 /* ── install section / footer ────────────────────────────────────── */
 
 .usagestep {

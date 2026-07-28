@@ -105,6 +105,14 @@ function Tile({ entry, color, onOpen }: { entry: Entry; color: string; onOpen: (
 
 type Tab = 'react' | 'vue' | 'html' | 'cli'
 
+// Shiki は初回表示時に動的読込 — メインバンドルを太らせない
+const TAB_LANG: Record<Tab, string> = { react: 'tsx', vue: 'vue', html: 'html', cli: 'bash' }
+
+async function highlight(code: string, lang: string): Promise<string> {
+  const { codeToHtml } = await import('shiki')
+  return codeToHtml(code, { lang, theme: 'github-light' })
+}
+
 function DetailModal({ entry, color, onClose }: { entry: Entry; color: string; onClose: () => void }) {
   const handle = useRef<GestureHandle>(null)
   const [tab, setTab] = useState<Tab>('react')
@@ -120,6 +128,15 @@ function DetailModal({ entry, color, onClose }: { entry: Entry; color: string; o
   const vue = useMemo(() => vueSnippet(entry, color), [entry, color])
   const html = useMemo(() => htmlSnippet(entry, color), [entry, color])
   const codeFor: Record<Tab, string> = { react: reactSrc, vue, html, cli: cliSnippet(entry) }
+
+  const [highlighted, setHighlighted] = useState<string | null>(null)
+  useEffect(() => {
+    let alive = true
+    setHighlighted(null)
+    highlight(codeFor[tab], TAB_LANG[tab]).then((h) => { if (alive) setHighlighted(h) })
+    return () => { alive = false }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab, reactSrc, vue, html, entry])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
@@ -164,7 +181,11 @@ function DetailModal({ entry, color, onClose }: { entry: Entry; color: string; o
             {copied ? 'copied' : 'copy'}
           </button>
         </div>
-        <pre>{codeFor[tab]}</pre>
+        {highlighted ? (
+          <div className="codehtml" dangerouslySetInnerHTML={{ __html: highlighted }} />
+        ) : (
+          <pre>{codeFor[tab]}</pre>
+        )}
       </div>
     </div>
   )
