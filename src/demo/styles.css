@@ -70,6 +70,54 @@ section { margin-top: 48px; }
   white-space: nowrap;
 }
 
+.colorbar {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.swatchwrap input[type='color'] {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.swatchwrap input[type='color']::-webkit-color-swatch-wrapper { padding: 0; }
+
+.swatchwrap input[type='color']::-webkit-color-swatch {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 50%;
+}
+
+.hex {
+  font-family: ui-monospace, 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  min-width: 62px;
+}
+
+.presets { display: flex; gap: 7px; }
+
+.preset {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  padding: 0;
+}
+
+.preset.active {
+  outline: 2px solid rgba(0, 0, 0, 0.35);
+  outline-offset: 2px;
+}
+
 .empty {
   margin-top: 24px;
   font-size: 14px;

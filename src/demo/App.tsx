@@ -42,12 +42,13 @@ function matches(e: Entry, q: string) {
 
 // ── UI ─────────────────────────────────────────────────────────────────────
 
-function Card({ entry, onCode }: { entry: Entry; onCode: (e: Entry) => void }) {
+function Card({ entry, color, onCode }: { entry: Entry; color: string; onCode: (e: Entry) => void }) {
   const handle = useRef<GestureHandle>(null)
   return (
     <div className="card">
       <button
         className="stage"
+        style={{ color }}
         onPointerEnter={() => handle.current?.play()}
         onClick={() => handle.current?.play()}
         aria-label={`play ${entry.name}`}
@@ -179,9 +180,13 @@ function Usage() {
   )
 }
 
+const DEFAULT_COLOR = '#000000'
+const PRESETS = ['#000000', '#6366f1', '#e11d48', '#059669', '#d97706', '#0ea5e9']
+
 export default function App() {
   const [code, setCode] = useState<Entry | null>(null)
   const [query, setQuery] = useState('')
+  const [iconColor, setIconColor] = useState(DEFAULT_COLOR)
   const searchRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -235,10 +240,36 @@ export default function App() {
         {q && <span className="count">{filtered.length} result{filtered.length === 1 ? '' : 's'}</span>}
       </div>
 
+      <div className="colorbar">
+        <label className="swatchwrap" title="Pick any color">
+          <input
+            type="color"
+            value={iconColor}
+            onChange={(e) => setIconColor(e.target.value)}
+            aria-label="Icon color"
+          />
+        </label>
+        <span className="hex">{iconColor}</span>
+        <div className="presets">
+          {PRESETS.map((c) => (
+            <button
+              key={c}
+              className={`preset${c === iconColor ? ' active' : ''}`}
+              style={{ background: c }}
+              onClick={() => setIconColor(c)}
+              aria-label={`color ${c}`}
+            />
+          ))}
+        </div>
+        {iconColor !== DEFAULT_COLOR && (
+          <button className="codebtn" onClick={() => setIconColor(DEFAULT_COLOR)}>reset</button>
+        )}
+      </div>
+
       {q ? (
         <section>
           <div className="grid">
-            {filtered.map((e) => <Card key={e.name} entry={e} onCode={setCode} />)}
+            {filtered.map((e) => <Card key={e.name} entry={e} color={iconColor} onCode={setCode} />)}
           </div>
           {filtered.length === 0 && (
             <p className="empty">No gesture for “{query}” yet — the skill in the repo shows how to make one.</p>
@@ -249,7 +280,7 @@ export default function App() {
           <section key={title}>
             <h2>{title}</h2>
             <div className="grid">
-              {entries.map((e) => <Card key={e.name} entry={e} onCode={setCode} />)}
+              {entries.map((e) => <Card key={e.name} entry={e} color={iconColor} onCode={setCode} />)}
             </div>
           </section>
         ))
