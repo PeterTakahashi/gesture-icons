@@ -256,6 +256,7 @@ footer a { color: inherit; }
 .overlay {
   position: fixed;
   inset: 0;
+  z-index: 50; /* above the sticky searchbar */
   background: rgba(0, 0, 0, 0.35);
   display: flex;
   align-items: center;
