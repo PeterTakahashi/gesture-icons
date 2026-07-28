@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cookie",
+  "title": "cookie",
+  "description": "Semantic animated icon — a bite is taken. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cookie.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeInCubic, settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * Cookie — a bite is taken. The cookie shakes once, fast and decaying, and\n * each chocolate-chip dot pops and resettles a beat after, staggered —\n * crumbs jostling loose from the bite.\n * Base geometry: Lucide `cookie` (ISC).\n */\nconst SHAKE_DUR = 0.5\nconst CHIP_DUR = 0.5\nconst CHIPS: [number, number][] = [\n  [8.5, 8.5],\n  [16, 15.5],\n  [12, 12],\n  [11, 17],\n  [7, 14],\n]\n\nexport function CookieIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const pop = (delay: number): Variants => ({\n    normal: { scale: 1 },\n    animate: {\n      scale: [1, 0.7, 1.2, 1],\n      transition: { duration: CHIP_DUR, delay, times: [0, 0.3, 0.65, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cookie'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 3, -2, 1, 0],\n            transition: { duration: SHAKE_DUR, times: [0, 0.3, 0.58, 0.8, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      {CHIPS.map(([cx, cy], i) => (\n        <motion.path\n          key={`${cx}-${cy}`}\n          d={`M${cx} ${cy}v.01`}\n          style={{ transformBox: 'view-box', transformOrigin: `${cx}px ${cy}px` }}\n          initial=\"normal\"\n          animate={controls}\n          variants={pop(0.1 + i * 0.06)}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cookie',\n  gesture: 'a bite is taken',\n  family: 'rigid' as const,\n  section: 'Food & drink',\n  tags: ['snack', 'sweet'],\n}\n\nexport default CookieIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cookie.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

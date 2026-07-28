@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "shirt",
+  "title": "shirt",
+  "description": "Semantic animated icon — it is shaken out. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/shirt.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Shirt — it is shaken out. A decaying shake hinged at the collar, each\n * swing smaller than the last, finishing on a smoothing settle rather than\n * a hard stop — fresh from the line. The whole shirt is a single compound\n * outline in this glyph, so the \"hem lagging behind the collar\" is honestly\n * folded into the decay curve itself (bigger first, calming down) rather\n * than a separate lagging layer the geometry doesn't provide.\n * Base geometry: Lucide `shirt` (ISC).\n */\nconst DUR = 0.8\n\nexport function ShirtIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'shirt'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 2px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -3, 3, -2, 1.5, -0.8, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.14, 0.3, 0.46, 0.62, 0.8, 1],\n              ease: [easeInOutCubic, easeInOutCubic, easeInOutCubic, easeInOutCubic, easeInOutCubic, easeOutQuart],\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'shirt',\n  gesture: 'it is shaken out',\n  family: 'rigid' as const,\n  section: 'People & emotion',\n  tags: ['clothes', 'fashion', 'laundry'],\n}\n\nexport default ShirtIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/shirt.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

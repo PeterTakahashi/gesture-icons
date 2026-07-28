@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cloud-cog",
+  "title": "cloud-cog",
+  "description": "Semantic animated icon — the cloud thinks. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cloud-cog.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, easeOutQuint } from '../core/easings'\n\n/**\n * Cloud cog — the cloud thinks. Only the six-spoked cog turns, about its own\n * center (12px,17px — the midpoint every spoke tip sits symmetric around).\n * A small wind-up, an overshoot past the mark, and a settle at 60° — one\n * sixth of a turn, the cog's own symmetry, so the landing is free. The\n * cloud itself never moves; it is provisioning, not blowing away.\n * Base geometry: Lucide `cloud-cog` (ISC).\n */\nconst DUR = 1.0\n\nexport function CloudCogIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cloud cog'}\n      {...hoverProps}\n    >\n      <path d=\"M4.2 15.1a7 7 0 1 1 9.93-9.858A7 7 0 0 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.2\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 17px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -8, 68, 60],\n            transition: { duration: DUR, times: [0, 0.18, 0.75, 1], ease: [easeInOutCubic, easeOutQuint, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"m10.852 19.772-.383.924\" />\n        <path d=\"m13.148 14.228.383-.923\" />\n        <path d=\"M13.148 19.772a3 3 0 1 0-2.296-5.544l-.383-.923\" />\n        <path d=\"m13.53 20.696-.382-.924a3 3 0 1 1-2.296-5.544\" />\n        <path d=\"m14.772 15.852.923-.383\" />\n        <path d=\"m14.772 18.148.923.383\" />\n        <path d=\"m9.228 15.852-.923-.383\" />\n        <path d=\"m9.228 18.148-.923.383\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cloud-cog',\n  gesture: 'the cloud thinks',\n  family: 'rigid' as const,\n  section: 'Workspace',\n  tags: ['devops', 'config', 'process'],\n}\n\nexport default CloudCogIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cloud-cog.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

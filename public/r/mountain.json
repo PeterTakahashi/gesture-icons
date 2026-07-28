@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mountain",
+  "title": "mountain",
+  "description": "Semantic animated icon — it endures. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/mountain.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Mountain — it endures. Almost nothing happens, on purpose: a barely\n * perceptible swell about its own base over a long, slow beat — geologic\n * patience. The one icon in the set whose gesture is stillness barely broken.\n * Base geometry: Lucide `mountain` (ISC).\n */\nconst DUR = 1.5\n\nexport function MountainIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'mountain'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"m8 3 4 8 5-5 5 15H2L8 3z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 21px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.015, 1],\n            transition: { duration: DUR, times: [0, 0.5, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'mountain',\n  gesture: 'it endures',\n  family: 'rigid' as const,\n  section: 'Animals & nature',\n  tags: ['peak', 'outdoor', 'hike'],\n}\n\nexport default MountainIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/mountain.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

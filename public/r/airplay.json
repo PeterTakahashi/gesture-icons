@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "airplay",
+  "title": "airplay",
+  "description": "Semantic animated icon — it casts to the screen. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/airplay.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Airplay — it casts to the screen. The triangle NUDGEs up into the frame\n * — a small wind-up down, the drive up, a settle-back — handing off; the\n * frame receives with a subtle press exactly on contact.\n * Base geometry: Lucide `airplay` (ISC).\n */\nconst DUR = 0.9\n\nexport function AirplayIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'airplay'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1, 0.97, 1.02, 1],\n            transition: { duration: DUR, times: [0, 0.44, 0.54, 0.66, 0.85], ease: ['linear', easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"m12 15 5 6H7Z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0.6, -1.5, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.48, 0.72], ease: [easeInOutCubic, easeOutQuart, settleBack] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'airplay',\n  gesture: 'it casts to the screen',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['stream', 'apple', 'mirror'],\n}\n\nexport default AirplayIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/airplay.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

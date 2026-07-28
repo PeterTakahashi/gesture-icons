@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "headphones",
+  "title": "headphones",
+  "description": "Semantic animated icon — it bops to the beat. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/headphones.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Headphones — it bops to the beat. The whole band dips twice about its own\n * base, a small nod-along rather than a bounce, smaller than a heartbeat.\n * Base geometry: Lucide `headphones` (ISC).\n */\nconst DUR = 0.95\n\nexport function HeadphonesIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'headphones'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 21px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 0.96, 1, 0.95, 1],\n            transition: { duration: DUR, times: [0, 0.22, 0.46, 0.7, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'headphones',\n  gesture: 'it bops to the beat',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['audio', 'music', 'listen'],\n}\n\nexport default HeadphonesIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/headphones.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

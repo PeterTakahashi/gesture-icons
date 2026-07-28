@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "laptop",
+  "title": "laptop",
+  "description": "Semantic animated icon — it opens for work. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/laptop.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Laptop — it tips open. Lucide draws the screen and base as one\n * continuous outline, so the honest move is to pivot that whole shape\n * about the hinge line at its bottom edge (~y=15.9): the base portion\n * barely displaces so close to the pivot, while the screen above it\n * visibly swings back. The separate front-lip line stays put.\n * Base geometry: Lucide `laptop` (ISC).\n */\nconst DUR = 1.0\n\nexport function LaptopIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'laptop'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 15.9px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -8, -8, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.7, 1], ease: [easeOutQuart, 'linear', easeInOutCubic] },\n          },\n        }}\n      />\n      <path d=\"M20.054 15.987H3.946\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'laptop',\n  gesture: 'it opens for work',\n  family: 'rigid' as const,\n  section: 'Devices',\n  tags: ['computer', 'notebook'],\n}\n\nexport default LaptopIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/laptop.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

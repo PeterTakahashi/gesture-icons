@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spell-check",
+  "title": "spell-check",
+  "description": "Semantic animated icon — it approves the word. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/spell-check.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeInOutQuart, easeOutQuart, pen } from '../core/easings'\n\n/**\n * Spell check — the check mark erases and the pen rewrites it; the\n * whole glyph takes a tiny landing dip exactly as the tick lands, since\n * that is the instant the word is approved. The letters hold still.\n * Base geometry: Lucide `spell-check` (ISC).\n */\nconst DUR = 1.0\n\nexport function SpellCheckIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'spell check'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.5, -0.15, 0],\n            transition: { duration: DUR, times: [0, 0.72, 0.82, 0.9, 1], ease: ['linear', easeOutQuart, easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"m6 16 6-12 6 12\" />\n        <path d=\"M8 12h8\" />\n        <motion.path\n          d=\"m16 20 2 2 4-4\"\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { pathLength: 1 },\n            animate: {\n              pathLength: [1, 0.001, 0.001, 1],\n              transition: { duration: DUR, times: [0, 0.18, 0.32, 0.7], ease: [easeInOutQuart, 'linear', pen] },\n            },\n          }}\n        />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'spell-check',\n  gesture: 'it approves the word',\n  family: 'draw-on' as const,\n  section: 'Text & editing',\n  tags: ['grammar', 'correct'],\n}\n\nexport default SpellCheckIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/spell-check.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

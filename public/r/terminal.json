@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "terminal",
+  "title": "terminal",
+  "description": "Semantic animated icon — the prompt types. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/terminal.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * Terminal — the prompt types. The cursor line blinks twice, a true binary\n * step with no fade (a terminal cursor does not dim, it is on or off), then\n * the chevron nudges forward as if a command had just been submitted.\n * Base geometry: Lucide `terminal` (ISC).\n */\nconst DUR = 1.1\n\nexport function TerminalIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'terminal'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"m4 17 6-6-6-6\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, 0, 1.2, 0],\n            transition: { duration: DUR, times: [0, 0.55, 0.78, 1], ease: ['linear', settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      {/* cursor: a true binary blink, never a fade */}\n      <motion.path\n        d=\"M12 19h8\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { opacity: 1 },\n          animate: {\n            opacity: [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n            transition: {\n              duration: DUR,\n              times: [0, 0.09, 0.1, 0.22, 0.23, 0.35, 0.36, 0.48, 0.49, 0.55],\n              ease: 'linear',\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'terminal',\n  gesture: 'the prompt types',\n  family: 'secondary' as const,\n  section: 'Workspace',\n  tags: ['cli', 'shell', 'console', 'command'],\n}\n\nexport default TerminalIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/terminal.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "flashlight",
+  "title": "flashlight",
+  "description": "Semantic animated icon — it sweeps the dark. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/flashlight.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { pen, easeInOutCubic, easeInCubic } from '../core/easings'\n\n/**\n * Flashlight — it sweeps the dark. A beam draws itself on above the lens,\n * the body rotates about the grip while it holds, then the beam erases as\n * the body settles back — one look around, drawn by length, never a fade.\n * Base geometry: Lucide `flashlight` (ISC).\n */\nconst DUR = 1.1\n\nexport function FlashlightIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const beam = (delay: number) => ({\n    normal: { pathLength: 0.001, opacity: 0 },\n    animate: {\n      pathLength: [0.001, 1, 1, 0.001],\n      opacity: [0, 1, 1, 0],\n      transition: {\n        duration: DUR,\n        delay,\n        pathLength: { times: [0, 0.28, 0.72, 0.92], ease: [pen, 'linear', easeInCubic] },\n        opacity: { times: [0, 0.02, 0.9, 0.92], ease: 'linear' },\n      },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'flashlight'}\n      {...hoverProps}\n    >\n      <motion.path strokeWidth={strokeWidth * 0.8} d=\"M8 2 5 0.3\" initial=\"normal\" animate={controls} variants={beam(0)} />\n      <motion.path strokeWidth={strokeWidth * 0.8} d=\"M12 2 12 0\" initial=\"normal\" animate={controls} variants={beam(0.04)} />\n      <motion.path strokeWidth={strokeWidth * 0.8} d=\"M16 2 19 0.3\" initial=\"normal\" animate={controls} variants={beam(0.08)} />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 20px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -6, 4, 0],\n            transition: { duration: DUR, times: [0, 0.35, 0.7, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M12 13v1\" />\n        <path d=\"M17 2a1 1 0 0 1 1 1v4a3 3 0 0 1-.6 1.8l-.6.8A4 4 0 0 0 16 12v8a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-8a4 4 0 0 0-.8-2.4l-.6-.8A3 3 0 0 1 6 7V3a1 1 0 0 1 1-1z\" />\n        <path d=\"M6 6h12\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'flashlight',\n  gesture: 'it sweeps the dark',\n  family: 'secondary' as const,\n  section: 'Tools',\n  tags: ['light', 'torch', 'search'],\n}\n\nexport default FlashlightIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/flashlight.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "arrow-left",
+  "title": "arrow-left",
+  "description": "Semantic animated icon — it urges left. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/arrow-left.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Arrow left — it urges left. Wind-up right (the load), drive left past the\n * mark, settle home. The chevron head runs 3% ahead of the shaft the whole\n * beat.\n * Base geometry: Lucide `arrow-left` (ISC).\n */\nconst DUR = 0.75\n\nexport function ArrowLeftIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'arrow left'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"m12 19-7-7 7-7\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, 1.5, -3, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.59, 0.97], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M19 12H5\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, 1.5, -3, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.62, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'arrow-left',\n  gesture: 'it urges left',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['left', 'back', 'direction'],\n}\n\nexport default ArrowLeftIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/arrow-left.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

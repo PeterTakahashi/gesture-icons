@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hard-drive-download",
+  "title": "hard-drive-download",
+  "description": "Semantic animated icon — data comes down. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/hard-drive-download.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Hard drive download — data comes down. A wind-up up, a drive down toward\n * the drive's mouth, a settle overshoot, then home — the standard NUDGE.\n * The drive's own LED answers with one hard blink right on the frame the\n * arrow bottoms out: receipt confirmed.\n * Base geometry: Lucide `hard-drive-download` (ISC).\n */\nconst DUR = 0.85\n\nexport function HardDriveDownloadIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'hard drive download'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1.2, 2.6, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.6, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M12 2v8\" />\n        <path d=\"m16 6-4 4-4-4\" />\n      </motion.g>\n      <rect width=\"20\" height=\"8\" x=\"2\" y=\"14\" rx=\"2\" />\n      <path d=\"M10 18h.01\" />\n      <motion.path\n        d=\"M6 18h.01\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { opacity: 1 },\n          animate: {\n            opacity: [1, 1, 0, 1],\n            transition: { duration: DUR, times: [0, 0.58, 0.63, 0.7], ease: 'linear' },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'hard-drive-download',\n  gesture: 'data comes down',\n  family: 'rigid' as const,\n  section: 'Workspace',\n  tags: ['save', 'backup', 'sync'],\n}\n\nexport default HardDriveDownloadIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/hard-drive-download.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

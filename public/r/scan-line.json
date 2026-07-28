@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scan-line",
+  "title": "scan-line",
+  "description": "Semantic animated icon — the beam passes. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/scan-line.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Scan line — the beam passes. Only the middle line moves: one sweep down\n * to the bottom of the frame and back up past the top, landing exactly back\n * on Lucide's centered line. The brackets never move — they are the frame\n * the beam scans inside of.\n * Base geometry: Lucide `scan-line` (ISC).\n */\nconst DUR = 1.0\n\nexport function ScanLineIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'scan line'}\n      {...hoverProps}\n    >\n      <path d=\"M3 7V5a2 2 0 0 1 2-2h2\" />\n      <path d=\"M17 3h2a2 2 0 0 1 2 2v2\" />\n      <path d=\"M21 17v2a2 2 0 0 1-2 2h-2\" />\n      <path d=\"M7 21H5a2 2 0 0 1-2-2v-2\" />\n      <motion.path\n        d=\"M7 12h10\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -4, 4, 0],\n            transition: { duration: DUR, times: [0, 0.38, 0.72, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'scan-line',\n  gesture: 'the beam passes',\n  family: 'secondary' as const,\n  section: 'Security',\n  tags: ['scanner', 'barcode'],\n}\n\nexport default ScanLineIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/scan-line.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bot",
+  "title": "bot",
+  "description": "Semantic animated icon — it boots up. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/bot.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Bot — it boots up. Both eyes hard-blink once together — no fade, a\n * true binary step — then the whole head tilts a few degrees about its own\n * center (12px,14px, the rect's own midpoint): hello, human. The antenna\n * carries no dot in Lucide's glyph, so its \"pop\" is an honest addition — a\n * tiny signal light at the antenna tip, hidden by scale at rest, that pops\n * once right at the tilt's peak and is gone again before the head returns.\n * Base geometry: Lucide `bot` (ISC).\n */\nconst DUR = 1.1\n\nexport function BotIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const eye = {\n    normal: { opacity: 1 },\n    animate: {\n      opacity: [1, 1, 0, 0, 1, 1],\n      transition: { duration: DUR, times: [0, 0.08, 0.09, 0.2, 0.21, 0.3], ease: 'linear' as const },\n    },\n  }\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'bot'}\n      {...hoverProps}\n    >\n      <path d=\"M2 14h2\" />\n      <path d=\"M20 14h2\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 14px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 0, 3, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.65, 1], ease: ['linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M12 8V4H8\" />\n        <rect width=\"16\" height=\"12\" x=\"4\" y=\"8\" rx=\"2\" />\n        <motion.path d=\"M15 13v2\" initial=\"normal\" animate={controls} variants={eye} />\n        <motion.path d=\"M9 13v2\" initial=\"normal\" animate={controls} variants={eye} />\n        <motion.circle\n          cx=\"8\" cy=\"4\" r=\"1\"\n          fill={color}\n          stroke=\"none\"\n          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { scale: 0.001 },\n            animate: {\n              scale: [0.001, 0.001, 1.3, 1, 1, 0.001],\n              transition: {\n                duration: DUR,\n                times: [0, 0.55, 0.66, 0.75, 0.9, 1],\n                ease: ['linear', settleBack, easeOutQuart, 'linear', 'linear'],\n              },\n            },\n          }}\n        />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'bot',\n  gesture: 'it boots up',\n  family: 'secondary' as const,\n  section: 'Workspace',\n  tags: ['robot', 'ai', 'assistant'],\n}\n\nexport default BotIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/bot.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

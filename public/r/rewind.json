@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "rewind",
+  "title": "rewind",
+  "description": "Semantic animated icon — it winds back. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/rewind.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Rewind — it winds back. Mirror of fast-forward, leftward: the front\n * (leftmost) triangle leads the nudge, the one behind follows 6% later.\n * Base geometry: Lucide `rewind` (ISC).\n */\nconst DUR = 0.9\nconst LAG = DUR * 0.06\n\nexport function RewindIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const nudge = (delay: number): Variants => ({\n    normal: { x: 0 },\n    animate: {\n      x: [0, 0.8, -2.4, 0],\n      transition: { duration: DUR, delay, times: [0, 0.15, 0.45, 0.7], ease: [easeInOutCubic, easeOutQuart, settleBack] },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'rewind'}\n      {...hoverProps}\n    >\n      {/* the front (leftmost) triangle leads */}\n      <motion.path\n        d=\"M12 6a2 2 0 0 0-3.414-1.414l-6 6a2 2 0 0 0 0 2.828l6 6A2 2 0 0 0 12 18z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={nudge(0)}\n      />\n      <motion.path\n        d=\"M22 6a2 2 0 0 0-3.414-1.414l-6 6a2 2 0 0 0 0 2.828l6 6A2 2 0 0 0 22 18z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={nudge(LAG)}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'rewind',\n  gesture: 'it winds back',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['media', 'back', 'replay'],\n}\n\nexport default RewindIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/rewind.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "backpack",
+  "title": "backpack",
+  "description": "Semantic animated icon — it is shouldered. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/backpack.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Backpack — it is shouldered. The whole pack lifts and swings up onto one\n * shoulder strap — hinged where the strap meets the top — settles down\n * square, and the top strap gives a small flex as the load takes hold.\n * Base geometry: Lucide `backpack` (ISC).\n */\nconst DUR = 1.0\n\nexport function BackpackIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'backpack'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '11px 4px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, -2, -2, 0],\n            rotate: [0, -3, -3, 0],\n            transition: { duration: DUR, times: [0, 0.34, 0.62, 1], ease: [easeOutQuart, 'linear', easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z\" />\n        <path d=\"M8 10h8\" />\n        <path d=\"M8 18h8\" />\n        <path d=\"M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6\" />\n        <motion.path\n          d=\"M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2\"\n          style={{ transformBox: 'view-box', transformOrigin: '11px 4px' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { scaleX: 1 },\n            animate: {\n              scaleX: [1, 1, 1.03, 1],\n              transition: { duration: DUR, times: [0, 0.62, 0.82, 1], ease: easeOutQuart },\n            },\n          }}\n        />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'backpack',\n  gesture: 'it is shouldered',\n  family: 'rigid' as const,\n  section: 'People & emotion',\n  tags: ['school', 'travel', 'hike'],\n}\n\nexport default BackpackIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/backpack.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

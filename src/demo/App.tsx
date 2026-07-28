@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState, type ComponentType } from 'react'
+import { createElement, useEffect, useMemo, useRef, useState, type ComponentType } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
 import type { GestureHandle } from '../lib/core/useGesture'
 import type { GestureIconProps } from '../lib/core/types'
 import './styles.css'
@@ -18,165 +19,154 @@ interface IconModule {
   meta: IconMeta
 }
 const modules = import.meta.glob('../lib/icons/*.tsx', { eager: true }) as Record<string, IconModule>
-const sources = import.meta.glob('../lib/icons/*.tsx', { query: '?raw', import: 'default', eager: true }) as Record<string, string>
+// Sources load lazily — with 500 icons, inlining them all would bloat the bundle.
+const sourceLoaders = import.meta.glob('../lib/icons/*.tsx', { query: '?raw', import: 'default' }) as Record<string, () => Promise<string>>
 
 interface Entry extends IconMeta {
   Icon: ComponentType<GestureIconProps>
-  source: string
+  path: string
 }
 
 const ALL: Entry[] = Object.entries(modules)
   .filter(([, m]) => m.meta && m.default)
-  .map(([path, m]) => ({ ...m.meta, Icon: m.default, source: sources[path] ?? '' }))
+  .map(([path, m]) => ({ ...m.meta, Icon: m.default, path }))
   .sort((a, b) => a.name.localeCompare(b.name))
 
 const SECTION_ORDER = [
-  'Hands', 'Interface', 'Objects', 'Communication', 'Media', 'Workspace',
-  'Files & time', 'Data', 'Nature', 'Transport', 'Commerce & feedback', 'People',
+  'Hands', 'Interface', 'Arrows', 'Objects', 'Communication', 'Media', 'Workspace',
+  'Files & time', 'Data', 'Text & editing', 'Devices', 'Security', 'Charts & math',
+  'Money & commerce', 'Commerce & feedback', 'Nature', 'Animals & nature', 'Transport',
+  'Buildings', 'Home', 'Tools', 'Food & drink', 'Health', 'Sport & games', 'Shapes',
+  'People', 'People & emotion',
 ]
+
+const SITE = 'https://claude-code-icons.vercel.app'
 
 function matches(e: Entry, q: string) {
   const hay = `${e.name} ${e.gesture} ${e.family} ${e.section} ${e.tags.join(' ')}`.toLowerCase()
   return q.split(/\s+/).every((w) => hay.includes(w))
 }
 
+// ── static code generation (Vue / HTML tabs) ───────────────────────────────
+// The resting picture rendered to markup — every icon rests exactly on its
+// base glyph, so this is the honest static version.
+function staticSvg(entry: Entry, color: string): string {
+  const raw = renderToStaticMarkup(createElement(entry.Icon, { size: 24, trigger: 'manual', color }))
+  return raw
+    .replace(/<div[^>]*>|<\/div>/g, '')
+    .replace(/\s*data-[a-z-]+="[^"]*"/g, '')
+}
+
+function vueSnippet(entry: Entry, color: string): string {
+  return `<!-- ${entry.name} — static rest glyph (animated version is React-only for now) -->
+<template>
+  ${staticSvg(entry, color).replace(/\n/g, '\n  ')}
+</template>
+
+<script setup lang="ts">
+// Purely presentational. For the animated version, see the React tab —
+// the gesture definitions port 1:1 to motion-v (Motion for Vue).
+</script>`
+}
+
+function htmlSnippet(entry: Entry, color: string): string {
+  return `<!-- ${entry.name} — static SVG, drop in anywhere -->
+${staticSvg(entry, color)}`
+}
+
+function cliSnippet(entry: Entry): string {
+  return `# one-time: the shared gesture engine (3 small files)
+npx shadcn@latest add ${SITE}/r/gesture-core.json
+
+# the icon itself
+npx shadcn@latest add ${SITE}/r/${entry.name}.json
+
+# then
+import ${entry.name.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join('')}Icon from "@/components/gesture-icons/icons/${entry.name}"`
+}
+
 // ── UI ─────────────────────────────────────────────────────────────────────
 
-function Card({ entry, color, onCode }: { entry: Entry; color: string; onCode: (e: Entry) => void }) {
+function Tile({ entry, color, onOpen }: { entry: Entry; color: string; onOpen: (e: Entry) => void }) {
   const handle = useRef<GestureHandle>(null)
   return (
-    <div className="card">
-      <button
-        className="stage"
-        style={{ color }}
-        onPointerEnter={() => handle.current?.play()}
-        onClick={() => handle.current?.play()}
-        aria-label={`play ${entry.name}`}
-      >
-        <entry.Icon size={44} trigger="manual" handleRef={handle} />
-      </button>
-      <div className="meta">
-        <div>
-          <div className="name">{entry.name}</div>
-          <div className="gesture">{entry.gesture}</div>
-        </div>
-        <div className="actions">
-          <span className="family">{entry.family}</span>
-          <button className="codebtn" onClick={() => onCode(entry)}>code</button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function CodeModal({ entry, onClose }: { entry: Entry; onClose: () => void }) {
-  const [copied, setCopied] = useState(false)
-  return (
-    <div className="overlay" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <div className="modalbar">
-          <span className="modaltitle">{entry.name}.tsx</span>
-          <div>
-            <button
-              className="codebtn"
-              onClick={() => {
-                navigator.clipboard.writeText(entry.source)
-                setCopied(true)
-                setTimeout(() => setCopied(false), 1200)
-              }}
-            >
-              {copied ? 'copied' : 'copy'}
-            </button>
-            <button className="codebtn" onClick={onClose}>close</button>
-          </div>
-        </div>
-        <pre>{entry.source}</pre>
-      </div>
-    </div>
-  )
-}
-
-const USAGE_QUICKSTART = `# 1. grab the engine (3 small files) + any icon file
-src/lib/core/useGesture.ts   # trigger discipline
-src/lib/core/easings.ts      # the house curves
-src/lib/core/types.ts        # shared props
-src/lib/icons/bell.tsx       # ← "code" button on any tile
-
-# 2. install the only runtime dependency
-npm install motion`
-
-const USAGE_BASIC = `import { BellIcon, HeartIcon, KeyIcon } from './lib'
-
-// plays its gesture on hover (default), after a 110ms intent dwell
-<BellIcon />
-
-// size / color / stroke — color defaults to currentColor,
-// so it also just inherits CSS \`color\` from the parent
-<BellIcon size={32} color="#e11d48" strokeWidth={1.5} />
-
-// play once when the component appears
-<HeartIcon trigger="mount" />`
-
-const USAGE_IMPERATIVE = `import { useRef } from 'react'
-import { KeyIcon, type GestureHandle } from './lib'
-
-function CopyKeyButton() {
-  const key = useRef<GestureHandle>(null)
-  return (
-    <button onClick={() => key.current?.play()}>
-      <KeyIcon trigger="manual" handleRef={key} />
-      Rotate API key
+    <button
+      className="tile"
+      style={{ color }}
+      onPointerEnter={() => handle.current?.play()}
+      onClick={() => onOpen(entry)}
+      aria-label={`${entry.name} — ${entry.gesture}`}
+    >
+      <entry.Icon size={30} trigger="manual" handleRef={handle} />
+      <span className="tilename">{entry.name}</span>
     </button>
   )
-}`
+}
 
-function Usage() {
+type Tab = 'react' | 'vue' | 'html' | 'cli'
+
+function DetailModal({ entry, color, onClose }: { entry: Entry; color: string; onClose: () => void }) {
+  const handle = useRef<GestureHandle>(null)
+  const [tab, setTab] = useState<Tab>('react')
+  const [reactSrc, setReactSrc] = useState('// loading…')
+  const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    sourceLoaders[entry.path]?.().then(setReactSrc)
+    const t = setTimeout(() => handle.current?.play(), 350)
+    return () => clearTimeout(t)
+  }, [entry])
+
+  const vue = useMemo(() => vueSnippet(entry, color), [entry, color])
+  const html = useMemo(() => htmlSnippet(entry, color), [entry, color])
+  const codeFor: Record<Tab, string> = { react: reactSrc, vue, html, cli: cliSnippet(entry) }
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onClose])
+
   return (
-    <section>
-      <h2>Usage</h2>
-      <div className="usage">
-        <div className="usagestep">
-          <h3>Copy, don&apos;t install</h3>
-          <p>
-            Every icon is one self-contained file — open <em>code</em> on a tile,
-            copy it into your project along with the three files in{' '}
-            <code>src/lib/core/</code>. The only dependency is{' '}
-            <a href="https://motion.dev">Motion</a>.
-          </p>
-          <pre>{USAGE_QUICKSTART}</pre>
+    <div className="overlay" onClick={onClose}>
+      <div className="modal detail" onClick={(e) => e.stopPropagation()}>
+        <div className="detailtop">
+          <button className="preview" style={{ color }} onClick={() => handle.current?.play()} aria-label="replay">
+            <entry.Icon size={88} trigger="manual" handleRef={handle} />
+          </button>
+          <div className="detailmeta">
+            <h3>{entry.name}</h3>
+            <p className="gesture">{entry.gesture}</p>
+            <p className="chips">
+              <span className="family">{entry.family}</span>
+              <span className="family">{entry.section}</span>
+            </p>
+            <p className="tags">{entry.tags.join(' · ')}</p>
+            <p className="hint">click the icon to replay</p>
+          </div>
+          <button className="codebtn" onClick={onClose}>close</button>
         </div>
-        <div className="usagestep">
-          <h3>Triggers</h3>
-          <p>
-            <code>trigger</code> is <code>&quot;hover&quot;</code> (default),{' '}
-            <code>&quot;mount&quot;</code>, or <code>&quot;manual&quot;</code>. A started
-            gesture always finishes and lands exactly on the resting picture;{' '}
-            <code>prefers-reduced-motion</code> turns every play into a no-op.
-          </p>
-          <pre>{USAGE_BASIC}</pre>
+        <div className="tabbar">
+          {(['react', 'vue', 'html', 'cli'] as Tab[]).map((t) => (
+            <button key={t} className={`tabbtn${tab === t ? ' active' : ''}`} onClick={() => setTab(t)}>
+              {t === 'cli' ? 'CLI' : t[0].toUpperCase() + t.slice(1)}
+            </button>
+          ))}
+          <span className="spacer" />
+          <button
+            className="codebtn"
+            onClick={() => {
+              navigator.clipboard.writeText(codeFor[tab])
+              setCopied(true)
+              setTimeout(() => setCopied(false), 1200)
+            }}
+          >
+            {copied ? 'copied' : 'copy'}
+          </button>
         </div>
-        <div className="usagestep">
-          <h3>Imperative — play it when something happens</h3>
-          <p>
-            Pass <code>handleRef</code> and call <code>play()</code> — it resolves
-            when the gesture has finished. Good for form submits, copy buttons,
-            notification arrivals.
-          </p>
-          <pre>{USAGE_IMPERATIVE}</pre>
-        </div>
-        <div className="usagestep">
-          <h3>Adding your own icon</h3>
-          <p>
-            Name the verb → pick the family → animate the one part that carries
-            it → end every track on its rest value. The full rules (taxonomy,
-            mechanics, morphing, verification checklist — and the prompts to
-            generate icons with a model) live in the repo&apos;s{' '}
-            <code>skill/</code> directory and README. Export <code>meta</code> and
-            a default component and the icon appears here automatically.
-          </p>
-        </div>
+        <pre>{codeFor[tab]}</pre>
       </div>
-    </section>
+    </div>
   )
 }
 
@@ -184,8 +174,9 @@ const DEFAULT_COLOR = '#000000'
 const PRESETS = ['#000000', '#6366f1', '#e11d48', '#059669', '#d97706', '#0ea5e9']
 
 export default function App() {
-  const [code, setCode] = useState<Entry | null>(null)
+  const [open, setOpen] = useState<Entry | null>(null)
   const [query, setQuery] = useState('')
+  const [section, setSection] = useState<string | null>(null)
   const [iconColor, setIconColor] = useState(DEFAULT_COLOR)
   const searchRef = useRef<HTMLInputElement>(null)
 
@@ -195,104 +186,118 @@ export default function App() {
         e.preventDefault()
         searchRef.current?.focus()
       }
-      if (e.key === 'Escape') searchRef.current?.blur()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
   const q = query.trim().toLowerCase()
-  const filtered = useMemo(() => (q ? ALL.filter((e) => matches(e, q)) : ALL), [q])
-  const sections = useMemo(() => {
+  const sectionNames = useMemo(() => {
+    const present = new Set(ALL.map((e) => e.section))
+    return SECTION_ORDER.filter((s) => present.has(s))
+  }, [])
+  const filtered = useMemo(() => {
+    let list = ALL
+    if (section) list = list.filter((e) => e.section === section)
+    if (q) list = list.filter((e) => matches(e, q))
+    return list
+  }, [q, section])
+  const grouped = useMemo(() => {
     if (q) return null
     const by = new Map<string, Entry[]>()
-    for (const e of ALL) {
+    for (const e of filtered) {
       if (!by.has(e.section)) by.set(e.section, [])
       by.get(e.section)!.push(e)
     }
-    return [...by.entries()].sort(
-      (a, b) => (SECTION_ORDER.indexOf(a[0]) + 99) - (SECTION_ORDER.indexOf(b[0]) + 99) ||
-        SECTION_ORDER.indexOf(a[0]) - SECTION_ORDER.indexOf(b[0]),
-    )
-  }, [q])
+    return sectionNames.filter((s) => by.has(s)).map((s) => [s, by.get(s)!] as const)
+  }, [q, filtered, sectionNames])
 
   return (
     <main>
       <header>
         <h1>gesture‑icons</h1>
         <p className="lede">
-          {ALL.length} icons that do the thing they already mean, once. Hover a tile
-          to play its gesture; every animation ends exactly on the resting picture.
-          Morph when the material bends, transform when it is rigid, dash when a
-          line is drawn, leave the frame when something goes away — never a fade.
+          {ALL.length} icons that do the thing they already mean, once. Hover to play;
+          click for React, Vue, HTML and CLI install. Every animation ends exactly on
+          the resting picture — morph when it bends, transform when it is rigid,
+          dash when a line is drawn, leave the frame when something goes away. Never a fade.
         </p>
       </header>
 
-      <div className="searchbar">
-        <input
-          ref={searchRef}
-          type="search"
-          placeholder={`Search ${ALL.length} icons…  ( / )`}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          aria-label="Search icons"
-        />
-        {q && <span className="count">{filtered.length} result{filtered.length === 1 ? '' : 's'}</span>}
-      </div>
-
-      <div className="colorbar">
-        <label className="swatchwrap" title="Pick any color">
+      <div className="toolbar">
+        <div className="searchbar">
           <input
-            type="color"
-            value={iconColor}
-            onChange={(e) => setIconColor(e.target.value)}
-            aria-label="Icon color"
+            ref={searchRef}
+            type="search"
+            placeholder={`Search ${ALL.length} icons…  ( / )`}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            aria-label="Search icons"
           />
-        </label>
-        <span className="hex">{iconColor}</span>
-        <div className="presets">
-          {PRESETS.map((c) => (
-            <button
-              key={c}
-              className={`preset${c === iconColor ? ' active' : ''}`}
-              style={{ background: c }}
-              onClick={() => setIconColor(c)}
-              aria-label={`color ${c}`}
-            />
+          <span className="count">{filtered.length}</span>
+        </div>
+        <div className="colorbar">
+          <label className="swatchwrap" title="Pick any color">
+            <input type="color" value={iconColor} onChange={(e) => setIconColor(e.target.value)} aria-label="Icon color" />
+          </label>
+          <span className="hex">{iconColor}</span>
+          <div className="presets">
+            {PRESETS.map((c) => (
+              <button key={c} className={`preset${c === iconColor ? ' active' : ''}`} style={{ background: c }} onClick={() => setIconColor(c)} aria-label={`color ${c}`} />
+            ))}
+          </div>
+          {iconColor !== DEFAULT_COLOR && (
+            <button className="codebtn" onClick={() => setIconColor(DEFAULT_COLOR)}>reset</button>
+          )}
+        </div>
+        <div className="chipsrow">
+          <button className={`chip${section === null ? ' active' : ''}`} onClick={() => setSection(null)}>All</button>
+          {sectionNames.map((s) => (
+            <button key={s} className={`chip${section === s ? ' active' : ''}`} onClick={() => setSection(section === s ? null : s)}>{s}</button>
           ))}
         </div>
-        {iconColor !== DEFAULT_COLOR && (
-          <button className="codebtn" onClick={() => setIconColor(DEFAULT_COLOR)}>reset</button>
-        )}
       </div>
 
-      {q ? (
+      {q || section ? (
         <section>
           <div className="grid">
-            {filtered.map((e) => <Card key={e.name} entry={e} color={iconColor} onCode={setCode} />)}
+            {filtered.map((e) => <Tile key={e.name} entry={e} color={iconColor} onOpen={setOpen} />)}
           </div>
           {filtered.length === 0 && (
             <p className="empty">No gesture for “{query}” yet — the skill in the repo shows how to make one.</p>
           )}
         </section>
       ) : (
-        sections!.map(([title, entries]) => (
+        grouped!.map(([title, entries]) => (
           <section key={title}>
-            <h2>{title}</h2>
+            <h2>{title} <span className="seccount">{entries.length}</span></h2>
             <div className="grid">
-              {entries.map((e) => <Card key={e.name} entry={e} color={iconColor} onCode={setCode} />)}
+              {entries.map((e) => <Tile key={e.name} entry={e} color={iconColor} onOpen={setOpen} />)}
             </div>
           </section>
         ))
       )}
 
-      <Usage />
+      <section>
+        <h2>Install</h2>
+        <div className="usagestep">
+          <p>
+            shadcn-style: each icon ships as a registry item. One command adds the
+            shared engine, one adds the icon — code lands in your repo, yours to edit.
+            Or just open an icon and copy the file. Only dependency: <a href="https://motion.dev">Motion</a>.
+          </p>
+          <pre>{`npx shadcn@latest add ${SITE}/r/gesture-core.json   # once
+npx shadcn@latest add ${SITE}/r/bell.json           # per icon`}</pre>
+        </div>
+      </section>
+
       <footer>
         Built with <a href="https://motion.dev">Motion</a>. Base glyphs from{' '}
         <a href="https://lucide.dev">Lucide</a> (ISC). Philosophy after{' '}
-        <a href="https://www.bakai.me/lab/animating-icons">Bakai&apos;s “Animating icons”</a>.
+        <a href="https://www.bakai.me/lab/animating-icons">Bakai&apos;s “Animating icons”</a>.{' '}
+        <a href="https://github.com/PeterTakahashi/gesture-icons">GitHub</a>
       </footer>
-      {code && <CodeModal entry={code} onClose={() => setCode(null)} />}
+      {open && <DetailModal entry={open} color={iconColor} onClose={() => setOpen(null)} />}
     </main>
   )
 }

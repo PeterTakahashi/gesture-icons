@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "package-open",
+  "title": "package-open",
+  "description": "Semantic animated icon — it is unpacked. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/package-open.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { settleBack, easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Package open — it is unpacked. The two flaps swing open on the fold lines\n * where they meet the box, hold a beat, then fold back down; the box itself\n * takes a small dip the instant the flaps land closed again — the thump of\n * cardboard settling, not one frame before contact.\n * Base geometry: Lucide `package-open` (ISC).\n */\nconst DUR = 1.2\n\nexport function PackageOpenIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'package open'}\n      {...hoverProps}\n    >\n      {/* the box: dips only on the frame the flaps land */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0, 0.8, -0.2, 0],\n            transition: { duration: DUR, times: [0, 0.7, 0.85, 0.92, 0.98, 1], ease: ['linear', 'linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M12 22v-9\" />\n        <path d=\"M20 13v3.87a2.06 2.06 0 0 1-1.11 1.83l-6 3.08a1.93 1.93 0 0 1-1.78 0l-6-3.08A2.06 2.06 0 0 1 4 16.87V13\" />\n      </motion.g>\n      {/* flap A: hinges on the edge nearest the box, near (5.9, 13.6) */}\n      <motion.path\n        d=\"M15.17 2.21a1.67 1.67 0 0 1 1.63 0L21 4.57a1.93 1.93 0 0 1 0 3.36L8.82 14.79a1.655 1.655 0 0 1-1.64 0L3 12.43a1.93 1.93 0 0 1 0-3.36z\"\n        style={{ transformBox: 'view-box', transformOrigin: '5.9px 13.6px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -14, -14, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.7, 0.92], ease: [settleBack, 'linear', easeInOutCubic] },\n          },\n        }}\n      />\n      {/* flap B: mirrored, hinges near (18, 12) */}\n      <motion.path\n        d=\"M21 12.43a1.93 1.93 0 0 0 0-3.36L8.83 2.2a1.64 1.64 0 0 0-1.63 0L3 4.57a1.93 1.93 0 0 0 0 3.36l12.18 6.86a1.636 1.636 0 0 0 1.63 0z\"\n        style={{ transformBox: 'view-box', transformOrigin: '18px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 14, 14, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.7, 0.92], ease: [settleBack, 'linear', easeInOutCubic] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'package-open',\n  gesture: 'it is unpacked',\n  family: 'rigid' as const,\n  section: 'Money & commerce',\n  tags: ['box', 'unbox', 'delivery'],\n}\n\nexport default PackageOpenIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/package-open.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "angry",
+  "title": "angry",
+  "description": "Semantic animated icon — it fumes. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/angry.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Angry — it fumes. A fast decaying shake with the brow marks pressing\n * down and holding through the shake — steam held in, not let out — before\n * everything settles back to composed.\n * Base geometry: Lucide `angry` (ISC).\n */\nconst DUR = 0.65\n\nexport function AngryIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const browVariants = {\n    normal: { y: 0 },\n    animate: {\n      y: [0, 0.5, 0.5, 0],\n      transition: { duration: DUR, times: [0, 0.14, 0.75, 1], ease: [easeOutQuart, 'linear' as const, easeInOutCubic] },\n    },\n  }\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'angry'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -2, 2, -1.5, 1, -0.5, 0],\n            transition: { duration: DUR, times: [0, 0.14, 0.3, 0.46, 0.62, 0.8, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <circle cx=\"12\" cy=\"12\" r=\"10\" />\n        <path d=\"M16 16s-1.5-2-4-2-4 2-4 2\" />\n        <motion.path d=\"M7.5 8 10 9\" initial=\"normal\" animate={controls} variants={browVariants} />\n        <motion.path d=\"m14 9 2.5-1\" initial=\"normal\" animate={controls} variants={browVariants} />\n        <path d=\"M9 10h.01\" />\n        <path d=\"M15 10h.01\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'angry',\n  gesture: 'it fumes',\n  family: 'rigid' as const,\n  section: 'People & emotion',\n  tags: ['mad', 'face', 'upset'],\n}\n\nexport default AngryIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/angry.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

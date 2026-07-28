@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pipette",
+  "title": "pipette",
+  "description": "Semantic animated icon — it takes a sample. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/pipette.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Pipette — it dips into the sample. The body slides along its own\n * diagonal toward the tip, holds a beat as if drawing liquid up, then\n * returns. The droplet mark at the tip is the fixed sample — it never\n * moves.\n * Base geometry: Lucide `pipette` (ISC).\n */\nconst DUR = 1.0\n\nexport function PipetteIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'pipette'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0, rotate: 0 },\n          animate: {\n            x: [0, -1.3, -1.3, 0],\n            y: [0, 1.4, 1.4, 0],\n            rotate: [0, -2, -2, 0],\n            transition: { duration: DUR, times: [0, 0.32, 0.62, 1], ease: [gravity, 'linear', easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"m12 9-8.414 8.414A2 2 0 0 0 3 18.828v1.344a2 2 0 0 1-.586 1.414A2 2 0 0 1 3.828 21h1.344a2 2 0 0 0 1.414-.586L15 12\" />\n        <path d=\"m18 9 .4.4a1 1 0 1 1-3 3l-3.8-3.8a1 1 0 1 1 3-3l.4.4 3.4-3.4a1 1 0 1 1 3 3z\" />\n      </motion.g>\n      <path d=\"m2 22 .414-.414\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'pipette',\n  gesture: 'it takes a sample',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['eyedropper', 'color'],\n}\n\nexport default PipetteIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/pipette.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

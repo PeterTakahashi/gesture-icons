@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "blocks",
+  "title": "blocks",
+  "description": "Semantic animated icon — they stack. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/blocks.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Blocks — they stack. The top block lifts and drops back into place; the\n * lower block isn't hit by the top block leaving, it's hit by it landing —\n * so its own small compression sets in 3% later, on the same curve.\n * Base geometry: Lucide `blocks` (ISC).\n */\nconst DUR = 1.0\n\nexport function BlocksIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'blocks'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.5, -0.15, 0],\n            transition: { duration: DUR, times: [0, 0.53, 0.66, 0.82, 1], ease: ['linear', easeOutQuart, easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.rect\n        x=\"14\" y=\"2\" width=\"8\" height=\"8\" rx=\"1\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -3.6, 0.6, -0.15, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.3, 0.56, 0.74, 1],\n              ease: [easeOutQuart, gravity, easeOutQuart, easeInOutCubic],\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'blocks',\n  gesture: 'they stack',\n  family: 'rigid' as const,\n  section: 'Sport & games',\n  tags: ['toys', 'build', 'lego'],\n}\n\nexport default BlocksIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/blocks.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

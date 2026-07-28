@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "club",
+  "title": "club",
+  "description": "Semantic animated icon — it follows suit. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/club.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Club — it follows suit. The same stamp as spade — press, pop, settle —\n * but without the flourish and 50ms softer: a calmer card laid down.\n * Base geometry: Lucide `club` (ISC).\n */\nconst DUR = 0.8\n\nexport function ClubIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'club'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 14px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.87, 1.1, 1],\n            transition: { duration: DUR, times: [0, 0.22, 0.58, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M17.28 9.05a5.5 5.5 0 1 0-10.56 0A5.5 5.5 0 1 0 12 17.66a5.5 5.5 0 1 0 5.28-8.6Z\" />\n        <path d=\"M12 17.66L12 22\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'club',\n  gesture: 'it follows suit',\n  family: 'rigid' as const,\n  section: 'Sport & games',\n  tags: ['cards', 'suit', 'poker'],\n}\n\nexport default ClubIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/club.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

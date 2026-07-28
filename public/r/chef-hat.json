@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chef-hat",
+  "title": "chef-hat",
+  "description": "Semantic animated icon — the chef bows. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/chef-hat.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Chef hat — the chef bows. The whole hat nods forward about the brim,\n * holds the bow a beat, then straightens back up — a professional nod,\n * not a topple.\n * Base geometry: Lucide `chef-hat` (ISC).\n */\nconst DUR = 0.9\n\nexport function ChefHatIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'chef hat'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 17px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 6, 6, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.7, 1], ease: [easeOutQuart, 'linear', easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z\" />\n        <path d=\"M6 17h12\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'chef-hat',\n  gesture: 'the chef bows',\n  family: 'rigid' as const,\n  section: 'Food & drink',\n  tags: ['cooking', 'kitchen'],\n}\n\nexport default ChefHatIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/chef-hat.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

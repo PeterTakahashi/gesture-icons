@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tv",
+  "title": "tv",
+  "description": "Semantic animated icon — it switches on. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/tv.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, settleBack } from '../core/easings'\n\n/**\n * TV — it switches on. The screen rect does one quick scaleY about its own\n * center-line, an old tube blinking to life before it holds its picture.\n * The antenna above stays put — it isn't what turns on.\n * Base geometry: Lucide `tv` (ISC).\n */\nconst DUR = 0.55\n\nexport function TvIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'tv'}\n      {...hoverProps}\n    >\n      <path d=\"m17 2-5 5-5-5\" />\n      <motion.rect\n        width=\"20\" height=\"15\" x=\"2\" y=\"7\" rx=\"2\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 14.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 0.92, 1.02, 1],\n            transition: { duration: DUR, times: [0, 0.32, 0.66, 1], ease: [easeInCubic, settleBack] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'tv',\n  gesture: 'it switches on',\n  family: 'rigid' as const,\n  section: 'Devices',\n  tags: ['television', 'screen'],\n}\n\nexport default TvIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/tv.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

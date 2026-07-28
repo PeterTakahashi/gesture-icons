@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "wine",
+  "title": "wine",
+  "description": "Semantic animated icon — it swirls. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/wine.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Wine — it swirls. The bowl and its surface line turn about the point\n * where the bowl meets the stem — the taster's wrist rolling the glass —\n * decaying with each pass. The stem and base never move; they're held.\n * Base geometry: Lucide `wine` (ISC).\n */\nconst DUR = 1.1\n\nexport function WineIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'wine'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 15px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -5, 4, -2.5, 1, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.42, 0.62, 0.8, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M7 10h10\" />\n        <path d=\"M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z\" />\n      </motion.g>\n      <path d=\"M8 22h8\" />\n      <path d=\"M12 15v7\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'wine',\n  gesture: 'it swirls',\n  family: 'rigid' as const,\n  section: 'Food & drink',\n  tags: ['glass', 'drink', 'bar'],\n}\n\nexport default WineIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/wine.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

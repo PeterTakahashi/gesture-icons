@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bed",
+  "title": "bed",
+  "description": "Semantic animated icon — it is turned down. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/bed.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Bed — it is turned down. The svg has no separate pillow shape, only the\n * divider line that marks it off from the rest of the frame — so that line\n * is the \"pillow\": it PRESSes (fluffed), and once it has settled the frame\n * around it (headboard, rail, floor) takes a small settle-down, as if the\n * whole bed had just taken the weight of being made ready.\n * Base geometry: Lucide `bed` (ISC).\n */\nconst DUR = 0.9\n\nexport function BedIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'bed'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M2 4v16\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.55, 0.76, 1], ease: ['linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M2 8h18a2 2 0 0 1 2 2v10\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.55, 0.76, 1], ease: ['linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M2 17h20\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.55, 0.76, 1], ease: ['linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      />\n      {/* the pillow: the one part the svg draws as its own line, fluffed first */}\n      <motion.path\n        d=\"M6 8v9\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 0.85, 1.05, 1],\n            transition: { duration: DUR, times: [0, 0.24, 0.5, 0.72], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'bed',\n  gesture: 'it is turned down',\n  family: 'rigid' as const,\n  section: 'Home',\n  tags: ['sleep', 'furniture', 'hotel'],\n}\n\nexport default BedIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/bed.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "credit-card",
+  "title": "credit-card",
+  "description": "Semantic animated icon — it swipes. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/credit-card.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Credit card — it swipes. A pull-back and a fast rightward swipe with a\n * slight tilt, then it levels out and returns — the stripe rides along in\n * the same group because it never moves independently of the card.\n * Base geometry: Lucide `credit-card` (ISC).\n */\nconst DUR = 0.95\n\nexport function CreditCardIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'credit card'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, rotate: 0 },\n          animate: {\n            x: [0, -2, 6, 0],\n            rotate: [0, -3, 1, 0],\n            transition: { duration: DUR, times: [0, 0.24, 0.52, 1], ease: [easeInOutCubic, easeInCubic, easeOutQuart] },\n          },\n        }}\n      >\n        <rect width=\"20\" height=\"14\" x=\"2\" y=\"5\" rx=\"2\" />\n        <line x1=\"2\" x2=\"22\" y1=\"10\" y2=\"10\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'credit-card',\n  gesture: 'it swipes',\n  family: 'rigid' as const,\n  section: 'Commerce & feedback',\n  tags: ['payment', 'pay', 'card', 'money'],\n}\n\nexport default CreditCardIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/credit-card.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

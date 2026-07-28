@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "monitor",
+  "title": "monitor",
+  "description": "Semantic animated icon — it wakes. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/monitor.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, settleBack } from '../core/easings'\n\n/**\n * Monitor — it wakes. The body takes a subtle press like a power\n * button, then a cursor line blinks twice inside the screen and goes\n * dark again. The cursor is not part of Lucide's glyph, so it is\n * declared hidden at rest and only ever appears as a hard on/off gate\n * — never a fade.\n * Base geometry: Lucide `monitor` (ISC).\n */\nconst DUR = 1.0\n\nexport function MonitorIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'monitor'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 10px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.97, 1.02, 1],\n            transition: { duration: DUR, times: [0, 0.12, 0.24, 0.4], ease: [easeInCubic, settleBack, 'linear'] },\n          },\n        }}\n      >\n        <rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\" />\n        <line x1=\"8\" x2=\"16\" y1=\"21\" y2=\"21\" />\n        <line x1=\"12\" x2=\"12\" y1=\"17\" y2=\"21\" />\n      </motion.g>\n      <motion.path\n        d=\"M9 10h6\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { opacity: 0 },\n          animate: {\n            opacity: [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.3, 0.31, 0.45, 0.46, 0.6, 0.61, 0.75, 0.76, 1],\n              ease: 'linear',\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'monitor',\n  gesture: 'it wakes',\n  family: 'secondary' as const,\n  section: 'Devices',\n  tags: ['screen', 'display', 'desktop'],\n}\n\nexport default MonitorIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/monitor.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

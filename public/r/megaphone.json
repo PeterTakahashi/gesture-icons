@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "megaphone",
+  "title": "megaphone",
+  "description": "Semantic animated icon — it announces. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/megaphone.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, pen } from '../core/easings'\n\n/**\n * Megaphone — it announces. The whole body rears back about the narrow\n * end (the mouthpiece, not the bell), then thrusts forward on the shout;\n * two burst lines flick on at the wide mouth exactly on the thrust and\n * erase right after — drawn by stroke length, never a fade.\n * Base geometry: Lucide `megaphone` (ISC).\n */\nconst DUR = 0.95\n\nexport function MegaphoneIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const burst = (delay: number): Variants => ({\n    normal: { strokeDashoffset: 1.02 },\n    animate: {\n      strokeDashoffset: [1.02, 1.02, 0, 0, 1.02, 1.02],\n      transition: {\n        duration: DUR,\n        delay,\n        times: [0, 0.44, 0.56, 0.68, 0.8, 0.92],\n        ease: ['linear', pen, 'linear', easeInOutCubic, 'linear'],\n      },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'megaphone'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '8px 10px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -7, 5, -1, 0],\n            transition: { duration: DUR, times: [0, 0.28, 0.56, 0.8, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z\" />\n        <path d=\"M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14\" />\n        <path d=\"M8 6v8\" />\n      </motion.g>\n      {/* shout: hidden at rest, flicks on at the wide mouth on the thrust */}\n      <motion.path\n        d=\"M21.5 7.3l2.3-1.1\"\n        pathLength={1}\n        strokeDasharray=\"1.02\"\n        strokeWidth={strokeWidth * 0.85}\n        initial=\"normal\"\n        animate={controls}\n        variants={burst(0)}\n      />\n      <motion.path\n        d=\"M21.5 12.7l2.3 1.1\"\n        pathLength={1}\n        strokeDasharray=\"1.02\"\n        strokeWidth={strokeWidth * 0.85}\n        initial=\"normal\"\n        animate={controls}\n        variants={burst(0.03)}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'megaphone',\n  gesture: 'it announces',\n  family: 'rigid' as const,\n  section: 'Communication',\n  tags: ['announce', 'broadcast', 'shout', 'marketing'],\n}\n\nexport default MegaphoneIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/megaphone.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "martini",
+  "title": "martini",
+  "description": "Semantic animated icon — it is shaken. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/martini.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Martini — it is shaken. The whole glass rocks fast about its base,\n * decaying quickly — shaken, not stirred. (Lucide's martini glyph carries\n * no olive, so there's no separate garnish to lag; the base itself stays\n * the fixed point the glass wobbles against, honest to the geometry given.)\n * Base geometry: Lucide `martini` (ISC).\n */\nconst DUR = 0.55\n\nexport function MartiniIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'martini'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 22px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 2.5, -2, 1.2, -0.6, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.4, 0.62, 0.82, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M12 12 4.207 4.207A.707.707 0 0 1 4.707 3h14.586a.707.707 0 0 1 .5 1.207z\" />\n        <path d=\"M12 12v10\" />\n        <path d=\"M7 22h10\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'martini',\n  gesture: 'it is shaken',\n  family: 'rigid' as const,\n  section: 'Food & drink',\n  tags: ['cocktail', 'bar'],\n}\n\nexport default MartiniIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/martini.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

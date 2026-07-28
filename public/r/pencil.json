@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pencil",
+  "title": "pencil",
+  "description": "Semantic animated icon — it writes. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/pencil.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, pen } from '../core/easings'\n\n/**\n * Pencil — it writes. The whole pencil tips toward the page about its own\n * tip — the one point that never leaves the line — with a hair of push\n * into the surface as it writes, then lifts back upright.\n * Base geometry: Lucide `pencil` (ISC).\n */\nconst DUR = 0.85\n\nexport function PencilIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'pencil'}\n      {...hoverProps}\n    >\n      {/* pivot at the tip (2, 21.35) — the point resting on the line */}\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '2px 21.35px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, x: 0, y: 0 },\n          animate: {\n            rotate: [0, -9, 4, 0],\n            x: [0, 0, -1, 0],\n            y: [0, 0, 1, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.65, 1], ease: [easeInOutCubic, pen, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\" />\n        <path d=\"m15 5 4 4\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'pencil',\n  gesture: 'it writes',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['edit', 'draw', 'write'],\n}\n\nexport default PencilIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/pencil.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

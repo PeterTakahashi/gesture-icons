@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "undo",
+  "title": "undo",
+  "description": "Semantic animated icon — it takes it back. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/undo.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Undo — it takes it back. Both arcs of the hook share one circle, centered\n * at (14.5, 14.5) in viewBox units (derived: that point sits exactly 5.5\n * from all four arc endpoints), so the whole hook and its arrowhead turn\n * about that real center — a small wind-up forward, then -40° backward past\n * the mark, settling home. The arrowhead runs 3% ahead of the hook the\n * whole beat.\n * Base geometry: Lucide `undo-2` (ISC).\n */\nconst DUR = 1.0\n\nexport function UndoIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const pivot = { transformBox: 'view-box' as const, transformOrigin: '14.5px 14.5px' }\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'undo'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M9 14 4 9l5-5\"\n        style={pivot}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 6, -40, 0],\n            transition: { duration: DUR, times: [0, 0.15, 0.57, 0.97], ease: [easeInOutCubic, easeInOutCubic, settleBack] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11\"\n        style={pivot}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 6, -40, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.6, 1], ease: [easeInOutCubic, easeInOutCubic, settleBack] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'undo',\n  gesture: 'it takes it back',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['back', 'revert', 'history'],\n}\n\nexport default UndoIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/undo.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ticket",
+  "title": "ticket",
+  "description": "Semantic animated icon — it is torn. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/ticket.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Ticket — it is torn. A half-tear: the whole ticket rocks about the\n * perforation center with a small x-drift, the checker's hand testing the\n * tear line without actually splitting the stub — it's whole again the\n * instant it settles. (An honest simplification: the perforation marks are\n * a single stroke each, not two independently torn stubs, so the gesture is\n * a rock about that line rather than a literal split.)\n * Base geometry: Lucide `ticket` (ISC).\n */\nconst DUR = 0.65\n\nexport function TicketIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'ticket'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '13px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, x: 0 },\n          animate: {\n            rotate: [0, 3, -2, 0],\n            x: [0, 0.5, -0.3, 0],\n            transition: { duration: DUR, times: [0, 0.4, 0.72, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z\" />\n        <path d=\"M13 5v2\" />\n        <path d=\"M13 17v2\" />\n        <path d=\"M13 11v2\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'ticket',\n  gesture: 'it is torn',\n  family: 'rigid' as const,\n  section: 'Money & commerce',\n  tags: ['admission', 'event', 'cinema'],\n}\n\nexport default TicketIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/ticket.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

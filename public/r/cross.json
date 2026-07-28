@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cross",
+  "title": "cross",
+  "description": "Semantic animated icon — help arrives. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cross.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Cross — help arrives. The same firm press-pop as plus.tsx, stretched\n * slightly slower and calmer — first aid arriving steady, not urgent.\n * Base geometry: Lucide `cross` (ISC).\n */\nconst DUR = 0.85\n\nexport function CrossIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cross'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M4 9a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4a1 1 0 0 1 1 1v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-4a1 1 0 0 1 1-1h4a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4a1 1 0 0 1-1-1V4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4a1 1 0 0 1-1 1z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.85, 1.11, 1],\n            transition: { duration: DUR, times: [0, 0.22, 0.58, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cross',\n  gesture: 'help arrives',\n  family: 'rigid' as const,\n  section: 'Health',\n  tags: ['medical', 'emergency', 'aid'],\n}\n\nexport default CrossIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cross.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "microwave",
+  "title": "microwave",
+  "description": "Semantic animated icon — it dings done. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/microwave.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, easeOutQuint, settleBack } from '../core/easings'\n\n/**\n * Microwave — it dings done. The interior plate is 180°-symmetric, so it\n * turns a half revolution with a small wind-up and overshoot and lands on a\n * picture identical to rest — the plate spinning inside. Once it stops, the\n * whole box takes a small stamp pulse: the ding. The door is only ever the\n * fixed outline; it never opens.\n * Base geometry: Lucide `microwave` (ISC).\n */\nconst DUR = 1.0\n\nexport function MicrowaveIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'microwave'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 11.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1, 1, 0.94, 1.1, 1],\n            transition: { duration: DUR, times: [0, 0.75, 0.8, 0.9, 0.97, 1], ease: ['linear', 'linear', easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <rect width=\"20\" height=\"15\" x=\"2\" y=\"4\" rx=\"2\" />\n        <motion.rect\n          width=\"8\" height=\"7\" x=\"6\" y=\"8\" rx=\"1\"\n          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { rotate: 0 },\n            animate: {\n              rotate: [0, -10, 190, 180],\n              transition: { duration: DUR, times: [0, 0.15, 0.55, 0.75], ease: [easeInOutCubic, easeOutQuint, easeOutQuart] },\n            },\n          }}\n        />\n        <path d=\"M18 8v7\" />\n        <path d=\"M6 19v2\" />\n        <path d=\"M18 19v2\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'microwave',\n  gesture: 'it dings done',\n  family: 'rigid' as const,\n  section: 'Home',\n  tags: ['kitchen', 'appliance'],\n}\n\nexport default MicrowaveIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/microwave.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

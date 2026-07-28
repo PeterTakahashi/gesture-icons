@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "landmark",
+  "title": "landmark",
+  "description": "Semantic animated icon — the institution stands. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/landmark.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, settleBack } from '../core/easings'\n\n/**\n * Landmark — the institution stands. The pediment presses down onto the\n * columns, which each take a small compression dip in sequence, left to\n * right — the layer above hits the next one down, 3% later each time,\n * weight settling on marble. The ground line never moves.\n * Base geometry: Lucide `landmark` (ISC).\n */\nconst DUR = 0.9\nconst COLUMNS = [\n  { d: 'M6 18v-7', startAt: 0.34 },\n  { d: 'M10 18v-7', startAt: 0.37 },\n  { d: 'M14 18v-7', startAt: 0.4 },\n  { d: 'M18 18v-7', startAt: 0.43 },\n]\n\nexport function LandmarkIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const column = (startAt: number): Variants => ({\n    normal: { y: 0 },\n    animate: {\n      y: [0, 0.3, 0],\n      transition: { duration: DUR, times: [0, startAt, startAt + 0.28], ease: ['linear', settleBack] },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'landmark'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0.8, 0],\n            transition: { duration: DUR, times: [0, 0.28, 0.55], ease: [easeInCubic, settleBack] },\n          },\n        }}\n      />\n      {COLUMNS.map((c) => (\n        <motion.path key={c.d} d={c.d} initial=\"normal\" animate={controls} variants={column(c.startAt)} />\n      ))}\n      <path d=\"M3 22h18\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'landmark',\n  gesture: 'the institution stands',\n  family: 'rigid' as const,\n  section: 'Money & commerce',\n  tags: ['bank', 'government', 'classic'],\n}\n\nexport default LandmarkIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/landmark.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

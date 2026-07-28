@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "voicemail",
+  "title": "voicemail",
+  "description": "Semantic animated icon — a message waits. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/voicemail.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Voicemail — a message waits. The connecting line stays put; the two reel\n * circles pulse in alternation, like tape rolling between them — one saved\n * message.\n * Base geometry: Lucide `voicemail` (ISC).\n */\nconst DUR = 1.1\n\nexport function VoicemailIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'voicemail'}\n      {...hoverProps}\n    >\n      <motion.circle\n        cx=\"6\" cy=\"12\" r=\"4\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.08, 1, 1, 1.08, 1, 1],\n            transition: { duration: DUR, times: [0, 0.14, 0.28, 0.5, 0.64, 0.78, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <motion.circle\n        cx=\"18\" cy=\"12\" r=\"4\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.08, 1, 1.08, 1, 1],\n            transition: { duration: DUR, times: [0, 0.39, 0.5, 0.86, 0.97, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <line x1=\"6\" x2=\"18\" y1=\"16\" y2=\"16\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'voicemail',\n  gesture: 'a message waits',\n  family: 'rigid' as const,\n  section: 'Communication',\n  tags: ['message', 'recording'],\n}\n\nexport default VoicemailIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/voicemail.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

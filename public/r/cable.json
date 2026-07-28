@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cable",
+  "title": "cable",
+  "description": "Semantic animated icon — it plugs through. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cable.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Cable — it plugs through. The two connectors nudge toward each other\n * along the cable's own diagonal, 1.5 units each, testing the tension, and\n * return. The cable run between them is the only part that stays put.\n * Base geometry: Lucide `cable` (ISC).\n */\nconst DUR = 0.9\n\nexport function CableIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cable'}\n      {...hoverProps}\n    >\n      {/* top-right connector, drawn toward the bottom-left one */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -1.06, 0],\n            y: [0, 1.06, 0],\n            transition: { duration: DUR, times: [0, 0.42, 0.86], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M17 19a1 1 0 0 1-1-1v-2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a1 1 0 0 1-1 1z\" />\n        <path d=\"M17 21v-2\" />\n        <path d=\"M21 21v-2\" />\n      </motion.g>\n      <path d=\"M19 14V6.5a1 1 0 0 0-7 0v11a1 1 0 0 1-7 0V10\" />\n      {/* bottom-left connector, drawn toward the top-right one */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, 1.06, 0],\n            y: [0, -1.06, 0],\n            transition: { duration: DUR, times: [0, 0.42, 0.86], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M3 5V3\" />\n        <path d=\"M4 10a2 2 0 0 1-2-2V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a2 2 0 0 1-2 2z\" />\n        <path d=\"M7 5V3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cable',\n  gesture: 'it plugs through',\n  family: 'rigid' as const,\n  section: 'Devices',\n  tags: ['cord', 'connect'],\n}\n\nexport default CableIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cable.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

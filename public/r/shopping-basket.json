@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "shopping-basket",
+  "title": "shopping-basket",
+  "description": "Semantic animated icon — it takes the goods. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/shopping-basket.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, easeInOutCubic } from '../core/easings'\n\n/**\n * Shopping basket — it takes the goods. Something lands in it: the basket\n * body dips under the weight and rebounds, while the two crossed handles —\n * held steady by a hand — follow ~3% late, the way a carried thing lags the\n * jolt of what just dropped into it.\n * Base geometry: Lucide `shopping-basket` (ISC).\n */\nconst DUR = 0.85\n\nfunction dip(delay = 0): Variants {\n  return {\n    normal: { y: 0 },\n    animate: {\n      y: [0, 0, 1.2, -0.3, 0],\n      transition: {\n        duration: DUR,\n        delay,\n        times: [0, 0.4, 0.56, 0.78, 1],\n        ease: ['linear', easeOutQuart, easeInOutCubic, easeOutQuart],\n      },\n    },\n  }\n}\n\nexport function ShoppingBasketIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'shopping basket'}\n      {...hoverProps}\n    >\n      {/* basket body: rim, bowl outline, weave line, side facets */}\n      <motion.g initial=\"normal\" animate={controls} variants={dip()}>\n        <path d=\"M2 11h20\" />\n        <path d=\"m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4\" />\n        <path d=\"M4.5 15.5h15\" />\n        <path d=\"m15 11-1 9\" />\n        <path d=\"m9 11 1 9\" />\n      </motion.g>\n      {/* handles: held by the hand, follow the jolt a beat late */}\n      <motion.path d=\"m19 11-4-7\" initial=\"normal\" animate={controls} variants={dip(DUR * 0.03)} />\n      <motion.path d=\"m5 11 4-7\" initial=\"normal\" animate={controls} variants={dip(DUR * 0.03)} />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'shopping-basket',\n  gesture: 'it takes the goods',\n  family: 'rigid' as const,\n  section: 'Money & commerce',\n  tags: ['buy', 'store'],\n}\n\nexport default ShoppingBasketIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/shopping-basket.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

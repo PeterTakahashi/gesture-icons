@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "repeat-2",
+  "title": "repeat-2",
+  "description": "Semantic animated icon — it loops once more. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/repeat-2.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Repeat 2 — same mechanism as repeat, turned vertical. The top chevron\n * (pointing up, feeding the left rail) leaves off the top edge, wraps to\n * below the frame while genuinely out of view, and slides back up into\n * place; the bottom chevron mirrors it through the bottom edge. Same clock,\n * so they read as one lap of the vertical loop.\n * Base geometry: Lucide `repeat-2` (ISC).\n */\nconst DUR = 1.1\nconst HOP = 20\n\nexport function Repeat2Icon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'repeat 2'}\n      {...hoverProps}\n    >\n      {/* top-left chevron travels up off-frame, wraps below, slides back in */}\n      <motion.path\n        d=\"m2 9 3-3 3 3\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -HOP, -HOP, HOP, HOP, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.28, 0.5, 0.5, 0.55, 1],\n              ease: [easeInCubic, 'linear', 'linear', 'linear', easeOutQuart],\n            },\n          },\n        }}\n      />\n      <path d=\"M13 18H7a2 2 0 0 1-2-2V6\" />\n      {/* bottom-right chevron travels down off-frame, wraps above, slides back in */}\n      <motion.path\n        d=\"m22 15-3 3-3-3\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, HOP, HOP, -HOP, -HOP, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.28, 0.5, 0.5, 0.55, 1],\n              ease: [easeInCubic, 'linear', 'linear', 'linear', easeOutQuart],\n            },\n          },\n        }}\n      />\n      <path d=\"M11 6h6a2 2 0 0 1 2 2v10\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'repeat-2',\n  gesture: 'it loops once more',\n  family: 'travel' as const,\n  section: 'Arrows',\n  tags: ['loop', 'cycle'],\n}\n\nexport default Repeat2Icon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/repeat-2.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

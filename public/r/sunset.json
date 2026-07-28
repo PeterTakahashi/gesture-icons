@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "sunset",
+  "title": "sunset",
+  "description": "Semantic animated icon — the sun goes down. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/sunset.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Sunset — the sun goes down. Mirror of sunrise.tsx: the sun's arc and its\n * rays dip together toward the horizon on a gravity ease, hold at the\n * bottom of the beat, then rise back — the day closing and reopening, for\n * the loop's honesty. The horizon line never moves.\n * Base geometry: Lucide `sunset` (ISC).\n */\nconst DUR = 1.1\n\nexport function SunsetIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'sunset'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 2, 2, 0],\n            transition: { duration: DUR, times: [0, 0.35, 0.75, 1], ease: [gravity, 'linear', easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M12 10V2\" />\n        <path d=\"m4.93 10.93 1.41 1.41\" />\n        <path d=\"M2 18h2\" />\n        <path d=\"M20 18h2\" />\n        <path d=\"m19.07 10.93-1.41 1.41\" />\n        <path d=\"m16 6-4 4-4-4\" />\n        <path d=\"M16 18a4 4 0 0 0-8 0\" />\n      </motion.g>\n      <path d=\"M22 22H2\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'sunset',\n  gesture: 'the sun goes down',\n  family: 'rigid' as const,\n  section: 'Animals & nature',\n  tags: ['evening', 'dusk'],\n}\n\nexport default SunsetIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/sunset.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

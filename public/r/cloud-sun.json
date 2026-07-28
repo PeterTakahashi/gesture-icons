@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cloud-sun",
+  "title": "cloud-sun",
+  "description": "Semantic animated icon — the sun breaks through. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cloud-sun.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Cloud sun — the sun breaks through. A classic NUDGE: the cloud winds up\n * a hair the wrong way, then slides aside, while the sun's rays reach out\n * about its own centre — a gap opening in the weather — before both settle\n * back to rest together.\n * Base geometry: Lucide `cloud-sun` (ISC).\n */\nconst DUR = 1.0\n\nexport function CloudSunIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cloud sun'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1, 1.2, 1],\n            transition: { duration: DUR, times: [0, 0.4, 0.68, 1], ease: ['linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M12 2v2\" />\n        <path d=\"m4.93 4.93 1.41 1.41\" />\n        <path d=\"M20 12h2\" />\n        <path d=\"m19.07 4.93-1.41 1.41\" />\n        <path d=\"M15.947 12.65a4 4 0 0 0-5.925-4.128\" />\n      </motion.g>\n      <motion.path\n        d=\"M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -0.5, 2, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.6, 1], ease: [easeInOutCubic, easeOutQuart, settleBack] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cloud-sun',\n  gesture: 'the sun breaks through',\n  family: 'rigid' as const,\n  section: 'Nature',\n  tags: ['weather', 'partly', 'fair'],\n}\n\nexport default CloudSunIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cloud-sun.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

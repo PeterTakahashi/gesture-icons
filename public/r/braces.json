@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "braces",
+  "title": "braces",
+  "description": "Semantic animated icon — the block closes. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/braces.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Braces — the block closes. Each brace NUDGEs toward the other — a small\n * wind-up outward, a drive inward, a settle back home — closing over their\n * contents. The right brace runs the same beat a hair later, so the two\n * close a beat apart rather than in a mirrored lockstep.\n * Base geometry: Lucide `braces` (ISC).\n */\nconst DUR = 0.85\n\nexport function BracesIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'braces'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -0.4, 1.2, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, 0.4, -1.2, 0],\n            transition: { duration: DUR, delay: 0.06, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'braces',\n  gesture: 'the block closes',\n  family: 'rigid' as const,\n  section: 'Workspace',\n  tags: ['json', 'code', 'scope'],\n}\n\nexport default BracesIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/braces.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cloud",
+  "title": "cloud",
+  "description": "Semantic animated icon — it drifts. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cloud.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Cloud — it drifts. The slowest gesture in the set: a big soft shape eases\n * sideways and gently back, long legs the whole way, big things move slow.\n * Base geometry: Lucide `cloud` (ISC).\n */\nconst DUR = 1.4\n\nexport function CloudIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cloud'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, 2.2, -1.6, 0],\n            y: [0, -0.5, 0.3, 0],\n            transition: { duration: DUR, times: [0, 0.4, 0.75, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cloud',\n  gesture: 'it drifts',\n  family: 'rigid' as const,\n  section: 'Nature',\n  tags: ['weather', 'sky', 'overcast'],\n}\n\nexport default CloudIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cloud.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

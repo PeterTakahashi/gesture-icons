@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "umbrella",
+  "title": "umbrella",
+  "description": "Semantic animated icon — it shakes off the rain. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/umbrella.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Umbrella — it shakes off the rain. A brisk shake about the handle tip at\n * the bottom, decaying fast — snappier than a bell's ring, shedding water\n * rather than announcing something.\n * Base geometry: Lucide `umbrella` (ISC).\n */\nconst DUR = 0.8\n\nexport function UmbrellaIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'umbrella'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 21px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -10, 8, -5, 2, 0],\n            transition: { duration: DUR, times: [0, 0.16, 0.36, 0.56, 0.76, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M12 13v7a2 2 0 0 0 4 0\" />\n        <path d=\"M12 2v2\" />\n        <path d=\"M20.992 13a1 1 0 0 0 .97-1.274 10.284 10.284 0 0 0-19.923 0A1 1 0 0 0 3 13z\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'umbrella',\n  gesture: 'it shakes off the rain',\n  family: 'rigid' as const,\n  section: 'Nature',\n  tags: ['rain', 'weather', 'protection'],\n}\n\nexport default UmbrellaIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/umbrella.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

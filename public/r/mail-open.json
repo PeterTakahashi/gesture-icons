@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mail-open",
+  "title": "mail-open",
+  "description": "Semantic animated icon — the letter is read. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/mail-open.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Mail open — the letter is read. The envelope holds still; the open flap\n * lifts further about its top fold, holds a beat while it \"reads,\" and\n * closes gently back down — the inner edge peeking up with it.\n * Base geometry: Lucide `mail-open` (ISC).\n */\nconst DUR = 1.15\n\nexport function MailOpenIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'mail open'}\n      {...hoverProps}\n    >\n      <path d=\"M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z\" />\n      <motion.path\n        d=\"m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 10px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, y: 0 },\n          animate: {\n            rotate: [0, -8, -8, 0],\n            y: [0, -0.8, -0.8, 0],\n            transition: { duration: DUR, times: [0, 0.24, 0.68, 1], ease: [easeOutQuart, 'linear', easeInOutCubic] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'mail-open',\n  gesture: 'the letter is read',\n  family: 'rigid' as const,\n  section: 'Communication',\n  tags: ['email', 'read', 'inbox'],\n}\n\nexport default MailOpenIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/mail-open.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

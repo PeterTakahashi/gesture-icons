@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "radio",
+  "title": "radio",
+  "description": "Semantic animated icon — it tunes in. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/radio.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, easeInOutCubic } from '../core/easings'\n\n/**\n * Radio — it tunes in. Both wave pairs erase and re-emit outward together\n * — inner pair first, outer pair a beat behind — and once the signal is\n * back, the whole body gives one small shiver as it locks onto the\n * station.\n * Base geometry: Lucide `radio` (ISC).\n */\nconst DUR = 1.0\n\nexport function RadioIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const wave = (redrawStart: number, redrawEnd: number): Variants => ({\n    normal: { pathLength: 1 },\n    animate: {\n      pathLength: [1, 0.001, 0.001, 1],\n      transition: {\n        duration: DUR,\n        times: [0, 0.15, redrawStart, redrawEnd],\n        ease: [easeInCubic, 'linear', easeOutQuart],\n      },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'radio'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 0, -1.5, 1, 0],\n            transition: { duration: DUR, times: [0, 0.78, 0.86, 0.93, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <circle cx=\"12\" cy=\"12\" r=\"2\" />\n        <motion.path d=\"M7.753 16.239a6 6 0 0 1 0-8.478\" initial=\"normal\" animate={controls} variants={wave(0.3, 0.55)} />\n        <motion.path d=\"M16.247 7.761a6 6 0 0 1 0 8.478\" initial=\"normal\" animate={controls} variants={wave(0.3, 0.55)} />\n        <motion.path d=\"M4.925 19.067a10 10 0 0 1 0-14.134\" initial=\"normal\" animate={controls} variants={wave(0.42, 0.72)} />\n        <motion.path d=\"M19.075 4.933a10 10 0 0 1 0 14.134\" initial=\"normal\" animate={controls} variants={wave(0.42, 0.72)} />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'radio',\n  gesture: 'it tunes in',\n  family: 'draw-on' as const,\n  section: 'Communication',\n  tags: ['broadcast', 'fm', 'waves'],\n}\n\nexport default RadioIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/radio.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

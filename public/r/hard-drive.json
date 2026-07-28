@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hard-drive",
+  "title": "hard-drive",
+  "description": "Semantic animated icon — it spins up. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/hard-drive.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Hard drive — it spins up. The chassis hums with a tiny, fast seek judder\n * while the activity LED hard-blinks three times — a drive waking up and\n * looking for data, not a light fading in and out.\n * Base geometry: Lucide `hard-drive` (ISC).\n */\nconst DUR = 0.9\n\nexport function HardDriveIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'hard drive'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, 0.4, -0.3, 0.2, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.55, 0.78, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z\" />\n        <path d=\"M21.946 12.013H2.054\" />\n        <path d=\"M10 16h.01\" />\n        {/* activity LED — hard blink, never a fade */}\n        <motion.path\n          d=\"M6 16h.01\"\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { opacity: 1 },\n            animate: {\n              opacity: [1, 0, 1, 0, 1, 0, 1, 1],\n              transition: { duration: DUR, times: [0, 0.08, 0.16, 0.24, 0.32, 0.4, 0.48, 1], ease: 'linear' },\n            },\n          }}\n        />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'hard-drive',\n  gesture: 'it spins up',\n  family: 'secondary' as const,\n  section: 'Workspace',\n  tags: ['disk', 'storage', 'data'],\n}\n\nexport default HardDriveIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/hard-drive.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

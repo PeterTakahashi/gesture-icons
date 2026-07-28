@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "key",
+  "title": "key",
+  "description": "Semantic animated icon — it turns in the lock. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/key.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeInOutQuart, easeOutQuart } from '../core/easings'\n\n/**\n * Key — it turns in the lock. \"Rotating a key\" is what you do with an API\n * key, so the gesture is the pun a developer reads without being told.\n * A small counter-grip wind-up, the turn past 90° as the lock gives,\n * a held beat while it is open, then the turn back home.\n * Base geometry: Lucide `key` (ISC).\n */\nexport function KeyIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'key'}\n      {...hoverProps}\n    >\n      {/* 鍵は持ち手（bow）の中心で回る */}\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '7.5px 15.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -12, 96, 96, -5, 0],\n            transition: {\n              duration: 1.1,\n              times: [0, 0.14, 0.4, 0.58, 0.86, 1],\n              ease: [easeInOutCubic, [0.5, 0, 0.3, 1.1], 'linear', easeInOutQuart, easeOutQuart],\n            },\n          },\n        }}\n      >\n        <path d=\"m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4\" />\n        <path d=\"m21 2-9.6 9.6\" />\n        <circle cx=\"7.5\" cy=\"15.5\" r=\"5.5\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'key',\n  gesture: 'it turns in the lock',\n  family: 'rigid' as const,\n  section: 'Objects',\n  tags: ['api', 'password', 'auth', 'unlock', 'credential'],\n}\n\nexport default KeyIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/key.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

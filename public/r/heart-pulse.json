@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "heart-pulse",
+  "title": "heart-pulse",
+  "description": "Semantic animated icon — it beats on the monitor. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/heart-pulse.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuint, pen } from '../core/easings'\n\n/**\n * Heart pulse — it beats on the monitor. VARIANT(heart): the same lub-dub\n * scale beat, while the vitals line inside erases and pen-redraws fast,\n * timed to land through the stronger DUB — the trace catching up to the\n * heartbeat, not a separate clock.\n * Base geometry: Lucide `heart-pulse` (ISC).\n */\nconst DUR = 0.95\n\nexport function HeartPulseIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'heart pulse'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.12, 1.02, 1.22, 0.99, 1],\n            transition: {\n              duration: DUR,\n              times: [0, 0.12, 0.26, 0.42, 0.62, 1],\n              ease: [easeOutQuint, easeInOutCubic, easeOutQuint, easeInOutCubic, easeInOutCubic],\n            },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 1, 0.001, 1, 1],\n            transition: { duration: DUR, times: [0, 0.3, 0.36, 0.48, 1], ease: ['linear', easeInCubic, pen, 'linear'] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'heart-pulse',\n  gesture: 'it beats on the monitor',\n  family: 'draw-on' as const,\n  section: 'Health',\n  tags: ['health', 'cardio', 'vitals'],\n}\n\nexport default HeartPulseIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/heart-pulse.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

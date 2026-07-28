@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "underline",
+  "title": "underline",
+  "description": "Semantic animated icon — it underscores the point. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/underline.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen } from '../core/easings'\n\n/**\n * Underline — it underscores the point. The rule erases, then a pen\n * redraws it left to right; the U above takes a small landing dip exactly\n * as the stroke completes, the way a hand presses down when it finishes\n * a line, then lifts back off.\n * Base geometry: Lucide `underline` (ISC).\n */\nconst DUR = 0.9\n\nexport function UnderlineIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'underline'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M6 4v6a6 6 0 0 0 12 0V4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.6, 0],\n            transition: { duration: DUR, times: [0, 0.82, 0.92, 1], ease: 'easeOut' },\n          },\n        }}\n      />\n      <motion.line\n        x1=\"4\" x2=\"20\" y1=\"20\" y2=\"20\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.3, 0.45, 0.92], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'underline',\n  gesture: 'it underscores the point',\n  family: 'draw-on' as const,\n  section: 'Text & editing',\n  tags: ['font', 'format'],\n}\n\nexport default UnderlineIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/underline.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

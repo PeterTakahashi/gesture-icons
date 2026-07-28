@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "volume",
+  "title": "volume",
+  "description": "Semantic animated icon — the sound comes out. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/volume.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, easeInOutCubic } from '../core/easings'\n\n/**\n * Volume — the sound comes out. Both wave arcs erase back toward the\n * speaker, then re-emit outward — inner arc first, outer arc a beat\n * behind, exactly how sound radiates in rings — and the speaker body\n * flinches back a hair as it fires. Erase and redraw are both stroke\n * length, never a fade.\n * Base geometry: Lucide `volume-2` (ISC).\n */\nconst DUR = 1.0\n\nexport function VolumeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'volume'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -0.6, 0],\n            transition: { duration: DUR, times: [0, 0.15, 0.4], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M16 9a5 5 0 0 1 0 6\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.18, 0.3, 0.65], ease: ['linear', 'linear', easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M19.364 18.364a9 9 0 0 0 0-12.728\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.18, 0.39, 0.86], ease: ['linear', 'linear', easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'volume',\n  gesture: 'the sound comes out',\n  family: 'draw-on' as const,\n  section: 'Communication',\n  tags: ['audio', 'sound', 'speaker', 'loud'],\n}\n\nexport default VolumeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/volume.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

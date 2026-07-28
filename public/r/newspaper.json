@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "newspaper",
+  "title": "newspaper",
+  "description": "Semantic animated icon — the news lands. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/newspaper.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Newspaper — the news lands. It lifts a hair (the toss), falls with real\n * gravity, and slaps flat past its resting plane before the stiff paper\n * settles — a hard stop, not a soft bounce. The whole sheet, headline box\n * included, moves as one rigid block: it just landed on the doorstep.\n * Base geometry: Lucide `newspaper` (ISC).\n */\nconst DUR = 0.85\n\nexport function NewspaperIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'newspaper'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -2.5, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.32, 0.62, 0.85], ease: [easeOutQuart, gravity, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M15 18h-5\" />\n        <path d=\"M18 14h-8\" />\n        <path d=\"M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9a2 2 0 0 1 2-2h2\" />\n        <rect width=\"8\" height=\"4\" x=\"10\" y=\"6\" rx=\"1\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'newspaper',\n  gesture: 'the news lands',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['press', 'article', 'daily'],\n}\n\nexport default NewspaperIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/newspaper.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

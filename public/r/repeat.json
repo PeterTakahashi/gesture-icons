@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "repeat",
+  "title": "repeat",
+  "description": "Semantic animated icon — it loops once. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/repeat.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Repeat — one lap of the loop. The top chevron (arriving at the right end\n * of the top rail) leaves off the right edge, is repositioned off the left\n * edge while genuinely out of frame, and arrives sliding back into place —\n * a wrap, not a bounce. The bottom chevron does the same in the other\n * direction, on the same clock, so they read as chasing each other around\n * the track. The rails themselves never move — only the traveling marks.\n * Base geometry: Lucide `repeat` (ISC).\n */\nconst DUR = 1.1\nconst HOP = 20\n\nexport function RepeatIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'repeat'}\n      {...hoverProps}\n    >\n      {/* top chevron travels right off-frame, wraps to the left, slides back in */}\n      <motion.path\n        d=\"m17 2 4 4-4 4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, HOP, HOP, -HOP, -HOP, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.28, 0.5, 0.5, 0.55, 1],\n              ease: [easeInCubic, 'linear', 'linear', 'linear', easeOutQuart],\n            },\n          },\n        }}\n      />\n      <path d=\"M3 11v-1a4 4 0 0 1 4-4h14\" />\n      {/* bottom chevron travels left off-frame, wraps to the right, slides back in */}\n      <motion.path\n        d=\"m7 22-4-4 4-4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -HOP, -HOP, HOP, HOP, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.28, 0.5, 0.5, 0.55, 1],\n              ease: [easeInCubic, 'linear', 'linear', 'linear', easeOutQuart],\n            },\n          },\n        }}\n      />\n      <path d=\"M21 13v1a4 4 0 0 1-4 4H3\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'repeat',\n  gesture: 'it loops once',\n  family: 'travel' as const,\n  section: 'Arrows',\n  tags: ['loop', 'cycle'],\n}\n\nexport default RepeatIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/repeat.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

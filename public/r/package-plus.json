@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "package-plus",
+  "title": "package-plus",
+  "description": "Semantic animated icon — one more is added. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/package-plus.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * Package plus — one more is added. VARIANT(plus): the corner plus stamps\n * itself the way plus.tsx does — press, overshoot, land — and the box takes\n * a small dip on that same landing frame, as if the added weight just\n * registered.\n * Base geometry: Lucide `package-plus` (ISC).\n */\nconst DUR = 0.75\n\nexport function PackagePlusIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'package plus'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.6, -0.15, 0],\n            transition: { duration: DUR, times: [0, 0.45, 0.62, 0.82, 1], ease: ['linear', easeOutQuart, 'linear'] },\n          },\n        }}\n      >\n        <path d=\"M21 10.535V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l1.675-.955\" />\n        <path d=\"M3.29 7 12 12l8.71-5\" />\n        <path d=\"m7.5 4.27 8.997 5.148\" />\n        <path d=\"M12 22V12\" />\n      </motion.g>\n      {/* the plus stamps: press, overshoot, land */}\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '19px 17px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.82, 1.14, 1],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M16 17h6\" />\n        <path d=\"M19 14v6\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'package-plus',\n  gesture: 'one more is added',\n  family: 'rigid' as const,\n  section: 'Money & commerce',\n  tags: ['box', 'add'],\n}\n\nexport default PackagePlusIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/package-plus.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

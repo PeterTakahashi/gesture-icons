@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "podcast",
+  "title": "podcast",
+  "description": "Semantic animated icon — on the air. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/podcast.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Podcast — on the air. The mic capsule pulses twice, scale never\n * opacity, while the four signal arcs around it EMIT once — inner pair\n * first, outer pair a beat behind — live now. The stem and base never\n * move.\n * Base geometry: Lucide `podcast` (ISC).\n */\nconst DUR = 1.0\n\nexport function PodcastIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const arc = (redrawStart: number, redrawEnd: number): Variants => ({\n    normal: { pathLength: 1 },\n    animate: {\n      pathLength: [1, 0.001, 0.001, 1],\n      transition: { duration: DUR, times: [0, 0.15, redrawStart, redrawEnd], ease: [easeInCubic, 'linear', easeOutQuart] },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'podcast'}\n      {...hoverProps}\n    >\n      <path d=\"M12 17v4\" />\n      <motion.path d=\"M6 11a6 6 0 0 1 3-5.197\" initial=\"normal\" animate={controls} variants={arc(0.32, 0.58)} />\n      <motion.path d=\"M18 11a6 6 0 0 0-3-5.197\" initial=\"normal\" animate={controls} variants={arc(0.32, 0.58)} />\n      <motion.path d=\"M2 11a10 10 0 0 1 5-8.662\" initial=\"normal\" animate={controls} variants={arc(0.42, 0.72)} />\n      <motion.path d=\"M22 11a10 10 0 0 0-5-8.662\" initial=\"normal\" animate={controls} variants={arc(0.42, 0.72)} />\n      <path d=\"M9 21h6\" />\n      <motion.rect\n        x=\"10\" y=\"9\" width=\"4\" height=\"8\" rx=\"2\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.3, 1, 1, 1.3, 1, 1],\n            transition: {\n              duration: DUR,\n              times: [0, 0.15, 0.3, 0.5, 0.65, 0.8, 1],\n              ease: [settleBack, easeOutQuart, 'linear', settleBack, easeOutQuart, 'linear'],\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'podcast',\n  gesture: 'on the air',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['audio', 'show', 'broadcast'],\n}\n\nexport default PodcastIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/podcast.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

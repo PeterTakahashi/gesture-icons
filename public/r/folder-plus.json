@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "folder-plus",
+  "title": "folder-plus",
+  "description": "Semantic animated icon — a folder is made. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/folder-plus.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Folder plus — a folder is made. VARIANT(folder): the plus pops (dips to\n * nothing, overshoots, settles) about the center of its own cross, and the\n * folder dips a hair on the frame the plus lands.\n * Base geometry: Lucide `folder-plus` (ISC).\n */\nconst DUR = 0.95\n\nexport function FolderPlusIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'folder plus'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.6, -0.15, 0],\n            transition: { duration: DUR, times: [0, 0.5, 0.62, 0.78, 1], ease: ['linear', 'linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 13px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.001, 1.3, 1],\n            transition: { duration: DUR, times: [0, 0.25, 0.55, 0.8], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M12 10v6\" />\n        <path d=\"M9 13h6\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'folder-plus',\n  gesture: 'a folder is made',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['directory', 'new', 'create'],\n}\n\nexport default FolderPlusIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/folder-plus.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

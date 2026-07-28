@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "book-open",
+  "title": "book-open",
+  "description": "Semantic animated icon — the pages turn. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/book-open.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Book open — the pages leaf through. Lucide draws both page-halves and the\n * top curve as ONE compound path, so the left and right pages cannot be\n * lifted independently without inventing geometry. The honest reading of\n * the same silhouette: it breathes with two soft scaleY pulses about the\n * spine's own centre — a page riffling — while the spine line itself never\n * moves.\n * Base geometry: Lucide `book-open` (ISC).\n */\nconst DUR = 0.95\n\nexport function BookOpenIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'book open'}\n      {...hoverProps}\n    >\n      {/* spine — still */}\n      <path d=\"M12 5v16\" />\n      <motion.path\n        d=\"M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 13px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 1.035, 1, 1.035, 1],\n            transition: { duration: DUR, times: [0, 0.22, 0.44, 0.66, 0.88], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'book-open',\n  gesture: 'the pages turn',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['read', 'study'],\n}\n\nexport default BookOpenIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/book-open.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

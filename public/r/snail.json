@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "snail",
+  "title": "snail",
+  "description": "Semantic animated icon — it inches on. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/snail.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Snail — it inches on. The shell turns about its own center while the body\n * stretches lengthwise about the tail — the classic inchworm-style single\n * step of travel, drawn slow because nothing about a snail is fast.\n * Base geometry: Lucide `snail` (ISC).\n */\nconst DUR = 1.4\n\nexport function SnailIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'snail'}\n      {...hoverProps}\n    >\n      {/* shell turns about its own center */}\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '10px 13px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -1.5, 9.5, 8, 8, 0],\n            transition: { duration: DUR, times: [0, 0.15, 0.4, 0.5, 0.75, 1], ease: [easeInOutCubic, easeOutQuart, easeInOutCubic, 'linear', easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M2 13a6 6 0 1 0 12 0 4 4 0 1 0-8 0 2 2 0 0 0 4 0\" />\n        <circle cx=\"10\" cy=\"13\" r=\"8\" />\n      </motion.g>\n      {/* body stretches lengthwise about the tail — one inch of travel */}\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '2px 21px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleX: 1 },\n          animate: {\n            scaleX: [1, 1.06, 0.98, 1],\n            transition: { duration: DUR, times: [0, 0.35, 0.65, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M2 21h12c4.4 0 8-3.6 8-8V7a2 2 0 1 0-4 0v6\" />\n        <path d=\"M18 3 19.1 5.2\" />\n        <path d=\"M22 3 20.9 5.2\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'snail',\n  gesture: 'it inches on',\n  family: 'rigid' as const,\n  section: 'Animals & nature',\n  tags: ['slow', 'animal', 'garden'],\n}\n\nexport default SnailIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/snail.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "home",
+  "title": "home",
+  "description": "Semantic animated icon — it welcomes you back. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/home.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Home — it welcomes you back. The whole house takes a warm press-pulse,\n * scaling from the doorstep (where the door meets the ground) — a\n * hearth-beat, then still.\n * Base geometry: Lucide `house` (ISC).\n */\nconst DUR = 0.85\n\nexport function HomeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'home'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 21px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.05, 0.99, 1],\n            transition: { duration: DUR, times: [0, 0.32, 0.65, 1], ease: [easeOutQuart, easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\" />\n        <path d=\"M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'home',\n  gesture: 'it welcomes you back',\n  family: 'rigid' as const,\n  section: 'Buildings',\n  tags: ['house', 'start', 'main'],\n}\n\nexport default HomeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/home.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

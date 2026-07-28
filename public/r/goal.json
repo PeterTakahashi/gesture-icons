@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "goal",
+  "title": "goal",
+  "description": "Semantic animated icon — the flag marks it. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/goal.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Goal — the flag waves. Lucide draws the flagpole and its flag as one\n * unbroken path (there is no separate rigid pole to hold still against),\n * so the whole flag-on-its-stem waves together, hinged where it plants\n * into the summit rings below — those rings are the still post.\n * Base geometry: Lucide `goal` (ISC).\n */\nconst DUR = 1.0\n\nexport function GoalIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'goal'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M12 13V2l8 4-8 4\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 13px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -8, 5, -2, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.5, 0.76, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <path d=\"M20.561 10.222a9 9 0 1 1-12.55-5.29\" />\n      <path d=\"M8.002 9.997a5 5 0 1 0 8.9 2.02\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'goal',\n  gesture: 'the flag marks it',\n  family: 'rigid' as const,\n  section: 'Sport & games',\n  tags: ['milestone', 'achievement'],\n}\n\nexport default GoalIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/goal.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

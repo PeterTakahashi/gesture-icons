@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "usb",
+  "title": "usb",
+  "description": "Semantic animated icon — it clicks in. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/usb.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * USB — it clicks in. A tiny failed half-push toward the plug end (up the\n * 19,5-to-4,20 axis) that retreats — USB never seats first try — then the\n * full push with a hard, no-overshoot stop, and the whole connector settles\n * back to rest once it's registered.\n * Base geometry: Lucide `usb` (ISC).\n */\nconst DUR = 1.0\n// unit vector toward the plug end (19,5), scaled to a 1-unit push\nconst UX = 0.707\nconst UY = -0.707\n\nexport function UsbIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'usb'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            // failed half-push, retreat, full push with a hard stop, settle home\n            x: [0, UX * 0.7, 0, UX * 2, 0],\n            y: [0, UY * 0.7, 0, UY * 2, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.22, 0.38, 0.68, 1],\n              ease: [easeOutQuart, easeInOutCubic, easeOutQuart, easeInOutCubic],\n            },\n          },\n        }}\n      >\n        <circle cx=\"10\" cy=\"7\" r=\"1\" />\n        <circle cx=\"4\" cy=\"20\" r=\"1\" />\n        <path d=\"M4.7 19.3 19 5\" />\n        <path d=\"m21 3-3 1 2 2Z\" />\n        <path d=\"M9.26 7.68 5 12l2 5\" />\n        <path d=\"m10 14 5 2 3.5-3.5\" />\n        <path d=\"m18 12 1-1 1 1-1 1Z\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'usb',\n  gesture: 'it clicks in',\n  family: 'rigid' as const,\n  section: 'Devices',\n  tags: ['connector', 'port'],\n}\n\nexport default UsbIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/usb.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "building",
+  "title": "building",
+  "description": "Semantic animated icon — the office lights up. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/building.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\n\n/**\n * Building — the office lights up. Every window is lit at rest (Lucide's\n * glyph), so the gesture is a hard-step blink-off then back-on, cascading\n * top row to bottom row, 60ms apart — an evening shift starting up. The\n * structure and door never move.\n * Base geometry: Lucide `building` (ISC).\n */\nconst DUR = 1.0\n// top-down, left to right within each row\nconst WINDOWS = [\n  { cx: 8, cy: 6 }, { cx: 12, cy: 6 }, { cx: 16, cy: 6 },\n  { cx: 8, cy: 10 }, { cx: 12, cy: 10 }, { cx: 16, cy: 10 },\n  { cx: 8, cy: 14 }, { cx: 12, cy: 14 }, { cx: 16, cy: 14 },\n]\n\nexport function BuildingIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'building'}\n      {...hoverProps}\n    >\n      <rect x=\"4\" y=\"2\" width=\"16\" height=\"20\" rx=\"2\" />\n      {WINDOWS.map((w, i) => (\n        <motion.path\n          key={`${w.cx}-${w.cy}`}\n          d={`M${w.cx} ${w.cy}h.01`}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { opacity: 1 },\n            animate: {\n              opacity: [1, 1, 0, 0, 1, 1],\n              transition: { duration: DUR, delay: i * 0.06, times: [0, 0.08, 0.09, 0.22, 0.23, 0.3], ease: 'linear' },\n            },\n          }}\n        />\n      ))}\n      <path d=\"M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'building',\n  gesture: 'the office lights up',\n  family: 'secondary' as const,\n  section: 'Buildings',\n  tags: ['office', 'city', 'company'],\n}\n\nexport default BuildingIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/building.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

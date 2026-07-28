@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "database-backup",
+  "title": "database-backup",
+  "description": "Semantic animated icon — the backup runs. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/database-backup.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Database backup — the restore arrow winds back once. Only the little\n * circular-arrow badge turns, about its own bounding-box center (17px,16px,\n * derived from its arc endpoints spanning x12–22, y12.5–20) — the cylinder\n * behind it never moves, it is being backed up, not touched. A small\n * wind-up, a sweep past -300°, and a settle at a full -360°: a complete\n * revolution reads identically to rest, so the landing costs nothing, the\n * same free-landing trick as `rotate-ccw.tsx`.\n * Base geometry: Lucide `database-backup` (ISC).\n */\nconst DUR = 1.1\nconst OVER_EASE: [number, number, number, number] = [0.45, 0, 0.25, 1]\n\nexport function DatabaseBackupIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'database backup'}\n      {...hoverProps}\n    >\n      {/* the cylinder — still, it is the thing being backed up */}\n      <ellipse cx=\"12\" cy=\"5\" rx=\"9\" ry=\"3\" />\n      <path d=\"M3 12a9 3 0 0 0 5 2.69\" />\n      <path d=\"M21 9.3V5\" />\n      <path d=\"M3 5v14a9 3 0 0 0 6.47 2.88\" />\n      {/* the restore badge — one full sweep about its own center */}\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '17px 16px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 14, -300, -360],\n            transition: { duration: DUR, times: [0, 0.16, 0.74, 1], ease: [easeInOutCubic, OVER_EASE, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M12 12v4h4\" />\n        <path d=\"M13 20a5 5 0 0 0 9-3 4.5 4.5 0 0 0-4.5-4.5c-1.33 0-2.54.54-3.41 1.41L12 16\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'database-backup',\n  gesture: 'the backup runs',\n  family: 'rigid' as const,\n  section: 'Workspace',\n  tags: ['db', 'restore', 'safety'],\n}\n\nexport default DatabaseBackupIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/database-backup.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

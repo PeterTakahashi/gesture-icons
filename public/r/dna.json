@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dna",
+  "title": "dna",
+  "description": "Semantic animated icon — the helix twists. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/dna.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * DNA — the helix twists. A 2D glyph cannot actually helix, so the two\n * backbone fragments (with the rungs that ride them) slide vertically\n * opposite ways and back — the twist read as a counter-slide. The long\n * unbroken diagonal strand crossing the whole glyph is shared structure\n * between both backbones, not exclusive to either, so it is the one part\n * that holds still.\n * Base geometry: Lucide `dna` (ISC).\n */\nconst DUR = 0.9\n\nexport function DnaIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'dna'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1.3, 0.2, 0],\n            transition: { duration: DUR, times: [0, 0.4, 0.72, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"m14 8-1.5-1.5\" />\n        <path d=\"M15 2c-1.798 1.998-2.518 3.995-2.807 5.993\" />\n        <path d=\"m16.5 10.5 1 1\" />\n        <path d=\"m17 6-2.891-2.891\" />\n        <path d=\"m20 9 .891.891\" />\n      </motion.g>\n      <path d=\"M2 15c6.667-6 13.333 0 20-6\" />\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 1.3, -0.2, 0],\n            transition: { duration: DUR, times: [0, 0.4, 0.72, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"m10 16 1.5 1.5\" />\n        <path d=\"M3.109 14.109 4 15\" />\n        <path d=\"m6.5 12.5 1 1\" />\n        <path d=\"m7 18 2.891 2.891\" />\n        <path d=\"M9 22c1.798-1.998 2.518-3.995 2.807-5.993\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'dna',\n  gesture: 'the helix twists',\n  family: 'rigid' as const,\n  section: 'Health',\n  tags: ['genetics', 'biology', 'science'],\n}\n\nexport default DnaIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/dna.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

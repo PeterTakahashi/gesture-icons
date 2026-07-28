@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "wind",
+  "title": "wind",
+  "description": "Semantic animated icon — it gusts through. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/wind.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutExpo } from '../core/easings'\n\n/**\n * Wind — it gusts through. Each stream line drains away from its trailing\n * tip and writes itself back on, top line first — pathLength, never a fade —\n * and the curl at each line's head makes the redraw read as a swirl passing.\n * Base geometry: Lucide `wind` (ISC).\n */\nconst DUR = 0.95\n\nconst LINES = [\n  { d: 'M9.8 4.4A2 2 0 1 1 11 8H2', delay: 0 },\n  { d: 'M17.5 8a2.5 2.5 0 1 1 2 4H2', delay: 0.06 },\n  { d: 'M12.8 19.6A2 2 0 1 0 14 16H2', delay: 0.12 },\n]\n\nexport function WindIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'wind'}\n      {...hoverProps}\n    >\n      {LINES.map((line) => (\n        <motion.path\n          key={line.d}\n          d={line.d}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { pathLength: 1 },\n            animate: {\n              pathLength: [1, 0.001, 0.001, 1],\n              transition: {\n                duration: DUR,\n                delay: line.delay,\n                times: [0, 0.32, 0.42, 1],\n                ease: [easeInCubic, 'linear', easeOutExpo],\n              },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'wind',\n  gesture: 'it gusts through',\n  family: 'draw-on' as const,\n  section: 'Nature',\n  tags: ['weather', 'air', 'breeze'],\n}\n\nexport default WindIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/wind.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "utensils-crossed",
+  "title": "utensils-crossed",
+  "description": "Semantic animated icon — the toast is made. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/utensils-crossed.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Utensils crossed — the toast is made. Both utensils lift together and\n * hold at the top of the lift where they clink — read as a tiny scale pulse\n * at the point they cross — then set back down.\n * Base geometry: Lucide `utensils-crossed` (ISC).\n */\nconst DUR = 0.85\n\nexport function UtensilsCrossedIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'utensils crossed'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '15px 15px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, scale: 1 },\n          animate: {\n            y: [0, -1.5, -1.5, 0],\n            scale: [1, 1, 1.06, 1, 1],\n            transition: {\n              duration: DUR,\n              y: { times: [0, 0.3, 0.65, 1], ease: [easeOutQuart, 'linear', easeOutQuart] },\n              scale: { times: [0, 0.3, 0.45, 0.6, 1], ease: ['linear', settleBack, 'linear', easeOutQuart] },\n            },\n          },\n        }}\n      >\n        <path d=\"m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8\" />\n        <path d=\"M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7\" />\n        <path d=\"m2.1 21.8 6.4-6.3\" />\n        <path d=\"m19 5-7 7\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'utensils-crossed',\n  gesture: 'the toast is made',\n  family: 'rigid' as const,\n  section: 'Food & drink',\n  tags: ['cutlery', 'finish'],\n}\n\nexport default UtensilsCrossedIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/utensils-crossed.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "volume-1",
+  "title": "volume-1",
+  "description": "Semantic animated icon — it speaks softly. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/volume-1.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Volume 1 — it speaks softly. VARIANT(volume): the single small arc\n * erases and re-emits once, gently — a smaller flinch, a smaller wave,\n * because there is only one wave to give.\n * Base geometry: Lucide `volume-1` (ISC).\n */\nconst DUR = 0.85\n\nexport function Volume1Icon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'volume low'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -0.4, 0],\n            transition: { duration: DUR, times: [0, 0.15, 0.4], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M16 9a5 5 0 0 1 0 6\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.2, 0.35, 0.7], ease: ['linear', 'linear', easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'volume-1',\n  gesture: 'it speaks softly',\n  family: 'draw-on' as const,\n  section: 'Media',\n  tags: ['audio', 'quiet', 'low'],\n}\n\nexport default Volume1Icon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/volume-1.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

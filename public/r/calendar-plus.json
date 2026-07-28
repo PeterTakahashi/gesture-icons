@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "calendar-plus",
+  "title": "calendar-plus",
+  "description": "Semantic animated icon — a date is booked. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/calendar-plus.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Calendar plus — a date is booked. VARIANT(calendar): the plus is part of\n * this glyph's true rest picture, so it pops the way user-plus.tsx's mark\n * does — a dip to near-zero and an overshoot back to size — while the\n * frame takes calendar.tsx's small dip as it lands.\n * Base geometry: Lucide `calendar-plus` (ISC).\n */\nconst DUR = 0.85\n\nexport function CalendarPlusIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'calendar plus'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0.6, 0],\n            transition: { duration: DUR, times: [0, 0.5, 0.78], ease: [easeOutQuart, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M21 12.598V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8.5\" />\n        <path d=\"M3 10h18\" />\n        <path d=\"M8 2v4\" />\n        <path d=\"M16 2v4\" />\n      </motion.g>\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '19px 19px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.001, 1.3, 1],\n            transition: { duration: DUR, times: [0, 0.22, 0.5, 0.8], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M16 19h6\" />\n        <path d=\"M19 16v6\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'calendar-plus',\n  gesture: 'a date is booked',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['schedule', 'new', 'event'],\n}\n\nexport default CalendarPlusIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/calendar-plus.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

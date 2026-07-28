@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "egg-fried",
+  "title": "egg-fried",
+  "description": "Semantic animated icon — the yolk jiggles. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/egg-fried.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Egg fried — the yolk jiggles. Only the yolk carries the verb: it wobbles\n * about its own center like liquid settling in the pan while the white,\n * already set, holds perfectly still.\n * Base geometry: Lucide `egg-fried` (ISC).\n */\nconst DUR = 0.65\n\nexport function EggFriedIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'egg fried'}\n      {...hoverProps}\n    >\n      <motion.circle\n        cx=\"11.5\" cy=\"12.5\" r=\"3.5\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.12, 0.94, 1.05, 1],\n            transition: { duration: DUR, times: [0, 0.28, 0.55, 0.78, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <path d=\"M3 8c0-3.5 2.5-6 6.5-6 5 0 4.83 3 7.5 5s5 2 5 6c0 4.5-2.5 6.5-7 6.5-2.5 0-2.5 2.5-6 2.5s-7-2-7-5.5c0-3 1.5-3 1.5-5C3.5 10 3 9 3 8Z\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'egg-fried',\n  gesture: 'the yolk jiggles',\n  family: 'rigid' as const,\n  section: 'Food & drink',\n  tags: ['breakfast', 'cooking'],\n}\n\nexport default EggFriedIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/egg-fried.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

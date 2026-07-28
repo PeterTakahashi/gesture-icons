@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "key-round",
+  "title": "key-round",
+  "description": "Semantic animated icon — it turns. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/key-round.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeInOutQuart, easeOutQuart } from '../core/easings'\n\n/**\n * Key round — it turns. VARIANT(key): the same rotating-key pun, hinged\n * about the bow's own hole this time. A small counter-grip wind-up, the\n * turn past 90° as the lock gives, a held beat, then back home.\n * Base geometry: Lucide `key-round` (ISC).\n */\nconst DUR = 1.1\n\nexport function KeyRoundIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'key round'}\n      {...hoverProps}\n    >\n      {/* the bow's hole (18.5? no — 16.5,7.5) is the hinge the whole key turns about */}\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '16.5px 7.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -12, 90, 90, -5, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.14, 0.4, 0.58, 0.86, 1],\n              ease: [easeInOutCubic, [0.5, 0, 0.3, 1.1], 'linear', easeInOutQuart, easeOutQuart],\n            },\n          },\n        }}\n      >\n        <path d=\"M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z\" />\n        <circle cx=\"16.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'key-round',\n  gesture: 'it turns',\n  family: 'rigid' as const,\n  section: 'Security',\n  tags: ['password', 'access'],\n}\n\nexport default KeyRoundIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/key-round.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

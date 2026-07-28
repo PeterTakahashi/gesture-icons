@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "align-center",
+  "title": "align-center",
+  "description": "Semantic animated icon — the lines find center. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/align-center.tsx",
+      "content": "import { motion } from 'motion/react'\nimport type { Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Align center — the shorter lines re-center themselves with a tiny\n * symmetric squeeze about the shared centerline (x=12), staggered so\n * the settle reads top-down; the full-width line is already centered\n * and stays still.\n * Base geometry: Lucide `align-center` (ISC).\n */\nconst DUR = 0.7\n\nfunction squeeze(delay: number): Variants {\n  return {\n    normal: { scaleX: 1 },\n    animate: {\n      scaleX: [1, 0.9, 1],\n      transition: { duration: DUR, delay, times: [0, 0.4, 1], ease: easeInOutCubic },\n    },\n  }\n}\n\nexport function AlignCenterIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'align center'}\n      {...hoverProps}\n    >\n      <path d=\"M21 5H3\" />\n      <motion.path\n        d=\"M17 12H7\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\" animate={controls} variants={squeeze(0)}\n      />\n      <motion.path\n        d=\"M19 19H5\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 19px' }}\n        initial=\"normal\" animate={controls} variants={squeeze(DUR * 0.06)}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'align-center',\n  gesture: 'the lines find center',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['format', 'paragraph'],\n}\n\nexport default AlignCenterIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/align-center.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

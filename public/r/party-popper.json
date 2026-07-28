@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "party-popper",
+  "title": "party-popper",
+  "description": "Semantic animated icon — it pops the confetti. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/party-popper.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, easeInOutCubic, settleBack, pen } from '../core/easings'\n\n/**\n * Party popper — it pops the confetti. The popper tips about its base, and\n * the confetti — the dot flecks and the streamer curls — burst: each\n * implodes and is redrawn staggered 40ms apart, landing back exactly on\n * Lucide's resting confetti. One pop worth of joy.\n * Base geometry: Lucide `party-popper` (ISC).\n */\nconst DUR = 0.95\nconst DOTS = [\n  { d: 'M4 3h.01', delay: 0 },\n  { d: 'M22 8h.01', delay: 0.04 },\n  { d: 'M15 2h.01', delay: 0.08 },\n  { d: 'M22 20h.01', delay: 0.12 },\n]\nconst STREAMERS = [\n  { d: 'm22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10', delay: 0.16 },\n  { d: 'm22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17', delay: 0.2 },\n  { d: 'm11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7', delay: 0.24 },\n  { d: 'M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z', delay: 0.28 },\n]\n\nexport function PartyPopperIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const dotPop = (delay: number): Variants => ({\n    normal: { scale: 1 },\n    animate: {\n      scale: [1, 0.001, 1.3, 1],\n      transition: { duration: DUR, delay, times: [0, 0.3, 0.55, 0.8], ease: [pen, settleBack, easeOutQuart] },\n    },\n  })\n  const streamerBurst = (delay: number): Variants => ({\n    normal: { pathLength: 1 },\n    animate: {\n      pathLength: [1, 0.001, 0.001, 1],\n      transition: { duration: DUR, delay, times: [0, 0.22, 0.4, 0.78], ease: [pen, 'linear', pen] },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'party popper'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M5.8 11.3 2 22l10.7-3.79\"\n        style={{ transformBox: 'view-box', transformOrigin: '2px 22px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -8, 3, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.55, 0.85], ease: easeInOutCubic },\n          },\n        }}\n      />\n      {DOTS.map((s) => (\n        <motion.path\n          key={s.d}\n          d={s.d}\n          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={dotPop(s.delay)}\n        />\n      ))}\n      {STREAMERS.map((s) => (\n        <motion.path key={s.d} d={s.d} initial=\"normal\" animate={controls} variants={streamerBurst(s.delay)} />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'party-popper',\n  gesture: 'it pops the confetti',\n  family: 'secondary' as const,\n  section: 'Tools',\n  tags: ['celebrate', 'confetti', 'party'],\n}\n\nexport default PartyPopperIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/party-popper.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

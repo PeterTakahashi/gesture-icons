@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chat",
+  "title": "chat",
+  "description": "Semantic animated icon — someone is typing. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/chat.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Chat — someone is typing. Three dots pop in left to right (scale, never\n * opacity), hold while the \"typing\" reads, and collapse away so the bubble\n * rests exactly as Lucide drew it. The bubble takes a breath as they arrive.\n * Base geometry: Lucide `message-circle` (ISC).\n */\nconst DUR = 1.1\nconst DOTS = [8, 12, 16]\n\nexport function ChatIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'chat'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.04, 1, 1],\n            transition: { duration: DUR, times: [0, 0.16, 0.36, 1], ease: easeOutQuart },\n          },\n        }}\n      >\n        <path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\" />\n      </motion.g>\n      {/* typing dots: rest state is the untouched bubble, so they end gone */}\n      {DOTS.map((cx, i) => (\n        <motion.circle\n          key={cx}\n          cx={cx} cy={12} r={1.15}\n          fill={color === 'currentColor' ? 'currentColor' : color}\n          stroke=\"none\"\n          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { scale: 0 },\n            animate: {\n              scale: [0, 1.3, 1, 1, 0],\n              transition: {\n                duration: DUR,\n                delay: i * 0.09,\n                times: [0, 0.14, 0.24, 0.6, 0.74],\n                ease: [settleBack, easeOutQuart, 'linear', easeOutQuart],\n              },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'chat',\n  gesture: 'someone is typing',\n  family: 'secondary' as const,\n  section: 'Communication',\n  tags: ['message', 'bubble', 'typing', 'talk'],\n}\n\nexport default ChatIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/chat.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

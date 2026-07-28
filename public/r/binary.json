@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "binary",
+  "title": "binary",
+  "description": "Semantic animated icon — the bits flip. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/binary.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\n\n/**\n * Binary — the bits flip. The two rounded \"0\" digits blink off and back\n * first, then the two \"1\" strokes blink off and back — a hard opacity gate\n * each time, never a fade, reading as the bits flipping in sequence before\n * settling back to the resting glyph (all four digits drawn as usual).\n * Base geometry: Lucide `binary` (ISC).\n */\nconst DUR = 1.0\n\nexport function BinaryIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'binary'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { opacity: 1 },\n          animate: {\n            opacity: [1, 1, 0, 0, 1, 1],\n            transition: { duration: DUR, times: [0, 0.08, 0.09, 0.24, 0.25, 1], ease: 'linear' },\n          },\n        }}\n      >\n        <rect x=\"14\" y=\"14\" width=\"4\" height=\"6\" rx=\"2\" />\n        <rect x=\"6\" y=\"4\" width=\"4\" height=\"6\" rx=\"2\" />\n      </motion.g>\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { opacity: 1 },\n          animate: {\n            opacity: [1, 1, 1, 1, 0, 0, 1, 1],\n            transition: {\n              duration: DUR,\n              times: [0, 0.3, 0.31, 0.4, 0.41, 0.56, 0.57, 1],\n              ease: 'linear',\n            },\n          },\n        }}\n      >\n        <path d=\"M6 20h4\" />\n        <path d=\"M14 10h4\" />\n        <path d=\"M6 14h2v6\" />\n        <path d=\"M14 4h2v6\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'binary',\n  gesture: 'the bits flip',\n  family: 'secondary' as const,\n  section: 'Charts & math',\n  tags: ['code', 'digital', 'data'],\n}\n\nexport default BinaryIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/binary.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

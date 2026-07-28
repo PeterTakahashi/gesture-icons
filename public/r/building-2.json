@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "building-2",
+  "title": "building-2",
+  "description": "Semantic animated icon — the tower stands taller. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/building-2.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Building 2 — the tower stands taller. Everything stretches scaleY about\n * the base (the ground edge, which is the fixed pivot and never itself\n * moves) — the tall tower body leads the stretch by 3% of the beat, the wing,\n * windows and door follow fractionally behind: growth, not a rigid jump.\n * Base geometry: Lucide `building-2` (ISC).\n */\nconst DUR = 0.9\n\nexport function Building2Icon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const stretch = (times: [number, number, number]): Variants => ({\n    normal: { scaleY: 1 },\n    animate: {\n      scaleY: [1, 1.03, 1],\n      transition: { duration: DUR, times, ease: easeInOutCubic },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'building 2'}\n      {...hoverProps}\n    >\n      {/* the tallest part leads the stretch by 3% */}\n      <motion.path\n        d=\"M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 21px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={stretch([0, 0.27, 0.97])}\n      />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 21px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={stretch([0, 0.3, 1])}\n      >\n        <path d=\"M10 12h4\" />\n        <path d=\"M10 8h4\" />\n        <path d=\"M14 21v-3a2 2 0 0 0-4 0v3\" />\n        <path d=\"M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'building-2',\n  gesture: 'the tower stands taller',\n  family: 'rigid' as const,\n  section: 'Buildings',\n  tags: ['office', 'corporate', 'skyscraper'],\n}\n\nexport default Building2Icon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/building-2.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

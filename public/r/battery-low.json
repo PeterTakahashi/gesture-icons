@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "battery-low",
+  "title": "battery-low",
+  "description": "Semantic animated icon — it runs low. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/battery-low.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\n\n/**\n * Battery low — it runs low. The single low-charge bar blinks twice, a true\n * binary step with no fade, then stays lit — the warning, same idiom as the\n * cursor in `terminal.tsx`. The shell never moves.\n * Base geometry: Lucide `battery-low` (ISC).\n */\nconst DUR = 0.9\n\nexport function BatteryLowIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'battery low'}\n      {...hoverProps}\n    >\n      <path d=\"M22 14v-4\" />\n      <motion.path\n        d=\"M6 14v-4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { opacity: 1 },\n          animate: {\n            opacity: [1, 1, 0, 0, 1, 1, 0, 0, 1],\n            transition: {\n              duration: DUR,\n              times: [0, 0.12, 0.13, 0.28, 0.29, 0.44, 0.45, 0.6, 0.61],\n              ease: 'linear',\n            },\n          },\n        }}\n      />\n      <rect x=\"2\" y=\"6\" width=\"16\" height=\"12\" rx=\"2\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'battery-low',\n  gesture: 'it runs low',\n  family: 'secondary' as const,\n  section: 'Devices',\n  tags: ['power', 'empty', 'warning'],\n}\n\nexport default BatteryLowIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/battery-low.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

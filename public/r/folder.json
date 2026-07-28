@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "folder",
+  "title": "folder",
+  "description": "Semantic animated icon — it receives a file. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/folder.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Folder — it receives a file. A small document falls from above the frame\n * and drops straight into the folder's mouth; a clipPath covering the area\n * above the folder's front edge (y=8) hides it the instant it crosses that\n * line — clipped away, not faded — and it is put back above the frame while\n * genuinely invisible. The folder takes the catch with a small dip.\n * Base geometry: Lucide `folder` (ISC).\n */\nconst DUR = 1.05\n\nexport function FolderIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'folder'}\n      {...hoverProps}\n    >\n      <defs>\n        <clipPath id=\"gi-folder-clip\">\n          <rect x=\"-6\" y=\"-10\" width=\"36\" height=\"18\" />\n        </clipPath>\n      </defs>\n      <motion.path\n        d=\"M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 1.2, -0.4, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.42, 0.54, 0.72, 1],\n              ease: ['linear', easeOutQuart, easeInOutCubic, easeOutQuart],\n            },\n          },\n        }}\n      />\n      {/* the incoming document: hidden above the frame at rest, clipped away as it enters */}\n      <motion.rect\n        x=\"13\" width=\"5\" height=\"6\" rx=\"1\"\n        clipPath=\"url(#gi-folder-clip)\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: -8 },\n          animate: {\n            y: [-8, -8, 8, 8, -8],\n            transition: {\n              duration: DUR,\n              times: [0, 0.08, 0.42, 0.55, 0.56],\n              ease: ['linear', gravity, 'linear', 'linear'],\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'folder',\n  gesture: 'it receives a file',\n  family: 'secondary' as const,\n  section: 'Files & time',\n  tags: ['directory', 'files', 'organize'],\n}\n\nexport default FolderIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/folder.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

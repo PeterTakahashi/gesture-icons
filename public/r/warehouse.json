@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "warehouse",
+  "title": "warehouse",
+  "description": "Semantic animated icon — the shutter opens. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/warehouse.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Warehouse — the shutter opens. Each interior door line nudges up and\n * settles back, bottom-most first, the one above it a beat later — the\n * roller door breathing through one open-close cycle without ever leaving\n * the frame it's built from.\n * Base geometry: Lucide `warehouse` (ISC).\n */\nconst DUR = 0.9\n\nexport function WarehouseIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const slat = (delay: number) => ({\n    normal: { y: 0 },\n    animate: {\n      y: [0, 0.5, -1.2, 0],\n      transition: { duration: DUR, delay, times: [0, 0.18, 0.55, 1], ease: [easeInOutCubic, easeInOutCubic, easeOutQuart] },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'warehouse'}\n      {...hoverProps}\n    >\n      <path d=\"M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11\" />\n      <path d=\"M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z\" />\n      <motion.path d=\"M6 17h12\" initial=\"normal\" animate={controls} variants={slat(0)} />\n      <motion.path d=\"M6 13h12\" initial=\"normal\" animate={controls} variants={slat(0.06)} />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'warehouse',\n  gesture: 'the shutter opens',\n  family: 'rigid' as const,\n  section: 'Buildings',\n  tags: ['storage', 'logistics'],\n}\n\nexport default WarehouseIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/warehouse.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

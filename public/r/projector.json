@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "projector",
+  "title": "projector",
+  "description": "Semantic animated icon — it projects. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/projector.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Projector — it projects. The three flash rays above the lens are Lucide's\n * own glyph (always visible at rest); the gesture erases them and writes\n * them back on, staggered outward from the lens, so the resting picture\n * never changes — only the moment they redraw does. Body and lens hold still.\n * Spec called for two rays; the geometry actually offers three, so all three\n * play the same beat rather than leaving one arbitrarily untouched.\n * Base geometry: Lucide `projector` (ISC).\n */\nconst DUR = 0.9\n\nexport function ProjectorIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const ray = (redrawStart: number, redrawEnd: number): Variants => ({\n    normal: { pathLength: 1 },\n    animate: {\n      pathLength: [1, 0.001, 0.001, 1],\n      transition: {\n        duration: DUR,\n        times: [0, 0.14, redrawStart, redrawEnd],\n        ease: [easeInCubic, 'linear', easeOutQuart],\n      },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'projector'}\n      {...hoverProps}\n    >\n      <motion.path d=\"M5 7 3 5\" initial=\"normal\" animate={controls} variants={ray(0.2, 0.5)} />\n      <motion.path d=\"M9 6V3\" initial=\"normal\" animate={controls} variants={ray(0.28, 0.6)} />\n      <motion.path d=\"m13 7 2-2\" initial=\"normal\" animate={controls} variants={ray(0.36, 0.7)} />\n      <circle cx=\"9\" cy=\"13\" r=\"3\" />\n      <path d=\"M11.83 12H20a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2.17\" />\n      <path d=\"M16 16h2\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'projector',\n  gesture: 'it projects',\n  family: 'draw-on' as const,\n  section: 'Devices',\n  tags: ['presentation', 'beam'],\n}\n\nexport default ProjectorIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/projector.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

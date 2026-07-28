@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "phone",
+  "title": "phone",
+  "description": "Semantic animated icon — it rings. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/phone.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Phone — it rings. The whole handset buzzes in place: a fast, decaying\n * vibration about the glyph's own center — the shudder of a phone going\n * off face-down on a table, not a swing or a wave.\n * Base geometry: Lucide `phone` (ISC).\n */\nconst DUR = 0.75\n\nexport function PhoneIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'phone'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -9, 8, -6, 5, -2, 0],\n            transition: { duration: DUR, times: [0, 0.12, 0.26, 0.4, 0.56, 0.74, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'phone',\n  gesture: 'it rings',\n  family: 'rigid' as const,\n  section: 'Communication',\n  tags: ['call', 'telephone', 'ring'],\n}\n\nexport default PhoneIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/phone.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

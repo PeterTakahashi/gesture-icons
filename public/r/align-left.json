@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "align-left",
+  "title": "align-left",
+  "description": "Semantic animated icon — the lines snap left. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/align-left.tsx",
+      "content": "import { motion } from 'motion/react'\nimport type { Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Align left — the ragged lines snap to the left margin. The full-width\n * top line is already flush, so only the two shorter lines nudge: a hair\n * right (winding up), then left past the margin, then settle home —\n * staggered top-down so the snap reads as a ripple, not a block move.\n * Base geometry: Lucide `align-left` (ISC).\n */\nconst DUR = 0.8\n\nfunction nudgeLeft(delay: number): Variants {\n  return {\n    normal: { x: 0 },\n    animate: {\n      x: [0, 0.6, -2.4, 0],\n      transition: { duration: DUR, delay, times: [0, 0.18, 0.55, 1], ease: [easeInOutCubic, easeInOutCubic, easeOutQuart] },\n    },\n  }\n}\n\nexport function AlignLeftIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'align left'}\n      {...hoverProps}\n    >\n      <path d=\"M21 5H3\" />\n      <motion.path d=\"M15 12H3\" initial=\"normal\" animate={controls} variants={nudgeLeft(0)} />\n      <motion.path d=\"M17 19H3\" initial=\"normal\" animate={controls} variants={nudgeLeft(DUR * 0.05)} />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'align-left',\n  gesture: 'the lines snap left',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['format', 'paragraph'],\n}\n\nexport default AlignLeftIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/align-left.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

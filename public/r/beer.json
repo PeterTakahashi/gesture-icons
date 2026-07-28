@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "beer",
+  "title": "beer",
+  "description": "Semantic animated icon — it clinks. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/beer.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { windupOvershoot, easeOutQuart } from '../core/easings'\n\n/**\n * Beer — it clinks. The whole mug tips about its far bottom corner — a\n * toast lean — lifting a hair as it goes over, then rights itself with a\n * firm thump.\n * Base geometry: Lucide `beer` (ISC).\n */\nconst DUR = 0.9\n\nexport function BeerIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'beer'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '5px 20px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, y: 0 },\n          animate: {\n            rotate: [0, -8, 3, 0],\n            y: [0, -0.5, 0.15, 0],\n            transition: { duration: DUR, times: [0, 0.4, 0.75, 1], ease: [windupOvershoot, easeOutQuart, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M17 11h1a3 3 0 0 1 0 6h-1\" />\n        <path d=\"M9 12v6\" />\n        <path d=\"M13 12v6\" />\n        <path d=\"M14 7.5c-1 0-1.44.5-3 .5s-2-.5-3-.5-1.72.5-2.5.5a2.5 2.5 0 0 1 0-5c.78 0 1.57.5 2.5.5S9.44 2 11 2s2 1.5 3 1.5 1.72-.5 2.5-.5a2.5 2.5 0 0 1 0 5c-.78 0-1.5-.5-2.5-.5Z\" />\n        <path d=\"M5 8v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'beer',\n  gesture: 'it clinks',\n  family: 'rigid' as const,\n  section: 'Food & drink',\n  tags: ['drink', 'cheers', 'bar'],\n}\n\nexport default BeerIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/beer.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

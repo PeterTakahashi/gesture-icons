@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "reply-all",
+  "title": "reply-all",
+  "description": "Semantic animated icon — everyone hears back. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/reply-all.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Reply all — everyone hears back. Both arrows nudge left together — the\n * line and the near arrowhead on one clock, the far arrowhead a beat (6% of\n * the duration) behind — reply, and reply again.\n * Base geometry: Lucide `reply-all` (ISC).\n */\nconst DUR = 0.8\n\nexport function ReplyAllIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'reply all'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, 0.6, -2.5, -2.5, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.46, 0.78, 1], ease: [easeInOutCubic, easeOutQuart, 'linear', easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"m12 17-5-5 5-5\" />\n        <path d=\"M22 18v-2a4 4 0 0 0-4-4H7\" />\n      </motion.g>\n      <motion.path\n        d=\"m7 17-5-5 5-5\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, 0.6, -2.5, -2.5, 0],\n            transition: { duration: DUR, delay: 0.054, times: [0, 0.18, 0.46, 0.78, 1], ease: [easeInOutCubic, easeOutQuart, 'linear', easeInOutCubic] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'reply-all',\n  gesture: 'everyone hears back',\n  family: 'rigid' as const,\n  section: 'Communication',\n  tags: ['respond', 'email', 'group'],\n}\n\nexport default ReplyAllIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/reply-all.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

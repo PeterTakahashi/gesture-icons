@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "list",
+  "title": "list",
+  "description": "Semantic animated icon — the items check in. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/list.tsx",
+      "content": "import { motion } from 'motion/react'\nimport type { Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * List — the items check in. Each bullet blinks out and re-stamps in\n * sequence top-down (scale, never opacity) while the text lines hold\n * still — the list confirming itself item by item.\n * Base geometry: Lucide `list` (ISC).\n */\nconst DUR = 0.9\nconst DOTS: Array<[number, number]> = [[3, 5], [3, 12], [3, 19]]\n\nfunction pop(delay: number): Variants {\n  return {\n    normal: { scale: 1 },\n    animate: {\n      scale: [1, 0.001, 1.3, 1],\n      transition: { duration: DUR, delay, times: [0, 0.25, 0.55, 0.85], ease: [easeInCubic, settleBack, easeOutQuart] },\n    },\n  }\n}\n\nexport function ListIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'list'}\n      {...hoverProps}\n    >\n      {DOTS.map(([x, y], i) => (\n        <motion.path\n          key={`${x}-${y}`}\n          d={`M${x} ${y}h.01`}\n          style={{ transformBox: 'view-box', transformOrigin: `${x}px ${y}px` }}\n          initial=\"normal\" animate={controls} variants={pop(i * 0.09)}\n        />\n      ))}\n      <path d=\"M8 5h13\" />\n      <path d=\"M8 12h13\" />\n      <path d=\"M8 19h13\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'list',\n  gesture: 'the items check in',\n  family: 'secondary' as const,\n  section: 'Text & editing',\n  tags: ['bullet', 'items'],\n}\n\nexport default ListIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/list.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

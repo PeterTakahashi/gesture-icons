@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "power",
+  "title": "power",
+  "description": "Semantic animated icon — it powers on. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/power.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Power — it powers on. The vertical stroke presses down like a button and\n * springs back, then the ring pulses once around its own center — the\n * beat of a device actually booting, button first, then the light.\n * Base geometry: Lucide `power` (ISC).\n */\nconst DUR = 0.85\n\nexport function PowerIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'power'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M12 2v10\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 1.2, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.56], ease: [easeInCubic, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M18.4 6.6a9 9 0 1 1-12.77.04\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 13px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1, 1.08, 1],\n            transition: { duration: DUR, times: [0, 0.56, 0.76, 1], ease: ['linear', settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'power',\n  gesture: 'it powers on',\n  family: 'rigid' as const,\n  section: 'Devices',\n  tags: ['on', 'start', 'boot'],\n}\n\nexport default PowerIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/power.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

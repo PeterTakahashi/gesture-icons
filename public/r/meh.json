@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "meh",
+  "title": "meh",
+  "description": "Semantic animated icon — it shrugs. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/meh.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Meh — it shrugs. The flat mouth tilts once, side to side — the facial\n * shrug — while the eyes blink once together, a true binary step, never a\n * fade.\n * Base geometry: Lucide `meh` (ISC).\n */\nconst DUR = 0.75\n\nexport function MehIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const eyeVariants = {\n    normal: { opacity: 1 },\n    animate: {\n      opacity: [1, 1, 0, 0, 1, 1],\n      transition: { duration: DUR, times: [0, 0.35, 0.37, 0.5, 0.52, 1], ease: 'linear' as const },\n    },\n  }\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'meh'}\n      {...hoverProps}\n    >\n      <circle cx=\"12\" cy=\"12\" r=\"10\" />\n      <motion.line\n        x1=\"8\" x2=\"16\" y1=\"15\" y2=\"15\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 15px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 3, -2, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.65, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <motion.line x1=\"9\" x2=\"9.01\" y1=\"9\" y2=\"9\" initial=\"normal\" animate={controls} variants={eyeVariants} />\n      <motion.line x1=\"15\" x2=\"15.01\" y1=\"9\" y2=\"9\" initial=\"normal\" animate={controls} variants={eyeVariants} />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'meh',\n  gesture: 'it shrugs',\n  family: 'rigid' as const,\n  section: 'People & emotion',\n  tags: ['neutral', 'whatever', 'face'],\n}\n\nexport default MehIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/meh.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

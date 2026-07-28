@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pentagon",
+  "title": "pentagon",
+  "description": "Semantic animated icon — it turns a face. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/pentagon.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Pentagon — it turns a face. A pentagon is 5-fold symmetric, so a 72°\n * rotation is a free landing: a small wind-up against the turn, the turn\n * with a touch of overshoot, then a settle onto Lucide's original pixels.\n * Base geometry: Lucide `pentagon` (ISC).\n */\nconst DUR = 0.85\nconst OVER_EASE: [number, number, number, number] = [0.45, 0, 0.25, 1.1]\n\nexport function PentagonIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'pentagon'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M10.83 2.38a2 2 0 0 1 2.34 0l8 5.74a2 2 0 0 1 .73 2.25l-3.04 9.26a2 2 0 0 1-1.9 1.37H7.04a2 2 0 0 1-1.9-1.37L2.1 10.37a2 2 0 0 1 .73-2.25z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -8, 80, 72],\n            transition: { duration: DUR, times: [0, 0.16, 0.78, 1], ease: [easeInOutCubic, OVER_EASE, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'pentagon',\n  gesture: 'it turns a face',\n  family: 'rigid' as const,\n  section: 'Shapes',\n  tags: ['shape', 'geometry'],\n}\n\nexport default PentagonIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/pentagon.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

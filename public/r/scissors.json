@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scissors",
+  "title": "scissors",
+  "description": "Semantic animated icon — they snip once. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/scissors.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, settleBack } from '../core/easings'\n\n/**\n * Scissors — one clean snip. The two blades are rigid pieces hinged\n * where their edges actually cross — reading the geometry, that point\n * is (12,12), not the handle loops at (6,6)/(6,18) — so each blade\n * (loop + edge) rotates as a whole about that real pivot, sharp in,\n * spring back out.\n * Base geometry: Lucide `scissors` (ISC).\n */\nconst DUR = 0.7\n\nexport function ScissorsIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'scissors'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -10, 0],\n            transition: { duration: DUR, times: [0, 0.35, 1], ease: [easeInCubic, settleBack] },\n          },\n        }}\n      >\n        <circle cx=\"6\" cy=\"6\" r=\"3\" />\n        <path d=\"M8.12 8.12 12 12\" />\n        <path d=\"M14.8 14.8 20 20\" />\n      </motion.g>\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 10, 0],\n            transition: { duration: DUR, times: [0, 0.35, 1], ease: [easeInCubic, settleBack] },\n          },\n        }}\n      >\n        <path d=\"M20 4 8.12 15.88\" />\n        <circle cx=\"6\" cy=\"18\" r=\"3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'scissors',\n  gesture: 'they snip once',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['cut', 'trim'],\n}\n\nexport default ScissorsIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/scissors.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "annoyed",
+  "title": "annoyed",
+  "description": "Semantic animated icon — it side-eyes. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/annoyed.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Annoyed — it side-eyes. The eyes nudge aside together, hold there\n * pointedly, then return — a deliberate glance, not a twitch. The mouth\n * never moves; the whole point is that the face stays flat while the eyes\n * do the talking.\n * Base geometry: Lucide `annoyed` (ISC).\n */\nconst DUR = 0.9\n\nexport function AnnoyedIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const eyeVariants = {\n    normal: { x: 0 },\n    animate: {\n      x: [0, -0.3, 1, 1, 0],\n      transition: {\n        duration: DUR,\n        times: [0, 0.18, 0.42, 0.75, 1],\n        ease: [easeInOutCubic, settleBack, 'linear' as const, easeOutQuart],\n      },\n    },\n  }\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'annoyed'}\n      {...hoverProps}\n    >\n      <circle cx=\"12\" cy=\"12\" r=\"10\" />\n      <path d=\"M8 15h8\" />\n      <motion.path d=\"M8 9h2\" initial=\"normal\" animate={controls} variants={eyeVariants} />\n      <motion.path d=\"M14 9h2\" initial=\"normal\" animate={controls} variants={eyeVariants} />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'annoyed',\n  gesture: 'it side-eyes',\n  family: 'rigid' as const,\n  section: 'People & emotion',\n  tags: ['irritated', 'face'],\n}\n\nexport default AnnoyedIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/annoyed.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

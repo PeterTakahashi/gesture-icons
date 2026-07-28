@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "layers",
+  "title": "layers",
+  "description": "Semantic animated icon — the stack takes the drop. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/layers.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Layers — the top sheet is lifted and dropped back on the pile.\n * The bands below compress in sequence: the middle is not hit by the sheet,\n * it is hit by the layer above it, so it sets off ~3% later on the same\n * curve, and the bottom 3% after that. Three layers leaving on the same\n * frame would be a rigid block, and a rigid block has no physics.\n * Base geometry: Lucide `layers` (ISC).\n */\nconst DUR = 1.0\n\nexport function LayersIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'layers'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -4.4, 0.7, -0.2, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.3, 0.56, 0.74, 1],\n              ease: [easeOutQuart, gravity, easeOutQuart, easeInOutCubic],\n            },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 1.3, -0.4, 0],\n            transition: { duration: DUR, times: [0, 0.53, 0.66, 0.82, 1], ease: ['linear', easeOutQuart, easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.85, -0.25, 0],\n            transition: { duration: DUR, times: [0, 0.56, 0.69, 0.85, 1], ease: ['linear', easeOutQuart, easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'layers',\n  gesture: 'the stack takes the drop',\n  family: 'rigid' as const,\n  section: 'Workspace',\n  tags: ['stack', 'sheets', 'levels'],\n}\n\nexport default LayersIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/layers.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

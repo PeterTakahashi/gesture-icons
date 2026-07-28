@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bar-chart",
+  "title": "bar-chart",
+  "description": "Semantic animated icon — the data arrives. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/bar-chart.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, settleBack } from '../core/easings'\n\n/**\n * Bar chart — the data arrives. All three bars collapse to nothing about\n * their shared baseline at once, then grow back staggered shortest-first,\n * tallest-last — data redrawing itself, biggest number landing last. The\n * baseline axis never moves.\n * Base geometry: Lucide `bar-chart-3` (ISC).\n */\nconst DUR = 1.0\n\nexport function BarChartIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const bar = (growStart: number): Variants => ({\n    normal: { scaleY: 1 },\n    animate: {\n      scaleY: [1, 0.001, 0.001, 1],\n      transition: { duration: DUR, times: [0, 0.22, growStart, 1], ease: [easeInCubic, 'linear', settleBack] },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'bar chart'}\n      {...hoverProps}\n    >\n      <path d=\"M3 3v16a2 2 0 0 0 2 2h16\" />\n      <motion.path\n        d=\"M18 17V9\"\n        style={{ transformBox: 'view-box', transformOrigin: '18px 17px' }}\n        initial=\"normal\" animate={controls} variants={bar(0.38)}\n      />\n      <motion.path\n        d=\"M13 17V5\"\n        style={{ transformBox: 'view-box', transformOrigin: '13px 17px' }}\n        initial=\"normal\" animate={controls} variants={bar(0.46)}\n      />\n      <motion.path\n        d=\"M8 17v-3\"\n        style={{ transformBox: 'view-box', transformOrigin: '8px 17px' }}\n        initial=\"normal\" animate={controls} variants={bar(0.3)}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'bar-chart',\n  gesture: 'the data arrives',\n  family: 'rigid' as const,\n  section: 'Charts & math',\n  tags: ['graph', 'analytics', 'stats'],\n}\n\nexport default BarChartIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/bar-chart.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

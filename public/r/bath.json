@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bath",
+  "title": "bath",
+  "description": "Semantic animated icon — the water sloshes. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/bath.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Bath — the water sloshes. The tub (basin, faucet bend, legs and waterline\n * all one rigid object) rocks gently about its base, decaying; the shower\n * nozzle mark is fixed to the same body but lags 4% behind because it sits\n * furthest from the pivot — a settled soak, not a tipping tub.\n * Base geometry: Lucide `bath` (ISC).\n */\nconst DUR = 1.0\nconst LAG = DUR * 0.04\n\nexport function BathIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const rock = {\n    normal: { rotate: 0 },\n    animate: {\n      rotate: [0, -2, 2, -1, 0],\n      transition: { duration: DUR, times: [0, 0.26, 0.52, 0.76, 1], ease: easeInOutCubic },\n    },\n  }\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'bath'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 21px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={rock}\n      >\n        <path d=\"M17 19v2\" />\n        <path d=\"M2 12h20\" />\n        <path d=\"M7 19v2\" />\n        <path d=\"M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5\" />\n      </motion.g>\n      {/* the nozzle mark, on the same body, lagging a beat behind */}\n      <motion.path\n        d=\"M10 4 8 6\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 21px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -2, 2, -1, 0],\n            transition: { duration: DUR, delay: LAG, times: [0, 0.26, 0.52, 0.76, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'bath',\n  gesture: 'the water sloshes',\n  family: 'rigid' as const,\n  section: 'Home',\n  tags: ['bathroom', 'tub', 'relax'],\n}\n\nexport default BathIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/bath.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

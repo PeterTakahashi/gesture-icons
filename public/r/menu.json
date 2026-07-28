@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "menu",
+  "title": "menu",
+  "description": "Semantic animated icon — the lines fall in. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/menu.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Menu — the lines fall in. Each bar nudges right and returns, top bar\n * first, then the next, then the last — a top-down cascade, like items\n * lining up as a list opens.\n * Base geometry: Lucide `menu` (ISC).\n */\nconst DUR = 0.7\nconst BARS = [\n  { d: 'M4 5h16', delay: 0 },\n  { d: 'M4 12h16', delay: 0.06 },\n  { d: 'M4 19h16', delay: 0.12 },\n]\n\nexport function MenuIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'menu'}\n      {...hoverProps}\n    >\n      {BARS.map((bar) => (\n        <motion.path\n          key={bar.d}\n          d={bar.d}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { x: 0 },\n            animate: {\n              x: [0, 2.2, 0],\n              transition: { duration: DUR, delay: bar.delay, times: [0, 0.35, 1], ease: easeInOutCubic },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'menu',\n  gesture: 'the lines fall in',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['hamburger', 'nav', 'list'],\n}\n\nexport default MenuIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/menu.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

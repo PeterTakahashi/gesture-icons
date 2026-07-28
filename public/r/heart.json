@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "heart",
+  "title": "heart",
+  "description": "Semantic animated icon — it beats, lub-dub. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/heart.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuint } from '../core/easings'\n\n/**\n * Heart — it beats. Not a generic pulse: a lub-dub — two contractions,\n * the second stronger, then the long diastole back to rest.\n * Base geometry: Lucide `heart` (ISC).\n */\nexport function HeartIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'heart'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            // lub … DUB …… settle\n            scale: [1, 1.12, 1.02, 1.22, 0.99, 1],\n            transition: {\n              duration: 0.95,\n              times: [0, 0.12, 0.26, 0.42, 0.62, 1],\n              ease: [easeOutQuint, easeInOutCubic, easeOutQuint, easeInOutCubic, easeInOutCubic],\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'heart',\n  gesture: 'it beats, lub-dub',\n  family: 'rigid' as const,\n  section: 'Commerce & feedback',\n  tags: ['like', 'love', 'favorite', 'health'],\n}\n\nexport default HeartIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/heart.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

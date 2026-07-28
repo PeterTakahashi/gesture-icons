@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bookmark",
+  "title": "bookmark",
+  "description": "Semantic animated icon — the ribbon dips. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/bookmark.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Bookmark — the ribbon dips. Hung from the top edge, it drops into the\n * page under its own weight and rebounds a hair before settling, the notch\n * flexing wider for a beat as it takes the motion — marked.\n * Base geometry: Lucide `bookmark` (ISC).\n */\nconst DUR = 0.85\n\nexport function BookmarkIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'bookmark'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 3px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, scaleY: 1 },\n          animate: {\n            y: [0, 1.6, -0.4, 0],\n            scaleY: [1, 1, 1.06, 1],\n            transition: {\n              duration: DUR,\n              y: { times: [0, 0.36, 0.68, 1], ease: [gravity, easeOutQuart, easeInOutCubic] },\n              scaleY: { times: [0, 0.4, 0.62, 1], ease: [easeInOutCubic, easeOutQuart, easeInOutCubic] },\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'bookmark',\n  gesture: 'the ribbon dips',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['save', 'later', 'favorite'],\n}\n\nexport default BookmarkIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/bookmark.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

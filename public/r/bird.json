@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bird",
+  "title": "bird",
+  "description": "Semantic animated icon — it hops. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/bird.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { gravity, easeOutQuart } from '../core/easings'\n\n/**\n * Bird — it hops. Two quick hops about its feet: an almost-instant takeoff\n * up, then gravity takes the fall back down, leaning forward a hair on\n * each — the little forward-lean of a bird hopping along a branch.\n * Base geometry: Lucide `bird` (ISC).\n */\nconst DUR = 0.9\n\nexport function BirdIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'bird'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '10px 20px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, -1.8, 0, -1.2, 0],\n            rotate: [0, 3, 0, 3, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.4, 0.62, 0.82], ease: [easeOutQuart, gravity, easeOutQuart, gravity] },\n          },\n        }}\n      >\n        <path d=\"M16 7h.01\" />\n        <path d=\"M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20\" />\n        <path d=\"m20 7 2 .5-2 .5\" />\n        <path d=\"M10 18v3\" />\n        <path d=\"M14 17.75V21\" />\n        <path d=\"M7 18a6 6 0 0 0 3.84-10.61\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'bird',\n  gesture: 'it hops',\n  family: 'rigid' as const,\n  section: 'Animals & nature',\n  tags: ['tweet', 'animal', 'fly'],\n}\n\nexport default BirdIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/bird.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

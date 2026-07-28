@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "lamp-desk",
+  "title": "lamp-desk",
+  "description": "Semantic animated icon — it angles to the page. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/lamp-desk.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Lamp desk — it angles to the page. The head and its upper arm bar rotate\n * about the elbow joint where the lower arm bends toward the base, hold\n * aimed at the work, and return. The lower arm and base never move.\n * Base geometry: Lucide `lamp-desk` (ISC).\n */\nconst DUR = 1.0\n\nexport function LampDeskIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'lamp desk'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '9.086px 6.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -8, -8, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.68, 1], ease: [easeOutQuart, 'linear', easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M10.293 2.293a1 1 0 0 1 1.414 0l2.5 2.5 5.994 1.227a1 1 0 0 1 .506 1.687l-7 7a1 1 0 0 1-1.687-.506l-1.227-5.994-2.5-2.5a1 1 0 0 1 0-1.414z\" />\n        <path d=\"m14.207 4.793-3.414 3.414\" />\n      </motion.g>\n      <path d=\"M3 20a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z\" />\n      <path d=\"m9.086 6.5-4.793 4.793a1 1 0 0 0-.18 1.17L7 18\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'lamp-desk',\n  gesture: 'it angles to the page',\n  family: 'rigid' as const,\n  section: 'Home',\n  tags: ['light', 'desk', 'study'],\n}\n\nexport default LampDeskIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/lamp-desk.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "sort-asc",
+  "title": "sort-asc",
+  "description": "Semantic animated icon — it sorts ascending. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/sort-asc.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Sort ascending — it sorts. The three bars NUDGE right in sequence,\n * shortest first, each 8% behind the last — a quick ripple settling into\n * order — while the arrow NUDGEs up on the base clock, the anchor the bars\n * ripple away from.\n * Base geometry: Lucide `arrow-up-narrow-wide` (ISC).\n */\nconst DUR = 0.75\nconst DRIVE_X = 1.5\nconst WIND_X = 0.3\nconst DRIVE_Y = 2\nconst WIND_Y = 0.6\nconst STAGGER = 0.08 * DUR\n\nconst barVariants = (delay: number) => ({\n  normal: { x: 0 },\n  animate: {\n    x: [0, -WIND_X, DRIVE_X, 0],\n    transition: { duration: DUR, delay, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n  },\n})\n\nexport function SortAscIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'sort asc'}\n      {...hoverProps}\n    >\n      {/* arrow nudges up, on the base clock */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, WIND_Y, -DRIVE_Y, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"m3 8 4-4 4 4\" />\n        <path d=\"M7 4v16\" />\n      </motion.g>\n      {/* shortest bar first */}\n      <motion.path d=\"M11 12h4\" initial=\"normal\" animate={controls} variants={barVariants(0)} />\n      <motion.path d=\"M11 16h7\" initial=\"normal\" animate={controls} variants={barVariants(STAGGER)} />\n      <motion.path d=\"M11 20h10\" initial=\"normal\" animate={controls} variants={barVariants(STAGGER * 2)} />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'sort-asc',\n  gesture: 'it sorts ascending',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['sort', 'order'],\n}\n\nexport default SortAscIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/sort-asc.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

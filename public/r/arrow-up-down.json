@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "arrow-up-down",
+  "title": "arrow-up-down",
+  "description": "Semantic animated icon — it weighs both ways. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/arrow-up-down.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Arrow up-down — it weighs both ways. The up arrow NUDGEs up while the down\n * arrow NUDGEs down, at the same time, then both settle back home — the pair\n * pulling apart before they rest, so the \"both directions\" reading lands.\n * Base geometry: Lucide `arrow-up-down` (ISC).\n */\nconst DUR = 0.75\nconst DRIVE = 2\nconst WIND = 0.6\n\nexport function ArrowUpDownIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'arrow up down'}\n      {...hoverProps}\n    >\n      {/* down arrow nudges down */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -WIND, DRIVE, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"m21 16-4 4-4-4\" />\n        <path d=\"M17 20V4\" />\n      </motion.g>\n      {/* up arrow nudges up */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, WIND, -DRIVE, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"m3 8 4-4 4 4\" />\n        <path d=\"M7 4v16\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'arrow-up-down',\n  gesture: 'it weighs both ways',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['sort', 'swap', 'vertical'],\n}\n\nexport default ArrowUpDownIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/arrow-up-down.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

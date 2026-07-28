@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "paintbrush",
+  "title": "paintbrush",
+  "description": "Semantic animated icon — it flicks paint. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/paintbrush.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Paintbrush — like brush, but snappier: a quicker flick of the wrist\n * about the ferrule tip, with an extra small correction wobble before\n * it settles.\n * Base geometry: Lucide `paintbrush` (ISC).\n */\nconst DUR = 0.8\n\nexport function PaintbrushIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'paintbrush'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '18px 3px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -10, 7, -3, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.48, 0.72, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m14.622 17.897-10.68-2.913\" />\n        <path d=\"M18.376 2.622a1 1 0 1 1 3.002 3.002L17.36 9.643a.5.5 0 0 0 0 .707l.944.944a2.41 2.41 0 0 1 0 3.408l-.944.944a.5.5 0 0 1-.707 0L8.354 7.348a.5.5 0 0 1 0-.707l.944-.944a2.41 2.41 0 0 1 3.408 0l.944.944a.5.5 0 0 0 .707 0z\" />\n        <path d=\"M9 8c-1.804 2.71-3.97 3.46-6.583 3.948a.507.507 0 0 0-.302.819l7.32 8.883a1 1 0 0 0 1.185.204C12.735 20.405 16 16.792 16 15\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'paintbrush',\n  gesture: 'it flicks paint',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['paint', 'art', 'decorate'],\n}\n\nexport default PaintbrushIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/paintbrush.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

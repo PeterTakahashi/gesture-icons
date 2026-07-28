@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "carrot",
+  "title": "carrot",
+  "description": "Semantic animated icon — it is pulled up. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/carrot.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, easeInOutCubic, gravity } from '../core/easings'\n\n/**\n * Carrot — it is pulled up. The whole carrot lifts with a wiggle — coming\n * loose from soil — then is pushed firmly back past rest and settles,\n * re-planted.\n * Base geometry: Lucide `carrot` (ISC).\n */\nconst DUR = 1.0\n\nexport function CarrotIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'carrot'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '9px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, -2, -2, 0.5, 0],\n            rotate: [0, 3, -2, 1, 0],\n            transition: {\n              duration: DUR,\n              y: { times: [0, 0.3, 0.55, 0.8, 1], ease: [easeOutQuart, 'linear', gravity, easeOutQuart] },\n              rotate: { times: [0, 0.2, 0.4, 0.6, 1], ease: easeInOutCubic },\n            },\n          },\n        }}\n      >\n        <path d=\"M15 16a1 1 0 0 0-7-7q-4 4-5.987 12.385a.5.5 0 0 0 .602.602Q11 20 15 16l-3-3\" />\n        <path d=\"M15 9q4 4 7 0-3-4-7 0 4-4 0-7-4 3 0 7\" />\n        <path d=\"m8 15-2.58-2.58\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'carrot',\n  gesture: 'it is pulled up',\n  family: 'rigid' as const,\n  section: 'Food & drink',\n  tags: ['vegetable', 'garden'],\n}\n\nexport default CarrotIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/carrot.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

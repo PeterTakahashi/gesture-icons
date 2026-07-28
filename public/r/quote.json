@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "quote",
+  "title": "quote",
+  "description": "Semantic animated icon — it opens a quotation. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/quote.tsx",
+      "content": "import { motion } from 'motion/react'\nimport type { Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Quote — the two marks lift and tilt as if raised to speak, left mark\n * first, right mark a beat after, each settling back to its printed\n * place.\n * Base geometry: Lucide `quote` (ISC).\n */\nconst DUR = 0.9\n\nfunction lift(delay: number): Variants {\n  return {\n    normal: { y: 0, rotate: 0 },\n    animate: {\n      y: [0, -1.5, -1.5, 0],\n      rotate: [0, -4, -4, 0],\n      transition: { duration: DUR, delay, times: [0, 0.28, 0.62, 1], ease: [easeOutQuart, 'linear', easeInOutCubic] },\n    },\n  }\n}\n\nexport function QuoteIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'quote'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\" animate={controls} variants={lift(0)}\n      />\n      <motion.path\n        d=\"M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\" animate={controls} variants={lift(DUR * 0.08)}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'quote',\n  gesture: 'it opens a quotation',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['blockquote', 'citation'],\n}\n\nexport default QuoteIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/quote.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

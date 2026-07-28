@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "clipboard-check",
+  "title": "clipboard-check",
+  "description": "Semantic animated icon — the check lands. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/clipboard-check.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, pen } from '../core/easings'\n\n/**\n * Clipboard check — the check lands. The tick un-draws, waits a beat, then\n * a pen writes it back on — short stroke first, easing into the stop. The\n * clipboard takes a small dip exactly on the frame the tick finishes,\n * because that is the moment the mark actually lands.\n * Base geometry: Lucide `clipboard-check` (ISC).\n */\nconst DUR = 1.0\n\nexport function ClipboardCheckIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'clipboard check'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.8, 0],\n            transition: { duration: DUR, times: [0, 0.8, 0.88, 1], ease: ['linear', easeOutQuart, easeOutQuart] },\n          },\n        }}\n      >\n        <rect width=\"8\" height=\"4\" x=\"8\" y=\"2\" rx=\"1\" ry=\"1\" />\n        <path d=\"M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2\" />\n      </motion.g>\n      <motion.path\n        d=\"m9 14 2 2 4-4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.18, 0.4, 0.8], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'clipboard-check',\n  gesture: 'the check lands',\n  family: 'draw-on' as const,\n  section: 'Files & time',\n  tags: ['done', 'task', 'todo', 'verified'],\n}\n\nexport default ClipboardCheckIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/clipboard-check.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

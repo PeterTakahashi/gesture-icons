@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "notebook-pen",
+  "title": "notebook-pen",
+  "description": "Semantic animated icon — notes are taken. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/notebook-pen.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Notebook pen — notes are taken. Only the pen moves: a small, organic\n * scribble hinged at its own nib (where it touches the page), tracing a\n * loose figure-eight before it comes to rest — a line jotted, nothing more.\n * Base geometry: Lucide `notebook-pen` (ISC).\n */\nconst DUR = 0.9\n\nexport function NotebookPenIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'notebook pen'}\n      {...hoverProps}\n    >\n      <path d=\"M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4\" />\n      <path d=\"M2 6h4\" />\n      <path d=\"M2 10h4\" />\n      <path d=\"M2 14h4\" />\n      <path d=\"M2 18h4\" />\n      <motion.path\n        d=\"M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12.3px 11.7px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0, rotate: 0 },\n          animate: {\n            x: [0, 1, -1, 0.6, -0.6, 0],\n            y: [0, -0.6, 0.6, -0.4, 0.4, 0],\n            rotate: [0, 3, -3, 2, -2, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.38, 0.58, 0.78, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'notebook-pen',\n  gesture: 'notes are taken',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['write', 'journal'],\n}\n\nexport default NotebookPenIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/notebook-pen.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

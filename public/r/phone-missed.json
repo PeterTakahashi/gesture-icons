@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "phone-missed",
+  "title": "phone-missed",
+  "description": "Semantic animated icon — the call is missed. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/phone-missed.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Phone missed — the call is missed. A small \"no\" wag from the X, and the\n * handset gives one soft sag and rights itself — just missed it.\n * Base geometry: Lucide `phone-missed` (ISC).\n */\nconst DUR = 0.85\n\nexport function PhoneMissedIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'phone missed'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '19px 5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -8, 6, -3, 0],\n            transition: { duration: DUR, times: [0, 0.24, 0.5, 0.76, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m16 2 6 6\" />\n        <path d=\"m22 2-6 6\" />\n      </motion.g>\n      <motion.path\n        d=\"M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 3, 0],\n            transition: { duration: DUR, times: [0, 0.45, 1], ease: [easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'phone-missed',\n  gesture: 'the call is missed',\n  family: 'rigid' as const,\n  section: 'Communication',\n  tags: ['call', 'missed', 'regret'],\n}\n\nexport default PhoneMissedIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/phone-missed.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

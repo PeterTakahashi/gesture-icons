@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "trash",
+  "title": "trash",
+  "description": "Semantic animated icon — the lid opens. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/trash.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Trash — the lid opens. Hinged at its right end, it lifts and tips back,\n * holds a beat so the open can reads, then falls shut — the close\n * accelerates (a dropped lid does), and the can thumps when it lands.\n * Base geometry: Lucide `trash-2` (ISC).\n */\nconst DUR = 1.05\n\nexport function TrashIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'trash'}\n      {...hoverProps}\n    >\n      {/* lid + handle, hinged at the right end of the rim */}\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '20px 6px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, y: 0 },\n          animate: {\n            rotate: [0, -26, -26, 0],\n            y: [0, -1, -1, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.28, 0.6, 0.82],\n              ease: [easeOutQuart, 'linear', easeInCubic],\n            },\n          },\n        }}\n      >\n        <path d=\"M3 6h18\" />\n        <path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\" />\n      </motion.g>\n      {/* the can takes the slam */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.9, 0],\n            transition: { duration: DUR, times: [0, 0.82, 0.9, 1], ease: ['linear', easeOutQuart, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\" />\n        <path d=\"M10 11v6\" />\n        <path d=\"M14 11v6\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'trash',\n  gesture: 'the lid opens',\n  family: 'rigid' as const,\n  section: 'Objects',\n  tags: ['delete', 'remove', 'bin', 'garbage'],\n}\n\nexport default TrashIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/trash.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

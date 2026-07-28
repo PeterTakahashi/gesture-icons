@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "badge-check",
+  "title": "badge-check",
+  "description": "Semantic animated icon — it certifies. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/badge-check.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen, settleBack } from '../core/easings'\n\n/**\n * Badge check — it certifies. The badge gives one firm press pulse and the\n * check erases and pen-redraws, landing exactly on the frame where the\n * badge settles: sealed and signed in the same beat.\n * Base geometry: Lucide `badge-check` (ISC).\n */\nconst DUR = 1.0\n\nexport function BadgeCheckIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'badge check'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.95, 1.03, 1],\n            transition: { duration: DUR, times: [0, 0.3, 0.6, 0.85], ease: settleBack },\n          },\n        }}\n      />\n      <motion.path\n        d=\"m9 12 2 2 4-4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0, 0, 1],\n            transition: { duration: DUR, times: [0, 0.35, 0.5, 0.85], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'badge-check',\n  gesture: 'it certifies',\n  family: 'draw-on' as const,\n  section: 'Security',\n  tags: ['verified', 'official'],\n}\n\nexport default BadgeCheckIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/badge-check.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

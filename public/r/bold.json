@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bold",
+  "title": "bold",
+  "description": "Semantic animated icon — it thickens its voice. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/bold.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Bold — it thickens its voice. A short, firm STAMP: the glyph presses in a\n * hair, pops past its own size with authority, and lands — quicker and more\n * assertive than plus's stamp, matching the weight of the letterform itself.\n * Base geometry: Lucide `bold` (ISC).\n */\nconst DUR = 0.65\n\nexport function BoldIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'bold'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.94, 1.1, 1],\n            transition: { duration: DUR, times: [0, 0.22, 0.5, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'bold',\n  gesture: 'it thickens its voice',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['font', 'strong', 'format'],\n}\n\nexport default BoldIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/bold.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

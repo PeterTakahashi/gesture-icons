@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "git-merge",
+  "title": "git-merge",
+  "description": "Semantic animated icon — the branch merges in. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/git-merge.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen, settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * Git merge — the branch merges in. The curve drains away toward its own\n * source end (the top node stays put, static, the whole time — like the\n * surviving head in git-branch.tsx), then the pen redraws it, curve first,\n * arriving at the trunk last — and the receiving node stamps down exactly\n * on that arrival frame.\n * Base geometry: Lucide `git-merge` (ISC).\n */\nconst DUR = 1.2\n\nexport function GitMergeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'git merge'}\n      {...hoverProps}\n    >\n      {/* the source node — never moves */}\n      <circle cx=\"6\" cy=\"6\" r=\"3\" />\n      <motion.path\n        d=\"M6 21V9a9 9 0 0 0 9 9\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.22, 0.36, 0.88], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n      <motion.circle\n        cx=\"18\" cy=\"18\" r=\"3\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1, 0.001, 0.001, 1.25, 1],\n            transition: {\n              duration: DUR,\n              times: [0, 0.14, 0.22, 0.8, 0.88, 0.97],\n              ease: ['linear', easeInCubic, 'linear', settleBack, easeOutQuart],\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'git-merge',\n  gesture: 'the branch merges in',\n  family: 'draw-on' as const,\n  section: 'Workspace',\n  tags: ['git', 'vcs', 'combine', 'pr'],\n}\n\nexport default GitMergeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/git-merge.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

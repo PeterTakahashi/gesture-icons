@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "corner-up-right",
+  "title": "corner-up-right",
+  "description": "Semantic animated icon — it heads up and out. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/corner-up-right.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen } from '../core/easings'\n\n/**\n * Corner up-right — it heads up and out. Both strokes erase from the\n * arrowhead backward, then the corner line pen-redraws up and into the\n * curve, and the arrowhead redraws last, landing as the line's pen arrives\n * at it.\n * Base geometry: Lucide `corner-up-right` (ISC).\n */\nconst DUR = 1.05\n\nexport function CornerUpRightIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'corner up right'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"m15 14 5-5-5-5\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.14, 0.6, 1], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M4 20v-7a4 4 0 0 1 4-4h12\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.16, 0.28, 0.72], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'corner-up-right',\n  gesture: 'it heads up and out',\n  family: 'draw-on' as const,\n  section: 'Arrows',\n  tags: ['corner'],\n}\n\nexport default CornerUpRightIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/corner-up-right.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

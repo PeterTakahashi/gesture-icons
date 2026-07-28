@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "utensils",
+  "title": "utensils",
+  "description": "Semantic animated icon — ready to eat. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/utensils.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Utensils — ready to eat. The fork and knife lift a hair and nudge toward\n * each other, then come back down and apart — set down at the place\n * setting, not mid-slide.\n * Base geometry: Lucide `utensils` (ISC).\n */\nconst DUR = 0.8\n\nexport function UtensilsIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'utensils'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -0.4, 1, 0],\n            y: [0, -0.5, -0.5, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.6, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2\" />\n        <path d=\"M7 2v20\" />\n      </motion.g>\n      <motion.path\n        d=\"M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, 0.4, -1, 0],\n            y: [0, -0.5, -0.5, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.6, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'utensils',\n  gesture: 'ready to eat',\n  family: 'rigid' as const,\n  section: 'Food & drink',\n  tags: ['cutlery', 'restaurant'],\n}\n\nexport default UtensilsIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/utensils.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

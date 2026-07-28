@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "calendar",
+  "title": "calendar",
+  "description": "Semantic animated icon — today gets marked. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/calendar.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Calendar — today gets marked. A dot pops onto a date cell near the bottom\n * right, holds so the stamp reads, then collapses away — like chat.tsx's\n * typing dots, hidden at rest by scale rather than a fade. The calendar\n * takes a tiny dip as the mark lands.\n * Base geometry: Lucide `calendar` (ISC).\n */\nconst DUR = 1.0\n\nexport function CalendarIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'calendar'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0.6, 0],\n            transition: { duration: DUR, times: [0, 0.34, 0.6], ease: [easeOutQuart, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M8 2v4\" />\n        <path d=\"M16 2v4\" />\n        <rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\" />\n        <path d=\"M3 10h18\" />\n      </motion.g>\n      {/* the stamp: hidden at rest by scale, popped onto the date cell */}\n      <motion.circle\n        cx=\"15.5\" cy=\"15.5\" r=\"1.2\"\n        fill={color === 'currentColor' ? 'currentColor' : color}\n        stroke=\"none\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 0 },\n          animate: {\n            scale: [0, 1.35, 1, 1, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.34, 0.5, 0.78, 0.92],\n              ease: [settleBack, easeOutQuart, 'linear', easeOutQuart],\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'calendar',\n  gesture: 'today gets marked',\n  family: 'secondary' as const,\n  section: 'Files & time',\n  tags: ['date', 'schedule', 'event', 'day'],\n}\n\nexport default CalendarIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/calendar.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

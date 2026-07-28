@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bitcoin",
+  "title": "bitcoin",
+  "description": "Semantic animated icon — it ticks volatile. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/bitcoin.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Bitcoin — it ticks volatile. A quick decaying rotate wobble reads as\n * price volatility, then a firm scale press-and-pop settles it — priced\n * anyway, despite the swings.\n * Base geometry: Lucide `bitcoin` (ISC).\n */\nconst DUR = 0.85\n\nexport function BitcoinIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'bitcoin'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M11.767 19.089c4.924.868 6.14-6.025 1.216-6.894m-1.216 6.894L5.86 18.047m5.908 1.042-.347 1.97m1.563-8.864c4.924.869 6.14-6.025 1.215-6.893m-1.215 6.893-3.94-.694m5.155-6.2L8.29 4.26m5.908 1.042.348-1.97M7.48 20.364l3.126-17.727\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, scale: 1 },\n          animate: {\n            rotate: [0, -6, 6, -4, 3, -1, 0],\n            scale: [1, 1, 0.88, 1.15, 1],\n            transition: {\n              duration: DUR,\n              rotate: { times: [0, 0.12, 0.26, 0.4, 0.52, 0.62, 0.7], ease: easeInOutCubic },\n              scale: { times: [0, 0.7, 0.8, 0.92, 1], ease: ['linear', easeInCubic, settleBack, easeOutQuart] },\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'bitcoin',\n  gesture: 'it ticks volatile',\n  family: 'rigid' as const,\n  section: 'Money & commerce',\n  tags: ['crypto', 'btc'],\n}\n\nexport default BitcoinIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/bitcoin.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

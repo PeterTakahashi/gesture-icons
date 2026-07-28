@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "refrigerator",
+  "title": "refrigerator",
+  "description": "Semantic animated icon — the door swings shut. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/refrigerator.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Refrigerator — the door swings shut. This glyph draws door and body as one\n * outline, so the whole silhouette (plus the divider and handle riding along\n * with it) is what opens: it rotates out about the hinge edge, holds, and\n * swings shut with an easeInCubic close — landing with a small squash thump\n * on contact, never a frame before it.\n * Base geometry: Lucide `refrigerator` (ISC).\n */\nconst DUR = 1.0\n\nexport function RefrigeratorIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'refrigerator'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '5px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, scaleX: 1, scaleY: 1 },\n          animate: {\n            rotate: [0, -6, -6, 0, 0],\n            scaleX: [1, 1, 1, 1.02, 1],\n            scaleY: [1, 1, 1, 0.97, 1],\n            transition: { duration: DUR, times: [0, 0.24, 0.62, 0.86, 1], ease: [easeOutQuart, 'linear', easeInCubic, settleBack] },\n          },\n        }}\n      >\n        <path d=\"M5 6a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6Z\" />\n        <path d=\"M5 10h14\" />\n        <path d=\"M15 7v6\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'refrigerator',\n  gesture: 'the door swings shut',\n  family: 'rigid' as const,\n  section: 'Home',\n  tags: ['kitchen', 'appliance'],\n}\n\nexport default RefrigeratorIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/refrigerator.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

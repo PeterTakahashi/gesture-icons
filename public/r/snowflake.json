@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "snowflake",
+  "title": "snowflake",
+  "description": "Semantic animated icon — it settles softly. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/snowflake.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Snowflake — it settles softly. Six-fold symmetry means a 60-degree turn\n * lands back on the same picture — a free turn nobody can catch as a turn —\n * so it spins past that mark and eases back onto it while bobbing once,\n * like a flake tumbling a single facet as it drifts down.\n * Base geometry: Lucide `snowflake` (ISC).\n */\nconst DUR = 1.2\nconst turn: [number, number, number, number] = [0.4, 0, 0.3, 1]\n\nexport function SnowflakeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'snowflake'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, y: 0 },\n          animate: {\n            rotate: [0, 66, 60],\n            y: [0, -1.2, 0],\n            transition: {\n              rotate: { duration: DUR, times: [0, 0.55, 1], ease: turn },\n              y: { duration: DUR, times: [0, 0.4, 1], ease: easeInOutCubic },\n            },\n          },\n        }}\n      >\n        <path d=\"m10 20-1.25-2.5L6 18\" />\n        <path d=\"M10 4 8.75 6.5 6 6\" />\n        <path d=\"m14 20 1.25-2.5L18 18\" />\n        <path d=\"m14 4 1.25 2.5L18 6\" />\n        <path d=\"m17 21-3-6h-4\" />\n        <path d=\"m17 3-3 6 1.5 3\" />\n        <path d=\"M2 12h6.5L10 9\" />\n        <path d=\"m20 10-1.5 2 1.5 2\" />\n        <path d=\"M22 12h-6.5L14 15\" />\n        <path d=\"m4 10 1.5 2L4 14\" />\n        <path d=\"m7 21 3-6-1.5-3\" />\n        <path d=\"m7 3 3 6h4\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'snowflake',\n  gesture: 'it settles softly',\n  family: 'rigid' as const,\n  section: 'Nature',\n  tags: ['winter', 'cold', 'snow', 'frozen'],\n}\n\nexport default SnowflakeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/snowflake.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

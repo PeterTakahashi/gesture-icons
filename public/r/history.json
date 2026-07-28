@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "history",
+  "title": "history",
+  "description": "Semantic animated icon — it looks back. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/history.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * History — it looks back. The arrow-circle (arc plus its arrowhead flag)\n * turns about the arc's own center (12, 12) — a small forward tick, a turn\n * to -45° (the glance backward), then all the way home. The clock hands\n * drawn inside it hold still throughout: they mark a fixed time, they are\n * not the thing turning.\n * Base geometry: Lucide `history` (ISC).\n */\nconst DUR = 0.9\n\nexport function HistoryIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'history'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 8, -45, 0],\n            transition: { duration: DUR, times: [0, 0.15, 0.55, 1], ease: [easeInOutCubic, easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\" />\n        <path d=\"M3 3v5h5\" />\n      </motion.g>\n      {/* the hands mark a fixed time — they never turn */}\n      <path d=\"M12 7v5l4 2\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'history',\n  gesture: 'it looks back',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['undo', 'past', 'log'],\n}\n\nexport default HistoryIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/history.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

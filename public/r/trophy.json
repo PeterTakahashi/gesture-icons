@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "trophy",
+  "title": "trophy",
+  "description": "Semantic animated icon — it is hoisted. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/trophy.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, easeOutQuint, gravity } from '../core/easings'\n\n/**\n * Trophy — it is hoisted. Lifted overhead with a proud tilting shake, then\n * set down with a firm landing dip — the ground line it rests on never\n * moves; only the cup, handles, and stem are held aloft.\n * Base geometry: Lucide `trophy` (ISC).\n */\nconst DUR = 1.15\n\nexport function TrophyIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'trophy'}\n      {...hoverProps}\n    >\n      <path d=\"M4 22h16\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 10px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, -2.8, -2.8, 0.8, 0],\n            rotate: [0, -4, 3, 0],\n            transition: {\n              duration: DUR,\n              y: { times: [0, 0.24, 0.66, 0.9, 1], ease: [easeOutQuint, 'linear', gravity, easeOutQuart] },\n              rotate: { times: [0, 0.3, 0.6, 0.9], ease: easeInOutCubic },\n            },\n          },\n        }}\n      >\n        <path d=\"M10 14.66V17a1 1 0 0 1-1 1 2 2 0 0 0-2 2v2\" />\n        <path d=\"M14 14.66V17a1 1 0 0 0 1 1 2 2 0 0 1 2 2v2\" />\n        <path d=\"M17.916 10H19.5A2.5 2.5 0 0 0 22 7.5V5a1 1 0 0 0-1-1h-3\" />\n        <path d=\"M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z\" />\n        <path d=\"M6.084 10H4.5A2.5 2.5 0 0 1 2 7.5V5a1 1 0 0 1 1-1h3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'trophy',\n  gesture: 'it is hoisted',\n  family: 'rigid' as const,\n  section: 'People',\n  tags: ['win', 'champion', 'prize', 'first'],\n}\n\nexport default TrophyIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/trophy.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

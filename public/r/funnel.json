@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "funnel",
+  "title": "funnel",
+  "description": "Semantic animated icon — something passes through. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/funnel.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, gravity } from '../core/easings'\n\n/**\n * Funnel — something actually passes through it. A drop falls in from\n * above the frame, slows as the neck squeezes it, slips through, and\n * falls out past the bottom edge. At rest the drop is parked above the\n * viewBox, so the resting picture is Lucide's untouched funnel — hidden\n * by geometry, not by opacity.\n * Base geometry: Lucide `filter` (ISC).\n */\nconst DUR = 1.1\n\nexport function FunnelIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'funnel'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M22 3H2l8 9.46V19l4 3v-9.54z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            // the funnel feels the drop squeeze through\n            x: [0, 0, 0.5, -0.4, 0.2, 0],\n            transition: { duration: DUR, times: [0, 0.42, 0.52, 0.64, 0.76, 0.88], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <motion.circle\n        cx=\"12\" r=\"1.3\" fill={color === 'currentColor' ? 'currentColor' : color} stroke=\"none\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { cy: -3, r: 1.3 },\n          animate: {\n            cy: [-3, 9, 13, 17, 29],\n            r: [1.3, 1.3, 1.05, 1.05, 1.25],\n            transition: {\n              duration: DUR,\n              times: [0, 0.3, 0.46, 0.62, 0.88],\n              ease: [gravity, easeInOutCubic, 'linear', gravity],\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'funnel',\n  gesture: 'something passes through',\n  family: 'travel' as const,\n  section: 'Data',\n  tags: ['filter', 'sort', 'refine'],\n}\n\nexport default FunnelIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/funnel.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

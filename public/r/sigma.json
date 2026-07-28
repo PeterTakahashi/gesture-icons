@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "sigma",
+  "title": "sigma",
+  "description": "Semantic animated icon — it sums up. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/sigma.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen } from '../core/easings'\n\n/**\n * Sigma — it sums up. The source path already runs top to bottom, so the\n * summation erases and a single pen stroke writes it back on, unchanged.\n * Base geometry: Lucide `sigma` (ISC).\n */\nconst DUR = 1.05\n\nexport function SigmaIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'sigma'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M18 7V5a1 1 0 0 0-1-1H6.5a.5.5 0 0 0-.4.8l4.5 6a2 2 0 0 1 0 2.4l-4.5 6a.5.5 0 0 0 .4.8H17a1 1 0 0 0 1-1v-2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0, 0, 1],\n            transition: { duration: DUR, times: [0, 0.22, 0.32, 0.85], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'sigma',\n  gesture: 'it sums up',\n  family: 'rigid' as const,\n  section: 'Charts & math',\n  tags: ['sum', 'math', 'total'],\n}\n\nexport default SigmaIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/sigma.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

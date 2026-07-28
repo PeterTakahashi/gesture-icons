@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "vibrate",
+  "title": "vibrate",
+  "description": "Semantic animated icon — it buzzes silently. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/vibrate.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Vibrate — it buzzes silently. VARIANT(smartphone): the same fast, decaying\n * ±2.5° buzz, with the side vibration marks hard-blinking in time with it —\n * a true on/off step, never a fade — landing lit, as Lucide always draws it.\n * Base geometry: Lucide `vibrate` (ISC).\n */\nconst DUR = 0.6\n\nconst blink: Variants = {\n  normal: { opacity: 1 },\n  animate: {\n    opacity: [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n    transition: {\n      duration: DUR,\n      times: [0, 0.12, 0.14, 0.28, 0.3, 0.44, 0.46, 0.6, 0.62, 1],\n      ease: 'linear',\n    },\n  },\n}\n\nexport function VibrateIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'vibrate'}\n      {...hoverProps}\n    >\n      <motion.path d=\"m2 8 2 2-2 2 2 2-2 2\" initial=\"normal\" animate={controls} variants={blink} />\n      <motion.path d=\"m22 8-2 2 2 2-2 2 2 2\" initial=\"normal\" animate={controls} variants={blink} />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -2.5, 2.5, -2, 2, -1, 0],\n            transition: { duration: DUR, times: [0, 0.14, 0.3, 0.46, 0.62, 0.8, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <rect width=\"8\" height=\"14\" x=\"8\" y=\"5\" rx=\"1\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'vibrate',\n  gesture: 'it buzzes silently',\n  family: 'rigid' as const,\n  section: 'Communication',\n  tags: ['silent', 'haptic', 'phone'],\n}\n\nexport default VibrateIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/vibrate.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

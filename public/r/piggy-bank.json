@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "piggy-bank",
+  "title": "piggy-bank",
+  "description": "Semantic animated icon — it gets fed. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/piggy-bank.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Piggy bank — it gets fed. A coin drops in from above the frame, falls\n * with gravity onto the pig's back, and vanishes right at the slot line —\n * clipped away the instant it would overlap the pig's outline, not faded.\n * The pig gives a happy little dip on the gulp. Like `funnel.tsx`.\n * Base geometry: Lucide `piggy-bank` (ISC).\n */\nconst DUR = 1.05\n\nexport function PiggyBankIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const fill = color === 'currentColor' ? 'currentColor' : color\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'piggy bank'}\n      {...hoverProps}\n    >\n      <defs>\n        {/* only the area above the pig's back is visible — the coin vanishes into the slot, not into thin air */}\n        <clipPath id=\"gi-piggy-clip\">\n          <rect x=\"0\" y=\"-10\" width=\"24\" height=\"14\" />\n        </clipPath>\n      </defs>\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 1, -0.3, 0],\n            transition: { duration: DUR, times: [0, 0.46, 0.6, 0.78], ease: [easeOutQuart, easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M11 17h3v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a3.16 3.16 0 0 0 2-2h1a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-1a5 5 0 0 0-2-4V3a4 4 0 0 0-3.2 1.6l-.3.4H11a6 6 0 0 0-6 6v1a5 5 0 0 0 2 4v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1z\" />\n        <path d=\"M16 10h.01\" />\n        <path d=\"M2 8v1a2 2 0 0 0 2 2h1\" />\n      </motion.g>\n      <motion.circle\n        cx=\"14\" r=\"1.4\" fill={fill} stroke=\"none\"\n        clipPath=\"url(#gi-piggy-clip)\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { cy: -4, r: 1.4 },\n          animate: {\n            cy: [-4, 3.5, 5, 8],\n            r: [1.4, 1.4, 1.2, 1],\n            transition: { duration: DUR, times: [0, 0.32, 0.42, 0.55], ease: [gravity, easeInOutCubic, 'linear'] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'piggy-bank',\n  gesture: 'it gets fed',\n  family: 'secondary' as const,\n  section: 'Commerce & feedback',\n  tags: ['savings', 'money', 'coin', 'bank'],\n}\n\nexport default PiggyBankIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/piggy-bank.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

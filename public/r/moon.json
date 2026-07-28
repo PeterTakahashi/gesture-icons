@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "moon",
+  "title": "moon",
+  "description": "Semantic animated icon — it drifts asleep. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/moon.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Moon — it drifts asleep. A slow tilt about the icon's center, holding at\n * its furthest lean before straightening back up — nodding off, once.\n * Base geometry: Lucide `moon` (ISC).\n */\nconst DUR = 1.2\n\nexport function MoonIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'moon'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -14, -14, 0],\n            transition: { duration: DUR, times: [0, 0.35, 0.6, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'moon',\n  gesture: 'it drifts asleep',\n  family: 'rigid' as const,\n  section: 'Nature',\n  tags: ['night', 'dark', 'sleep', 'lunar'],\n}\n\nexport default MoonIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/moon.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

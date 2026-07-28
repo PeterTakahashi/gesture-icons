@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pause-circle",
+  "title": "pause-circle",
+  "description": "Semantic animated icon — held, in a ring. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/pause-circle.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Pause circle — held, in a ring. VARIANT(pause): the two bars squeeze\n * toward each other and hold, exactly as the bare glyph does; the ring\n * stays put — it is the frame the pause happens inside, not the thing\n * pausing.\n * Base geometry: Lucide `pause-circle` (ISC).\n */\nconst DUR = 0.85\n\nexport function PauseCircleIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const bar = (dir: 1 | -1): Variants => ({\n    normal: { x: 0, scaleY: 1 },\n    animate: {\n      x: [0, 1.1 * dir, 1.1 * dir, 0],\n      scaleY: [1, 0.94, 0.94, 1],\n      transition: { duration: DUR, times: [0, 0.3, 0.6, 1], ease: [easeInOutCubic, 'linear', easeOutQuart] },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'pause circle'}\n      {...hoverProps}\n    >\n      <circle cx=\"12\" cy=\"12\" r=\"10\" />\n      <motion.line\n        x1=\"10\" x2=\"10\" y1=\"15\" y2=\"9\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={bar(1)}\n      />\n      <motion.line\n        x1=\"14\" x2=\"14\" y1=\"15\" y2=\"9\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={bar(-1)}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'pause-circle',\n  gesture: 'held, in a ring',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['media', 'wait'],\n}\n\nexport default PauseCircleIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/pause-circle.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

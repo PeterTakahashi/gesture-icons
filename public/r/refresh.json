@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "refresh",
+  "title": "refresh",
+  "description": "Semantic animated icon — it goes around once. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/refresh.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Refresh — it goes around once. A small wind-up against the direction of\n * travel, then one full revolution about the glyph's own center. 360° is\n * the same picture as 0°, so the landing is free — no separate settle needed.\n * Base geometry: Lucide `refresh-cw` (ISC).\n */\nconst DUR = 1.0\n\nexport function RefreshIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'refresh'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -15, 360],\n            transition: { duration: DUR, times: [0, 0.18, 1], ease: [easeInOutCubic, [0.45, 0, 0.25, 1]] },\n          },\n        }}\n      >\n        <path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\" />\n        <path d=\"M21 3v5h-5\" />\n        <path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\" />\n        <path d=\"M8 16H3v5\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'refresh',\n  gesture: 'it goes around once',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['reload', 'sync', 'update', 'cycle'],\n}\n\nexport default RefreshIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/refresh.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

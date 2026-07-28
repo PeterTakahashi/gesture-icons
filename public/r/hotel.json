@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hotel",
+  "title": "hotel",
+  "description": "Semantic animated icon — checked in. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/hotel.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Hotel — checked in. The building takes a short settling press (the\n * weight of an arrival), and the door mark pops a hair larger right after —\n * a guest stepping through. Base geometry: Lucide `hotel` (ISC).\n */\nconst DUR = 0.85\n\nexport function HotelIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'hotel'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0.6, 0],\n            transition: { duration: DUR, times: [0, 0.42, 1], ease: [easeInCubic, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M12 11h.01\" />\n        <path d=\"M12 7h.01\" />\n        <path d=\"M16 11h.01\" />\n        <path d=\"M16 7h.01\" />\n        <path d=\"M8 11h.01\" />\n        <path d=\"M8 7h.01\" />\n        <rect x=\"4\" y=\"2\" width=\"16\" height=\"20\" rx=\"2\" />\n      </motion.g>\n      {/* the door — someone passes through it */}\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 22px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1, 1.22, 1],\n            transition: { duration: DUR, times: [0, 0.42, 0.66, 0.92], ease: ['linear', settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M10 22v-6.57\" />\n        <path d=\"M14 15.43V22\" />\n        <path d=\"M15 16a5 5 0 0 0-6 0\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'hotel',\n  gesture: 'checked in',\n  family: 'rigid' as const,\n  section: 'Buildings',\n  tags: ['stay', 'travel', 'lodging'],\n}\n\nexport default HotelIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/hotel.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

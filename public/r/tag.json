@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tag",
+  "title": "tag",
+  "description": "Semantic animated icon — it swings from its hole. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/tag.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Tag — it swings from its hole. The whole tag hangs and swings about the\n * punched hole near its top-left corner, each swing smaller than the last,\n * the way anything actually pinned at a single point decays.\n * Base geometry: Lucide `tag` (ISC).\n */\nconst DUR = 1.0\n\nexport function TagIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'tag'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '7.5px 7.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -12, 9, -6, 3, 0],\n            transition: { duration: DUR, times: [0, 0.16, 0.36, 0.56, 0.76, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z\" />\n        <circle\n          cx=\"7.5\" cy=\"7.5\" r=\".5\"\n          fill={color === 'currentColor' ? 'currentColor' : color}\n        />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'tag',\n  gesture: 'it swings from its hole',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['label', 'price', 'category'],\n}\n\nexport default TagIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/tag.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

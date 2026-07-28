@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "map",
+  "title": "map",
+  "description": "Semantic animated icon — it unfolds a panel. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/map.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Map — it unfolds a panel. Lucide draws the trifold outline as one\n * continuous path, so there is no separate \"middle panel\" shape to scale in\n * isolation; the honest equivalent is the two fold lines themselves pinching\n * toward each other (the panel narrowing), a small overshoot apart, and\n * settling — the crease actually flexing, which is what the spec is really\n * after. The outer outline holds still.\n * Base geometry: Lucide `map` (ISC).\n */\nconst DUR = 0.9\n\nexport function MapIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'map'}\n      {...hoverProps}\n    >\n      <path d=\"M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z\" />\n      <motion.path\n        d=\"M15 5.764v15\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -0.24, 0.06, 0],\n            transition: { duration: DUR, times: [0, 0.35, 0.7, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M9 3.236v15\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, 0.24, -0.06, 0],\n            transition: { duration: DUR, times: [0, 0.35, 0.7, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'map',\n  gesture: 'it unfolds a panel',\n  family: 'rigid' as const,\n  section: 'Transport',\n  tags: ['directions', 'travel'],\n}\n\nexport default MapIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/map.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

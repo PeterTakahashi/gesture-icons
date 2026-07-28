@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "rocket",
+  "title": "rocket",
+  "description": "Semantic animated icon — it does a lap. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/rocket.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Rocket — it does a lap. It leaves past its own nose, up along the\n * diagonal the fuselage already points, is repositioned while genuinely\n * off-frame, and arrives back down that same line. Departure is the fast\n * third of the beat; the arrival gets the rest, same discipline as send.tsx.\n * Base geometry: Lucide `rocket` (ISC).\n */\nconst DUR = 1.15\n\nexport function RocketIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'rocket'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            // 鼻先の斜め軸に沿って離陸 → 見えない間に反対側へ → 帰還\n            x: [0, 10, 10, -10, -10, 0],\n            y: [0, -10, -10, 10, 10, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.33, 0.42, 0.42, 0.46, 1],\n              ease: [easeInCubic, 'linear', 'linear', 'linear', easeOutQuart],\n            },\n          },\n        }}\n      >\n        <path d=\"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5\" />\n        <path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09\" />\n        <path d=\"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z\" />\n        <path d=\"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'rocket',\n  gesture: 'it does a lap',\n  family: 'travel' as const,\n  section: 'Transport',\n  tags: ['launch', 'start', 'ship', 'startup'],\n}\n\nexport default RocketIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/rocket.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

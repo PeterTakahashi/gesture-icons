@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "smile",
+  "title": "smile",
+  "description": "Semantic animated icon — it smiles. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/smile.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, pen, settleBack } from '../core/easings'\n\n/**\n * Smile — it smiles. The mouth erases and rewrites itself with a pen\n * stroke — the smile forming, not fading in — and the eyes pop just\n * before the mouth finishes, because the eyes smile first. The face\n * outline never moves.\n * Base geometry: Lucide `smile` (ISC).\n */\nconst DUR = 1.0\nconst EYES = [9, 15]\n\nexport function SmileIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'smile'}\n      {...hoverProps}\n    >\n      <circle cx=\"12\" cy=\"12\" r=\"10\" />\n      <motion.path\n        d=\"M8 14s1.5 2 4 2 4-2 4-2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0, 0, 1],\n            transition: { duration: DUR, times: [0, 0.18, 0.26, 0.85], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n      {EYES.map((cx, i) => (\n        <motion.line\n          key={cx}\n          x1={cx} x2={cx + 0.01} y1=\"9\" y2=\"9\"\n          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { scale: 1 },\n            animate: {\n              scale: [1, 1, 1.25, 1, 1],\n              transition: {\n                duration: DUR,\n                delay: i * 0.04,\n                times: [0, 0.6, 0.72, 0.84, 1],\n                ease: ['linear', settleBack, easeOutQuart, 'linear'],\n              },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'smile',\n  gesture: 'it smiles',\n  family: 'draw-on' as const,\n  section: 'People',\n  tags: ['happy', 'face', 'emoji', 'positive'],\n}\n\nexport default SmileIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/smile.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

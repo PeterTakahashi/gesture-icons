@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "flame-kindling",
+  "title": "flame-kindling",
+  "description": "Semantic animated icon — the fire catches. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/flame-kindling.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Flame kindling — VARIANT(flame): the fire catches. The flame flickers\n * exactly as in `flame` — an uneven scaleY stretch-and-squash with a\n * matching rotational wobble, anchored at its base — while the crossed\n * kindling sticks beneath it hold perfectly still: it takes.\n * Base geometry: Lucide `flame-kindling` (ISC).\n */\nconst DUR = 0.85\n\nexport function FlameKindlingIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'flame kindling'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M12 2c1 3 2.5 3.5 3.5 4.5A5 5 0 0 1 17 10a5 5 0 1 1-10 0c0-.3 0-.6.1-.9a2 2 0 1 0 3.3-2C8 4.5 11 2 12 2Z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 17px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1, rotate: 0 },\n          animate: {\n            scaleY: [1, 1.08, 0.95, 1.05, 1],\n            rotate: [0, -3, 2.5, -1.5, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.46, 0.7, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <path d=\"m5 22 14-4\" />\n      <path d=\"m5 18 14 4\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'flame-kindling',\n  gesture: 'the fire catches',\n  family: 'rigid' as const,\n  section: 'Nature',\n  tags: ['camp', 'fire', 'start'],\n}\n\nexport default FlameKindlingIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/flame-kindling.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

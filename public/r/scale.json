@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scale",
+  "title": "scale",
+  "description": "Semantic animated icon — it weighs and levels. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/scale.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Scale — it weighs and levels. The beam and its two pans tip about the\n * post's top pivot, decaying swings settling to level — a balance actually\n * weighing something, not just wobbling. The center post and base hold\n * still; they are the fixed stand, not the beam.\n * Base geometry: Lucide `scale` (ISC).\n */\nconst DUR = 1.25\n\nexport function ScaleIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'scale'}\n      {...hoverProps}\n    >\n      <path d=\"M12 3v18\" />\n      <path d=\"M7 21h10\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 3px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -7, 5, -3, 1.5, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.4, 0.6, 0.8, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m19 8 3 8a5 5 0 0 1-6 0zV7\" />\n        <path d=\"M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1\" />\n        <path d=\"m5 8 3 8a5 5 0 0 1-6 0zV7\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'scale',\n  gesture: 'it weighs and levels',\n  family: 'rigid' as const,\n  section: 'Commerce & feedback',\n  tags: ['balance', 'justice', 'law', 'compare'],\n}\n\nexport default ScaleIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/scale.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toggle-right",
+  "title": "toggle-right",
+  "description": "Semantic animated icon — it switches back. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/toggle-right.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Toggle right — it switches back. Mirror of `toggle-left.tsx`: the knob\n * travels to the far end of the track — cx 15 to cx 9, `toggle-left.tsx`'s\n * own resting spot — with the same settled overshoot, holds, and returns.\n * The track never moves.\n * Base geometry: Lucide `toggle-right` (ISC).\n */\nconst DUR = 1.0\n\nexport function ToggleRightIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'toggle right'}\n      {...hoverProps}\n    >\n      <motion.circle\n        cx=\"15\" cy=\"12\" r=\"3\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -6.3, -6, -6, 0],\n            transition: { duration: DUR, times: [0, 0.34, 0.42, 0.66, 1], ease: [easeInCubic, settleBack, 'linear', easeInOutCubic] },\n          },\n        }}\n      />\n      <rect width=\"20\" height=\"14\" x=\"2\" y=\"5\" rx=\"7\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'toggle-right',\n  gesture: 'it switches back',\n  family: 'rigid' as const,\n  section: 'Devices',\n  tags: ['switch', 'on', 'setting'],\n}\n\nexport default ToggleRightIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/toggle-right.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

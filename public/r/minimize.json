@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "minimize",
+  "title": "minimize",
+  "description": "Semantic animated icon — it pulls inward. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/minimize.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Minimize — it pulls inward. Mirror of maximize: both corner marks NUDGE\n * toward the center along their own diagonal — wind up outward first, then\n * drive in past the mark, settle back home — on the same clock.\n * Base geometry: Lucide `minimize-2` (ISC).\n */\nconst DUR = 0.75\nconst D = 0.7071\nconst DRIVE = 2.2\nconst WIND = 0.6\n\nexport function MinimizeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'minimize'}\n      {...hoverProps}\n    >\n      {/* top-right corner nudges inward toward center */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, WIND * D, -DRIVE * D, 0],\n            y: [0, -WIND * D, DRIVE * D, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"m14 10 7-7\" />\n        <path d=\"M20 10h-6V4\" />\n      </motion.g>\n      {/* bottom-left corner nudges inward toward center */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -WIND * D, DRIVE * D, 0],\n            y: [0, WIND * D, -DRIVE * D, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"m3 21 7-7\" />\n        <path d=\"M4 14h6v6\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'minimize',\n  gesture: 'it pulls inward',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['restore', 'collapse'],\n}\n\nexport default MinimizeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/minimize.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

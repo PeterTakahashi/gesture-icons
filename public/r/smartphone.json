@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "smartphone",
+  "title": "smartphone",
+  "description": "Semantic animated icon — it buzzes. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/smartphone.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Smartphone — it buzzes. A silent-mode vibration: tiny, fast rocking about\n * the phone's own center, decaying to a stop. No sound icon needed — the\n * shake reads as \"on silent\" on its own.\n * Base geometry: Lucide `smartphone` (ISC).\n */\nconst DUR = 0.6\n\nexport function SmartphoneIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'smartphone'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -2.5, 2.5, -2, 2, -1, 0],\n            transition: { duration: DUR, times: [0, 0.14, 0.3, 0.46, 0.62, 0.8, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <rect width=\"14\" height=\"20\" x=\"5\" y=\"2\" rx=\"2\" ry=\"2\" />\n        <path d=\"M12 18h.01\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'smartphone',\n  gesture: 'it buzzes',\n  family: 'rigid' as const,\n  section: 'Objects',\n  tags: ['mobile', 'phone', 'device'],\n}\n\nexport default SmartphoneIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/smartphone.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

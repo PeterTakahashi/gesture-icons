@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "zoom-in",
+  "title": "zoom-in",
+  "description": "Semantic animated icon — it magnifies. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/zoom-in.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Zoom in — it magnifies. The whole lens leans toward the viewer about its\n * own center; a beat later the plus inside pops, since that is the part\n * that is actually \"zooming.\"\n * Base geometry: Lucide `zoom-in` (ISC).\n */\nconst DUR = 0.85\n\nexport function ZoomInIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'zoom in'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '11px 11px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.14, 1],\n            transition: { duration: DUR, times: [0, 0.4, 1], ease: [easeInCubic, easeOutQuart] },\n          },\n        }}\n      >\n        <circle cx=\"11\" cy=\"11\" r=\"8\" />\n        <line x1=\"21\" x2=\"16.65\" y1=\"21\" y2=\"16.65\" />\n      </motion.g>\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '11px 11px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.7, 1.25, 1],\n            transition: {\n              duration: DUR,\n              delay: 0.1,\n              times: [0, 0.16, 0.5, 1],\n              ease: [easeInCubic, settleBack, easeOutQuart],\n            },\n          },\n        }}\n      >\n        <line x1=\"11\" x2=\"11\" y1=\"8\" y2=\"14\" />\n        <line x1=\"8\" x2=\"14\" y1=\"11\" y2=\"11\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'zoom-in',\n  gesture: 'it magnifies',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['zoom', 'magnify', 'enlarge'],\n}\n\nexport default ZoomInIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/zoom-in.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

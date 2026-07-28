@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "receipt",
+  "title": "receipt",
+  "description": "Semantic animated icon — it prints the total. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/receipt.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Receipt — it prints the total. The whole slip feeds down as if pushed\n * from an unseen printer above — its torn zigzag edge is already at the\n * bottom, so it leads naturally — then springs back up to rest. The\n * interior total line and its squiggle ride along with the paper.\n * Base geometry: Lucide `receipt` (ISC).\n */\nconst DUR = 1.0\n\nexport function ReceiptIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'receipt'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 2.2, 2.2, 0],\n            transition: { duration: DUR, times: [0, 0.35, 0.6, 1], ease: [easeOutQuart, 'linear', settleBack] },\n          },\n        }}\n      >\n        <path d=\"M12 17V7\" />\n        <path d=\"M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8\" />\n        <path d=\"M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'receipt',\n  gesture: 'it prints the total',\n  family: 'rigid' as const,\n  section: 'Money & commerce',\n  tags: ['bill', 'invoice'],\n}\n\nexport default ReceiptIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/receipt.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

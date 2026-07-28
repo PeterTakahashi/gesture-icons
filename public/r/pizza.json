@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pizza",
+  "title": "pizza",
+  "description": "Semantic animated icon — a slice is offered. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/pizza.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * Pizza — a slice is offered. The whole slice nudges along the axis its\n * point already aims — down toward the tip — and back, the topping dots\n * riding along as one piece: offered, then kept.\n * Base geometry: Lucide `pizza` (ISC).\n */\nconst DUR = 0.8\n\nexport function PizzaIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'pizza'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, 0.35, -1.3, 0],\n            y: [0, -0.4, 1.55, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"m12 14-1 1\" />\n        <path d=\"m13.75 18.25-1.25 1.42\" />\n        <path d=\"M17.775 5.654a15.68 15.68 0 0 0-12.121 12.12\" />\n        <path d=\"M18.8 9.3a1 1 0 0 0 2.1 7.7\" />\n        <path d=\"M21.964 20.732a1 1 0 0 1-1.232 1.232l-18-5a1 1 0 0 1-.695-1.232A19.68 19.68 0 0 1 15.732 2.037a1 1 0 0 1 1.232.695z\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'pizza',\n  gesture: 'a slice is offered',\n  family: 'rigid' as const,\n  section: 'Food & drink',\n  tags: ['food', 'italian'],\n}\n\nexport default PizzaIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/pizza.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

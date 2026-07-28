@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "crown",
+  "title": "crown",
+  "description": "Semantic animated icon — it is crowned. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/crown.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, easeOutQuint, gravity } from '../core/easings'\n\n/**\n * Crown — it is crowned. It rises and tilts slightly as if catching the\n * light, then descends and seats itself with a dignified settle. The line\n * it seats on (head or table) never moves.\n * Base geometry: Lucide `crown` (ISC).\n */\nconst DUR = 1.1\n\nexport function CrownIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'crown'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 10px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, -2.5, -2.5, 0.6, 0],\n            rotate: [0, -3, 3, 0],\n            transition: {\n              duration: DUR,\n              y: { times: [0, 0.26, 0.62, 0.88, 1], ease: [easeOutQuint, 'linear', gravity, easeOutQuart] },\n              rotate: { times: [0, 0.3, 0.62, 0.9], ease: easeInOutCubic },\n            },\n          },\n        }}\n      />\n      <path d=\"M5 21h14\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'crown',\n  gesture: 'it is crowned',\n  family: 'rigid' as const,\n  section: 'People',\n  tags: ['king', 'queen', 'royal', 'top', 'best'],\n}\n\nexport default CrownIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/crown.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

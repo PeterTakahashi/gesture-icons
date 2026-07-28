@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "shovel",
+  "title": "shovel",
+  "description": "Semantic animated icon — it digs in. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/shovel.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Shovel — it digs in. A two-stage push down the blade's own axis (a foot\n * presses it in, pauses, presses again), then it levers back — a small\n * rotate about the blade tip — and comes home. One scoop.\n * Base geometry: Lucide `shovel` (ISC).\n */\nconst DUR = 1.0\n\nexport function ShovelIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'shovel'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '6px 20px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0, rotate: 0 },\n          animate: {\n            x: [0, -0.9, -0.9, -1.7, -1.7, 0],\n            y: [0, 0.9, 0.9, 1.7, 1.7, 0],\n            rotate: [0, 0, 0, 0, -6, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.3, 0.48, 0.66, 0.85, 1],\n              ease: [easeInOutCubic, 'linear', easeInOutCubic, easeOutQuart, easeOutQuart],\n            },\n          },\n        }}\n      >\n        <path d=\"M21.56 4.56a1.5 1.5 0 0 1 0 2.122l-.47.47a3 3 0 0 1-4.212-.03 3 3 0 0 1 0-4.243l.44-.44a1.5 1.5 0 0 1 2.121 0z\" />\n        <path d=\"M3 22a1 1 0 0 1-1-1v-3.586a1 1 0 0 1 .293-.707l3.355-3.355a1.205 1.205 0 0 1 1.704 0l3.296 3.296a1.205 1.205 0 0 1 0 1.704l-3.355 3.355a1 1 0 0 1-.707.293z\" />\n        <path d=\"m9 15 7.879-7.878\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'shovel',\n  gesture: 'it digs in',\n  family: 'rigid' as const,\n  section: 'Tools',\n  tags: ['dig', 'garden', 'tool'],\n}\n\nexport default ShovelIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/shovel.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tree-pine",
+  "title": "tree-pine",
+  "description": "Semantic animated icon — it shrugs off snow. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/tree-pine.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Tree pine — it shrugs off snow. The tiered canopy dips a hair as the load\n * releases, then shakes rapidly about the trunk base, decaying to a stop.\n * The trunk itself never moves.\n * Base geometry: Lucide `tree-pine` (ISC).\n */\nconst DUR = 0.65\n\nexport function TreePineIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'tree pine'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 19px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, y: 0 },\n          animate: {\n            rotate: [0, -2.7, 2.5, -2, 1.4, -0.7, 0],\n            y: [0, 0.6, 0.15, 0, 0, 0, 0],\n            transition: { duration: DUR, times: [0, 0.14, 0.3, 0.46, 0.62, 0.8, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <path d=\"M12 22v-3\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'tree-pine',\n  gesture: 'it shrugs off snow',\n  family: 'rigid' as const,\n  section: 'Animals & nature',\n  tags: ['forest', 'winter'],\n}\n\nexport default TreePineIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/tree-pine.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

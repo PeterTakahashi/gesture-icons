@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "percent",
+  "title": "percent",
+  "description": "Semantic animated icon — the deal spins up. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/percent.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, pen, settleBack } from '../core/easings'\n\n/**\n * Percent — the deal spins up. The slash erases and rewrites itself with a\n * pen stroke, while the two circles stamp themselves in one after another,\n * top-left first — a sale sign going up.\n * Base geometry: Lucide `percent` (ISC).\n */\nconst DUR = 0.95\nconst CIRCLES = [\n  { cx: 6.5, cy: 6.5, delay: 0 },\n  { cx: 17.5, cy: 17.5, delay: 0.09 },\n]\n\nexport function PercentIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'percent'}\n      {...hoverProps}\n    >\n      <motion.line\n        x1=\"19\" x2=\"5\" y1=\"5\" y2=\"19\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0, 0, 1],\n            transition: { duration: DUR, times: [0, 0.22, 0.3, 0.7], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n      {CIRCLES.map((c) => (\n        <motion.circle\n          key={c.cx}\n          cx={c.cx} cy={c.cy} r={2.5}\n          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { scale: 1 },\n            animate: {\n              scale: [1, 0.7, 1.25, 1],\n              transition: {\n                duration: DUR,\n                delay: c.delay,\n                times: [0, 0.35, 0.62, 0.85],\n                ease: [easeInCubic, settleBack, easeOutQuart],\n              },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'percent',\n  gesture: 'the deal spins up',\n  family: 'rigid' as const,\n  section: 'Commerce & feedback',\n  tags: ['discount', 'sale', 'rate', 'off'],\n}\n\nexport default PercentIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/percent.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

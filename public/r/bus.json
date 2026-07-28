@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bus",
+  "title": "bus",
+  "description": "Semantic animated icon — it kneels at the stop. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/bus.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Bus — it kneels at the stop. The body dips and tilts down toward the\n * door side on its suspension, holds for boarding, then rises level again.\n * The wheels and the axle line between them stay planted — a bus kneels\n * on its air springs, it doesn't move on its wheels.\n * Base geometry: Lucide `bus` (ISC).\n */\nconst DUR = 1.1\n\nexport function BusIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'bus'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '4px 18px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, 1.2, 1.2, 0],\n            rotate: [0, 1.5, 1.5, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.7, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M8 6v6\" />\n        <path d=\"M15 6v6\" />\n        <path d=\"M2 12h19.6\" />\n        <path d=\"M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3\" />\n      </motion.g>\n      <circle cx=\"7\" cy=\"18\" r=\"2\" />\n      <path d=\"M9 18h5\" />\n      <circle cx=\"16\" cy=\"18\" r=\"2\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'bus',\n  gesture: 'it kneels at the stop',\n  family: 'rigid' as const,\n  section: 'Transport',\n  tags: ['transit', 'public'],\n}\n\nexport default BusIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/bus.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

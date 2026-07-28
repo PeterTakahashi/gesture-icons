@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "volleyball",
+  "title": "volleyball",
+  "description": "Semantic animated icon — it is set. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/volleyball.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Volleyball — it is set. One clean rise on the hit, gravity pulling it\n * back down, a soft catch dip on the palms. The ball never spins — a set\n * is a straight vertical touch, not a serve — so only y moves; the seams\n * ride along for the whole trip.\n * Base geometry: Lucide `volleyball` (ISC).\n */\nconst DUR = 0.9\n\nexport function VolleyballIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'volleyball'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -3, 0, 0.5, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.35, 0.7, 0.85, 1],\n              ease: [easeOutQuart, gravity, easeOutQuart, easeInOutCubic],\n            },\n          },\n        }}\n      >\n        <path d=\"M11 7a16 16 20 0 1 10.98 4.362\" />\n        <path d=\"M12 12a13 13 0 0 1-8.66 5\" />\n        <path d=\"M16.83 13.634a16 16 0 0 1-9.267 7.328\" />\n        <path d=\"M20.66 17A13 13 0 0 0 12 12a13 13 0 0 1 0-10\" />\n        <path d=\"M8.17 15.366a16 16 0 0 1-1.713-11.69\" />\n        <circle cx=\"12\" cy=\"12\" r=\"10\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'volleyball',\n  gesture: 'it is set',\n  family: 'rigid' as const,\n  section: 'Sport & games',\n  tags: ['ball', 'beach', 'sport'],\n}\n\nexport default VolleyballIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/volleyball.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

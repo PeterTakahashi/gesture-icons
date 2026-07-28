@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "laugh",
+  "title": "laugh",
+  "description": "Semantic animated icon — it cracks up. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/laugh.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Laugh — it cracks up. Two quick hops (laughing shakes the whole body)\n * while the mouth stretches wider open on the beat — genuinely funny, not\n * just a smile. The eyes ride the hops without moving on their own.\n * Base geometry: Lucide `laugh` (ISC).\n */\nconst DUR = 0.75\n\nexport function LaughIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'laugh'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1, 0, -0.7, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.44, 0.68, 1], ease: [easeOutQuart, gravity, easeOutQuart, gravity] },\n          },\n        }}\n      >\n        <circle cx=\"12\" cy=\"12\" r=\"10\" />\n        <motion.path\n          d=\"M18 13a6 6 0 0 1-6 5 6 6 0 0 1-6-5h12Z\"\n          style={{ transformBox: 'view-box', transformOrigin: '12px 13px' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { scaleY: 1 },\n            animate: {\n              scaleY: [1, 1.15, 1],\n              transition: { duration: DUR, times: [0, 0.25, 0.5], ease: easeOutQuart },\n            },\n          }}\n        />\n        <line x1=\"9\" x2=\"9.01\" y1=\"9\" y2=\"9\" />\n        <line x1=\"15\" x2=\"15.01\" y1=\"9\" y2=\"9\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'laugh',\n  gesture: 'it cracks up',\n  family: 'rigid' as const,\n  section: 'People & emotion',\n  tags: ['happy', 'funny', 'face'],\n}\n\nexport default LaughIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/laugh.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

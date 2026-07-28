@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "play",
+  "title": "play",
+  "description": "Semantic animated icon — it presses play. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/play.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * Play — it presses play. The triangle presses in on itself like a button\n * being pushed, then pops forward and overshoots as the tape starts\n * rolling, and settles back to its resting size and place.\n * Base geometry: Lucide `play` (ISC).\n */\nconst DUR = 0.8\n\nexport function PlayIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'play'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1, x: 0 },\n          animate: {\n            scale: [1, 0.9, 1.08, 1],\n            x: [0, 0, 1.8, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.5, 0.85], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'play',\n  gesture: 'it presses play',\n  family: 'rigid' as const,\n  section: 'Communication',\n  tags: ['media', 'start', 'video', 'music'],\n}\n\nexport default PlayIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/play.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

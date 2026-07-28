@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "trending-up",
+  "title": "trending-up",
+  "description": "Semantic animated icon — it climbs. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/trending-up.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, pen, settleBack } from '../core/easings'\n\n/**\n * Trending up — it climbs. Lucide's source line is parameterized from the\n * arrowhead end; it is re-expressed here as the same three points starting\n * at the bottom-left so the pen genuinely travels left to right. The\n * arrowhead itself shrinks away with the erase and pops back on arrival —\n * the climb happening as it lands.\n * Base geometry: Lucide `trending-up` (ISC).\n */\nconst DUR = 1.0\n\nexport function TrendingUpIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'trending up'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M16 7h6v6\"\n        style={{ transformBox: 'view-box', transformOrigin: '22px 7px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.001, 0.001, 1.3, 1],\n            transition: {\n              duration: DUR,\n              times: [0, 0.2, 0.68, 0.85, 1],\n              ease: [easeInCubic, 'linear', settleBack, easeOutQuart],\n            },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M2 17L8.5 10.5L13.5 15.5L22 7\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0, 0, 1],\n            transition: { duration: DUR, times: [0, 0.2, 0.28, 0.75], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'trending-up',\n  gesture: 'it climbs',\n  family: 'draw-on' as const,\n  section: 'Charts & math',\n  tags: ['growth', 'up', 'stocks'],\n}\n\nexport default TrendingUpIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/trending-up.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

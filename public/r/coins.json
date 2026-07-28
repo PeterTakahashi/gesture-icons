@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "coins",
+  "title": "coins",
+  "description": "Semantic animated icon — they stack up. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/coins.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, easeOutQuint, gravity } from '../core/easings'\n\n/**\n * Coins — they stack up. The top coin (its ring plus its shine mark) lifts\n * and drops back onto the stack; the landing dip propagates to the coin\n * beneath it 3% later, the way one disc actually settles onto another.\n * Base geometry: Lucide `coins` (ISC).\n */\nconst DUR = 1.0\n\nexport function CoinsIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'coins'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -2.5, -2.5, 0.6, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.24, 0.6, 0.85, 1],\n              ease: [easeOutQuint, 'linear', gravity, easeOutQuart],\n            },\n          },\n        }}\n      >\n        <circle cx=\"16\" cy=\"8\" r=\"6\" />\n        <path d=\"M15 6h1v4\" />\n      </motion.g>\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.25, -0.08, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.78, 0.88, 0.95, 1],\n              ease: ['linear', easeOutQuart, easeInOutCubic],\n            },\n          },\n        }}\n      >\n        <path d=\"M13.744 17.736a6 6 0 1 1-7.48-7.48\" />\n        <path d=\"m6.134 14.768.866-.5 2 3.464\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'coins',\n  gesture: 'they stack up',\n  family: 'rigid' as const,\n  section: 'Money & commerce',\n  tags: ['money', 'cash', 'change'],\n}\n\nexport default CoinsIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/coins.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

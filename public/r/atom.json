@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "atom",
+  "title": "atom",
+  "description": "Semantic animated icon — the electrons orbit. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/atom.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, easeOutQuint } from '../core/easings'\n\n/**\n * Atom — the electrons orbit. Both orbit ellipses counter-TURN about the\n * shared nucleus (12px,12px) — one small wind-up, a swing to ±25°, and a\n * return — running the opposite sign on the same clock, so they cross like\n * real orbitals rather than spinning in lockstep. The nucleus dot pulses\n * once, right as the swing peaks: one quantum of motion.\n * Base geometry: Lucide `atom` (ISC).\n */\nconst DUR = 1.0\n\nexport function AtomIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'atom'}\n      {...hoverProps}\n    >\n      <motion.circle\n        cx=\"12\" cy=\"12\" r=\"1\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1, 1.4, 1],\n            transition: { duration: DUR, times: [0, 0.55, 0.68, 0.85], ease: ['linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 9.87 6.54 11.9 4.5Z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -5, 25, 0],\n            transition: { duration: DUR, times: [0, 0.15, 0.65, 1], ease: [easeInOutCubic, easeOutQuint, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 5, -25, 0],\n            transition: { duration: DUR, times: [0, 0.15, 0.65, 1], ease: [easeInOutCubic, easeOutQuint, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'atom',\n  gesture: 'the electrons orbit',\n  family: 'rigid' as const,\n  section: 'Workspace',\n  tags: ['physics', 'science', 'energy'],\n}\n\nexport default AtomIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/atom.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cake",
+  "title": "cake",
+  "description": "Semantic animated icon — the candles flicker. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cake.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Cake — the candles flicker. Each flame mark stretches tall then short\n * then tall again about its own base, fast and unsynchronized (40ms apart)\n * — make a wish. The cake, frosting, plate and candle sticks never move.\n * Base geometry: Lucide `cake` (ISC).\n */\nconst DUR = 0.6\nconst CANDLES: [number, number][] = [\n  [7, 4],\n  [12, 4],\n  [17, 4],\n]\n\nexport function CakeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const flicker = (delay: number): Variants => ({\n    normal: { scaleY: 1 },\n    animate: {\n      scaleY: [1, 1.2, 0.9, 1.1, 1],\n      transition: { duration: DUR, delay, times: [0, 0.25, 0.5, 0.75, 1], ease: easeInOutCubic },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cake'}\n      {...hoverProps}\n    >\n      <path d=\"M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8\" />\n      <path d=\"M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1\" />\n      <path d=\"M2 21h20\" />\n      <path d=\"M7 8v3\" />\n      <path d=\"M12 8v3\" />\n      <path d=\"M17 8v3\" />\n      {CANDLES.map(([cx, cy], i) => (\n        <motion.path\n          key={cx}\n          d={`M${cx} ${cy}h.01`}\n          style={{ transformBox: 'view-box', transformOrigin: `${cx}px ${cy}px` }}\n          initial=\"normal\"\n          animate={controls}\n          variants={flicker(i * 0.04)}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cake',\n  gesture: 'the candles flicker',\n  family: 'secondary' as const,\n  section: 'Food & drink',\n  tags: ['birthday', 'dessert', 'celebrate'],\n}\n\nexport default CakeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cake.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

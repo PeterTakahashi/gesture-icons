@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toggle-left",
+  "title": "toggle-left",
+  "description": "Semantic animated icon — it switches over. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/toggle-left.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Toggle left — it switches over. The knob travels to the far end of the\n * track — cx 9 to cx 15, the mirrored resting position `toggle-right.tsx`\n * actually draws — with a settled overshoot, holds a beat, then eases back.\n * Spec called the throw 8 units; the track (x=2, width=20, rx=7) and the\n * mirrored icon's own knob position both put the true mirrored spot 6 units\n * over, so the throw uses the geometry's number instead. The track itself\n * never moves.\n * Base geometry: Lucide `toggle-left` (ISC).\n */\nconst DUR = 1.0\n\nexport function ToggleLeftIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'toggle left'}\n      {...hoverProps}\n    >\n      <motion.circle\n        cx=\"9\" cy=\"12\" r=\"3\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, 6.3, 6, 6, 0],\n            transition: { duration: DUR, times: [0, 0.34, 0.42, 0.66, 1], ease: [easeInCubic, settleBack, 'linear', easeInOutCubic] },\n          },\n        }}\n      />\n      <rect width=\"20\" height=\"14\" x=\"2\" y=\"5\" rx=\"7\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'toggle-left',\n  gesture: 'it switches over',\n  family: 'rigid' as const,\n  section: 'Devices',\n  tags: ['switch', 'off', 'setting'],\n}\n\nexport default ToggleLeftIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/toggle-left.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

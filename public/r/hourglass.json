@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hourglass",
+  "title": "hourglass",
+  "description": "Semantic animated icon — it flips. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/hourglass.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Hourglass — it flips. The whole glyph turns 180° about its center: a\n * small counter wind-up, the flip itself, a slight over-rotation, then a\n * settle. The hourglass is vertically symmetric, so a 180° turn renders the\n * identical picture Lucide drew — the discrete reset to rotate:0 at the end\n * of the gesture is invisible because 180° and 0° are the same pixels.\n * Base geometry: Lucide `hourglass` (ISC).\n */\nconst DUR = 1.1\nconst OVER_EASE: [number, number, number, number] = [0.45, 0, 0.25, 1.1]\n\nexport function HourglassIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'hourglass'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -10, 186, 180],\n            transition: { duration: DUR, times: [0, 0.15, 0.75, 1], ease: [easeInOutCubic, OVER_EASE, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M5 22h14\" />\n        <path d=\"M5 2h14\" />\n        <path d=\"M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22\" />\n        <path d=\"M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'hourglass',\n  gesture: 'it flips',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['time', 'wait', 'loading', 'sand'],\n}\n\nexport default HourglassIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/hourglass.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

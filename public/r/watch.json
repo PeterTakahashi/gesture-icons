@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "watch",
+  "title": "watch",
+  "description": "Semantic animated icon — it ticks a second. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/watch.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, windupOvershoot } from '../core/easings'\n\n/**\n * Watch — it ticks a second. The hand turns a full 360° about the dial\n * center with a small wind-up and an overshoot before it settles; 360° and\n * 0° are the identical picture, so the turn is free. Case and strap never\n * move — only the hand marks the passing second.\n * Base geometry: Lucide `watch` (ISC).\n */\nconst DUR = 1.0\n\nexport function WatchIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'watch'}\n      {...hoverProps}\n    >\n      <path d=\"m16.13 7.66-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05\" />\n      <path d=\"m7.88 16.36.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05\" />\n      <circle cx=\"12\" cy=\"12\" r=\"6\" />\n      <motion.path\n        d=\"M12 10v2.2l1.6 1\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            // one lap of the dial: 360° is pixel-identical to 0°, so the landing is free\n            rotate: [0, -9, 378, 360],\n            transition: { duration: DUR, times: [0, 0.14, 0.82, 1], ease: [windupOvershoot, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'watch',\n  gesture: 'it ticks a second',\n  family: 'rigid' as const,\n  section: 'Devices',\n  tags: ['time', 'wrist'],\n}\n\nexport default WatchIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/watch.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

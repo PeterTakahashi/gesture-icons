@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "castle",
+  "title": "castle",
+  "description": "Semantic animated icon — the banner day. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/castle.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Castle — the banner day. Each battlement uprising (the two corner towers\n * and the two merlon teeth between them) NUDGEs up a hair in a left-to-right\n * wave, 50ms apart — the wall feels alive. The wall top, base and gate never\n * move.\n * Base geometry: Lucide `castle` (ISC).\n */\nconst DUR = 0.8\nconst MERLONS = [\n  { d: 'M6 3v8', delay: 0 },\n  { d: 'M10 5V3', delay: 0.05 },\n  { d: 'M14 5V3', delay: 0.1 },\n  { d: 'M18 3v8', delay: 0.15 },\n]\n\nexport function CastleIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'castle'}\n      {...hoverProps}\n    >\n      {MERLONS.map((m) => (\n        <motion.path\n          key={m.d}\n          d={m.d}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { y: 0 },\n            animate: {\n              y: [0, 0.3, -0.8, 0],\n              transition: { duration: DUR, delay: m.delay, times: [0, 0.2, 0.55, 0.85], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n            },\n          }}\n        />\n      ))}\n      <path d=\"M15 21v-3a3 3 0 0 0-6 0v3\" />\n      <path d=\"M18 5H6\" />\n      <path d=\"M22 11H2\" />\n      <path d=\"M22 9v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'castle',\n  gesture: 'the banner day',\n  family: 'rigid' as const,\n  section: 'Buildings',\n  tags: ['fortress', 'medieval', 'kingdom'],\n}\n\nexport default CastleIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/castle.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

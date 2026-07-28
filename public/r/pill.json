@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pill",
+  "title": "pill",
+  "description": "Semantic animated icon — it is taken. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/pill.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Pill — it is taken. The whole capsule turns 180° about its center with a\n * small hop, then sets back down — down the hatch. A capsule is symmetric\n * under a half turn, so the landing renders the identical picture Lucide\n * drew; the discrete reset to rotate:0 is invisible.\n * Base geometry: Lucide `pill` (ISC).\n */\nconst DUR = 0.85\nconst OVER_EASE: [number, number, number, number] = [0.45, 0, 0.25, 1.1]\n\nexport function PillIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'pill'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, y: 0 },\n          animate: {\n            rotate: [0, -8, 186, 180],\n            y: [0, -1, -1, 0],\n            transition: { duration: DUR, times: [0, 0.15, 0.75, 1], ease: [easeInOutCubic, OVER_EASE, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z\" />\n        <path d=\"m8.5 8.5 7 7\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'pill',\n  gesture: 'it is taken',\n  family: 'rigid' as const,\n  section: 'Health',\n  tags: ['medicine', 'capsule', 'dose'],\n}\n\nexport default PillIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/pill.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

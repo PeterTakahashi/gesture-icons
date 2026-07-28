@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "shield-check",
+  "title": "shield-check",
+  "description": "Semantic animated icon — it holds the line. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/shield-check.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen, settleBack } from '../core/easings'\n\n/**\n * Shield check — it holds the line. The shield gives one firm brace — a\n * pulse with a small overshoot, like flexing against a push — and the\n * checkmark erases and redraws with a pen stroke, landing exactly on the\n * frame where the shield settles: protection confirmed.\n * Base geometry: Lucide `shield-check` (ISC).\n */\nconst DUR = 1.0\n\nexport function ShieldCheckIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'shield check'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.95, 1.03, 1],\n            transition: { duration: DUR, times: [0, 0.3, 0.6, 0.85], ease: settleBack },\n          },\n        }}\n      />\n      <motion.path\n        d=\"m9 12 2 2 4-4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0, 0, 1],\n            transition: { duration: DUR, times: [0, 0.35, 0.5, 0.85], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'shield-check',\n  gesture: 'it holds the line',\n  family: 'draw-on' as const,\n  section: 'People',\n  tags: ['security', 'safe', 'protected', 'verified'],\n}\n\nexport default ShieldCheckIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/shield-check.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "forklift",
+  "title": "forklift",
+  "description": "Semantic animated icon — it lifts the pallet. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/forklift.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Forklift — it lifts the pallet. The fork and its carriage ride straight\n * up the mast on a smooth hydraulic ease, hold, then lower with the same\n * precision — no wind-up, no overshoot. Machines don't celebrate; the mast,\n * wheels, and base stay exactly where they are.\n * Base geometry: Lucide `forklift` (ISC).\n */\nconst DUR = 1.1\n\nexport function ForkliftIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'forklift'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -2.5, -2.5, 0],\n            transition: { duration: DUR, times: [0, 0.4, 0.7, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M12 12H5a2 2 0 0 0-2 2v5\" />\n        <path d=\"M6 12V7a2 2 0 0 1 2-2h2.172a2 2 0 0 1 1.414.586l3.828 3.828A2 2 0 0 1 16 10.828\" />\n      </motion.g>\n      <path d=\"M15 19h7\" />\n      <path d=\"M16 19V2\" />\n      <path d=\"M7 19h4\" />\n      <circle cx=\"13\" cy=\"19\" r=\"2\" />\n      <circle cx=\"5\" cy=\"19\" r=\"2\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'forklift',\n  gesture: 'it lifts the pallet',\n  family: 'rigid' as const,\n  section: 'Transport',\n  tags: ['warehouse', 'logistics'],\n}\n\nexport default ForkliftIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/forklift.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

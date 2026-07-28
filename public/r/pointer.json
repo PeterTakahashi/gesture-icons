@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pointer",
+  "title": "pointer",
+  "description": "Semantic animated icon — it taps. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/pointer.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Pointer — it taps. The whole hand nudges down fast, hits a hard stop,\n * and settles back up with a small overshoot — one tap.\n * Base geometry: Lucide `pointer` (ISC).\n */\nconst DUR = 0.7\n\nexport function PointerIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'pointer'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -0.3, 1.5, 1.5, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.12, 0.32, 0.5, 0.85],\n              ease: [easeInOutCubic, easeOutQuart, 'linear', settleBack],\n            },\n          },\n        }}\n      >\n        <path d=\"M22 14a8 8 0 0 1-8 8\" />\n        <path d=\"M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2\" />\n        <path d=\"M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1\" />\n        <path d=\"M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10\" />\n        <path d=\"M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'pointer',\n  gesture: 'it taps',\n  family: 'rigid' as const,\n  section: 'People & emotion',\n  tags: ['click', 'cursor', 'hand'],\n}\n\nexport default PointerIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/pointer.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

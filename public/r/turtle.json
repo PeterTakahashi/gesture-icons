@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "turtle",
+  "title": "turtle",
+  "description": "Semantic animated icon — it takes its time. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/turtle.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Turtle — it takes its time. The slowest NUDGE in the set: one deliberate\n * step forward over a long beat, easeInOutCubic the whole way. The front\n * legs (the part that actually pushes off) lead the shell by 3%; the back\n * leg bar trails 3% behind, the way a heavy shell catches up last.\n * Base geometry: Lucide `turtle` (ISC).\n */\nconst DUR = 1.5\nconst X: [number, number, number, number, number] = [0, -0.15, 1.8, 1.8, 0]\n\nexport function TurtleIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'turtle'}\n      {...hoverProps}\n    >\n      {/* front legs push off first */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: X,\n            transition: { duration: DUR, times: [0, 0.07, 0.52, 0.72, 0.97], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M4.82 7.9 8 10\" />\n        <path d=\"M15.18 7.9 12 10\" />\n      </motion.g>\n      {/* the shell and body ride the middle of the step */}\n      <motion.path\n        d=\"m12 10 2 4v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a8 8 0 1 0-16 0v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3l2-4h4Z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: X,\n            transition: { duration: DUR, times: [0, 0.1, 0.55, 0.75, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      {/* the back leg bar is last to catch up */}\n      <motion.path\n        d=\"M16.93 10H20a2 2 0 0 1 0 4H2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: X,\n            transition: { duration: DUR, times: [0, 0.13, 0.58, 0.78, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'turtle',\n  gesture: 'it takes its time',\n  family: 'rigid' as const,\n  section: 'Animals & nature',\n  tags: ['slow', 'animal', 'steady'],\n}\n\nexport default TurtleIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/turtle.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

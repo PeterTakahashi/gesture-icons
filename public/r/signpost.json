@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "signpost",
+  "title": "signpost",
+  "description": "Semantic animated icon — it points the ways. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/signpost.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Signpost — it points the ways. Lucide draws the two arrow boards as one\n * fused board shape (not two independent signs), so the honest reading of\n * \"each rotate opposite, 6% apart\" is a single board that wobbles first one\n * way, then the other, decaying to rest — considering both directions before\n * settling. The post never moves.\n * Base geometry: Lucide `signpost` (ISC).\n */\nconst DUR = 1.0\n\nexport function SignpostIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'signpost'}\n      {...hoverProps}\n    >\n      <path d=\"M12 13v8\" />\n      <path d=\"M12 3v3\" />\n      {/* the boards: considering one way, then the other, decaying to rest */}\n      <motion.path\n        d=\"M2.354 10.354a1.207 1.207 0 0 1 0-1.708l2.06-2.06A2 2 0 0 1 5.828 6h12.344a2 2 0 0 1 1.414.586l2.06 2.06a1.207 1.207 0 0 1 0 1.708l-2.06 2.06a2 2 0 0 1-1.414.586H5.828a2 2 0 0 1-1.414-.586z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 9.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 5, -4, 2, 0],\n            transition: { duration: DUR, times: [0, 0.28, 0.56, 0.78, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'signpost',\n  gesture: 'it points the ways',\n  family: 'rigid' as const,\n  section: 'Transport',\n  tags: ['directions', 'choice'],\n}\n\nexport default SignpostIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/signpost.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

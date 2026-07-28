@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "file-text",
+  "title": "file-text",
+  "description": "Semantic animated icon — the lines write themselves. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/file-text.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen } from '../core/easings'\n\n/**\n * File text — the lines write themselves. The page and its folded corner\n * hold still; the three text rules un-draw top to bottom, then a pen\n * rewrites them in the same order a hand would — top line first, staggered\n * a beat apart, each easing into its stop.\n * Base geometry: Lucide `file-text` (ISC).\n */\nconst DUR = 1.0\nconst LINES = ['M10 9H8', 'M16 13H8', 'M16 17H8']\n\nexport function FileTextIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'file text'}\n      {...hoverProps}\n    >\n      <path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\" />\n      <path d=\"M14 2v5a1 1 0 0 0 1 1h5\" />\n      {LINES.map((d, i) => (\n        <motion.path\n          key={d}\n          d={d}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { pathLength: 1 },\n            animate: {\n              pathLength: [1, 0.001, 0.001, 1],\n              transition: {\n                duration: DUR,\n                delay: i * 0.08,\n                times: [0, 0.3, 0.46, 0.9],\n                ease: [easeInCubic, 'linear', pen],\n              },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'file-text',\n  gesture: 'the lines write themselves',\n  family: 'draw-on' as const,\n  section: 'Files & time',\n  tags: ['document', 'doc', 'page', 'text'],\n}\n\nexport default FileTextIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/file-text.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

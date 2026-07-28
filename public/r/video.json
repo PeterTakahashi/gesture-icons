@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "video",
+  "title": "video",
+  "description": "Semantic animated icon — it starts rolling. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/video.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Video — it starts rolling. The viewfinder flap tilts up about its mount\n * on the camera body — framing the shot — holds a beat, and levels back;\n * then the whole camera takes a small press, like a record button giving\n * way underfoot.\n * Base geometry: Lucide `video` (ISC).\n */\nconst DUR = 1.0\n\nexport function VideoIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'video'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1, 0.94, 1.06, 1],\n            transition: { duration: DUR, times: [0, 0.78, 0.86, 0.94, 1], ease: ['linear', easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <rect x=\"2\" y=\"6\" width=\"14\" height=\"12\" rx=\"2\" />\n        {/* flap hinges where it meets the body's right edge */}\n        <motion.path\n          d=\"m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5\"\n          style={{ transformBox: 'view-box', transformOrigin: '16px 11.75px' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { rotate: 0 },\n            animate: {\n              rotate: [0, -4, -4, 0],\n              transition: { duration: DUR, times: [0, 0.3, 0.62, 0.8], ease: [easeInOutCubic, 'linear', easeOutQuart] },\n            },\n          }}\n        />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'video',\n  gesture: 'it starts rolling',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['camera', 'record', 'film'],\n}\n\nexport default VideoIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/video.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

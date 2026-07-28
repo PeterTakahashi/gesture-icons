@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "anchor",
+  "title": "anchor",
+  "description": "Semantic animated icon — it holds fast. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/anchor.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, easeOutQuint, gravity } from '../core/easings'\n\n/**\n * Anchor — it holds fast. The shaft, stock and flukes lift a touch, then\n * drop past their resting depth under gravity, and bite back up to seat\n * with a hard, firm stop — no wobble, it's set. The ring at the top stays\n * fixed; that's the mounting point, not the part that falls.\n * Base geometry: Lucide `anchor` (ISC).\n */\nconst DUR = 1.0\n\nexport function AnchorIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'anchor'}\n      {...hoverProps}\n    >\n      <circle cx=\"12\" cy=\"4\" r=\"2\" />\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1.5, 2, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.62, 1], ease: [easeOutQuart, gravity, easeOutQuint] },\n          },\n        }}\n      >\n        <path d=\"M12 6v16\" />\n        <path d=\"m19 13 2-1a9 9 0 0 1-18 0l2 1\" />\n        <path d=\"M9 11h6\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'anchor',\n  gesture: 'it holds fast',\n  family: 'rigid' as const,\n  section: 'Transport',\n  tags: ['hold', 'secure', 'port'],\n}\n\nexport default AnchorIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/anchor.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

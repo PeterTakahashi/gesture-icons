@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "drama",
+  "title": "drama",
+  "description": "Semantic animated icon — the masks trade moods. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/drama.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Drama — the masks trade moods. Comedy (right) and tragedy (left) each\n * tilt toward one another about their own centers, mirrored and decaying —\n * comedy and tragedy conferring, not one dominating the other.\n * Base geometry: Lucide `drama` (ISC).\n */\nconst DUR = 1.0\n\nexport function DramaIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'drama'}\n      {...hoverProps}\n    >\n      {/* comedy — leans left, toward tragedy */}\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '16px 10px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -4, 3, -1.5, 0],\n            transition: { duration: DUR, times: [0, 0.16, 0.36, 0.56, 0.76], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M14 6h.01\" />\n        <path d=\"M18 6h.01\" />\n        <path d=\"M22 5c0 9-4 12-6 12s-6-3-6-12c0-2 2-3 6-3s6 1 6 3\" />\n        <path d=\"M17.4 9.9c-.8.8-2 .8-2.8 0\" />\n      </motion.g>\n      {/* tragedy — leans right, toward comedy */}\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '9px 14px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 4, -3, 1.5, 0],\n            transition: { duration: DUR, times: [0, 0.16, 0.36, 0.56, 0.76], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M10 11h.01\" />\n        <path d=\"M6.5 13.1h.01\" />\n        <path d=\"M10.1 7.1C9 7.2 7.7 7.7 6 8.6c-3.5 2-4.7 3.9-3.7 5.6 4.5 7.8 9.5 8.4 11.2 7.4.9-.5 1.9-2.1 1.9-4.7\" />\n        <path d=\"M9.1 16.5c.3-1.1 1.4-1.7 2.4-1.4\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'drama',\n  gesture: 'the masks trade moods',\n  family: 'rigid' as const,\n  section: 'Sport & games',\n  tags: ['theater', 'comedy', 'tragedy'],\n}\n\nexport default DramaIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/drama.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

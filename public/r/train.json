@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "train",
+  "title": "train",
+  "description": "Semantic animated icon — it pulls in. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/train.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuint, easeOutQuart, easeInOutCubic } from '../core/easings'\n\n/**\n * Train — it pulls in. It departs right at speed, is repositioned to the\n * far side while genuinely off-frame, and pulls IN from the left on a long\n * arrival curve — the readable beat is the arrival, not the exit, so it\n * gets most of the clock. A tiny settle dip as the wheels stop.\n * Base geometry: Lucide `train-front` (ISC).\n */\nconst DUR = 1.2\n\nexport function TrainIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'train'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, 26, -26, 0],\n            y: [0, 0, 0.6, 0],\n            transition: {\n              duration: DUR,\n              x: { times: [0, 0.15, 0.16, 1], ease: [easeInCubic, 'linear', easeOutQuint] },\n              y: { times: [0, 0.88, 0.94, 1], ease: ['linear', easeOutQuart, easeInOutCubic] },\n            },\n          },\n        }}\n      >\n        <path d=\"M8 3.1V7a4 4 0 0 0 8 0V3.1\" />\n        <path d=\"m9 15-1-1\" />\n        <path d=\"m15 15 1-1\" />\n        <path d=\"M9 19c-2.8 0-5-2.2-5-5v-4a8 8 0 0 1 16 0v4c0 2.8-2.2 5-5 5Z\" />\n        <path d=\"m8 19-2 3\" />\n        <path d=\"m16 19 2 3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'train',\n  gesture: 'it pulls in',\n  family: 'travel' as const,\n  section: 'Transport',\n  tags: ['railway', 'metro', 'subway', 'transit'],\n}\n\nexport default TrainIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/train.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

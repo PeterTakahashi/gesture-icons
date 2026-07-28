@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "plus",
+  "title": "plus",
+  "description": "Semantic animated icon — it stamps. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/plus.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Plus — it stamps. The whole cross presses down a hair, pops past its\n * own size, and lands — the beat of a rubber stamp hitting the page, not\n * a bounce for its own sake.\n * Base geometry: Lucide `plus` (ISC).\n */\nconst DUR = 0.7\n\nexport function PlusIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'plus'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.82, 1.14, 1],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M5 12h14\" />\n        <path d=\"M12 5v14\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'plus',\n  gesture: 'it stamps',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['add', 'new', 'create'],\n}\n\nexport default PlusIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/plus.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

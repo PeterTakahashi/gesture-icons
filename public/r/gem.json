@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "gem",
+  "title": "gem",
+  "description": "Semantic animated icon — it glints. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/gem.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuint, pen, settleBack } from '../core/easings'\n\n/**\n * Gem — it glints. Compact `star.tsx` energy: the gem gathers itself and\n * blooms back to rest, and at the peak of the bloom the top facet redraws\n * in a quick flash — the glint — via pathLength, never opacity.\n * Base geometry: Lucide `gem` (ISC).\n */\nconst DUR = 0.9\n\nexport function GemIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'gem'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1, rotate: 0 },\n          animate: {\n            scale: [1, 0.92, 1.08, 1],\n            rotate: [0, -4, 3, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.32, 0.62, 0.85],\n              ease: [[0.55, 0, 0.7, 0.3], easeOutQuint, settleBack],\n            },\n          },\n        }}\n      >\n        <path d=\"M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z\" />\n        <path d=\"M2 9h20\" />\n        {/* the glint: the top facet redraws at the bloom's peak */}\n        <motion.path\n          d=\"M10.5 3 8 9l4 13 4-13-2.5-6\"\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { pathLength: 1 },\n            animate: {\n              pathLength: [1, 1, 0.001, 0.001, 1],\n              transition: { duration: DUR, times: [0, 0.6, 0.66, 0.7, 0.82], ease: ['linear', 'linear', 'linear', pen] },\n            },\n          }}\n        />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'gem',\n  gesture: 'it glints',\n  family: 'rigid' as const,\n  section: 'Commerce & feedback',\n  tags: ['diamond', 'jewel', 'premium', 'value'],\n}\n\nexport default GemIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/gem.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "eye",
+  "title": "eye",
+  "description": "Semantic animated icon — it blinks. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/eye.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Eye — it blinks. The whole eye scales flat on its own horizontal axis\n * about its center — a lid dropping — then springs back open, dips a hair\n * short of full open, and settles exactly on Lucide's open eye.\n * Base geometry: Lucide `eye` (ISC).\n */\nconst DUR = 0.75\n\nexport function EyeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'eye'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 0.08, 1, 0.96, 1],\n            transition: {\n              duration: DUR,\n              times: [0, 0.18, 0.42, 0.6, 1],\n              ease: [easeInCubic, easeOutQuart, easeInOutCubic, easeOutQuart],\n            },\n          },\n        }}\n      >\n        <path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\" />\n        <circle cx=\"12\" cy=\"12\" r=\"3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'eye',\n  gesture: 'it blinks',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['view', 'see', 'watch', 'visibility'],\n}\n\nexport default EyeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/eye.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

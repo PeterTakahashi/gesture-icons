@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "circle",
+  "title": "circle",
+  "description": "Semantic animated icon — it is perfectly round. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/circle.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Circle — it is perfectly round. One soft breath: the whole disc swells\n * about its own center and settles — the platonic pulse.\n * Base geometry: Lucide `circle` (ISC).\n */\nconst DUR = 0.8\n\nexport function CircleIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'circle'}\n      {...hoverProps}\n    >\n      <motion.circle\n        cx=\"12\" cy=\"12\" r=\"10\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.06, 1],\n            transition: { duration: DUR, times: [0, 0.4, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'circle',\n  gesture: 'it is perfectly round',\n  family: 'rigid' as const,\n  section: 'Shapes',\n  tags: ['shape', 'geometry'],\n}\n\nexport default CircleIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/circle.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

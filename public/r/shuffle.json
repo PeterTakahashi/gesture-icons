@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "shuffle",
+  "title": "shuffle",
+  "description": "Semantic animated icon — the paths swap. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/shuffle.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Shuffle — the crossover breathes. The two diagonals of the X each NUDGE\n * along their own axis — wind up against it, drive along it, settle back —\n * opposite phase so one is already underway when the other starts (a 10%\n * lead), which is what makes the crossing itself feel alive. Each arrowhead\n * rides inside its own diagonal's group, so it travels with its line.\n * Base geometry: Lucide `shuffle` (ISC).\n */\nconst DUR = 0.8\n// \"/\" diagonal: bottom-left (2,18) to top-right (22,6)\nconst DIR_A = { x: 20 / 23.324, y: -12 / 23.324 }\n// \"\\\" diagonal: top-left (2,6) to bottom-right (22,18)\nconst DIR_B = { x: 20 / 23.324, y: 12 / 23.324 }\nconst LEAD_A = 0.5\nconst DRIVE = 2.5\n\nexport function ShuffleIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'shuffle'}\n      {...hoverProps}\n    >\n      {/* \"/\" diagonal — drawn unbroken, on top at the crossing */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -LEAD_A * DIR_A.x, DRIVE * DIR_A.x, 0],\n            y: [0, -LEAD_A * DIR_A.y, DRIVE * DIR_A.y, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.6, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22\" />\n        <path d=\"m18 2 4 4-4 4\" />\n      </motion.g>\n      {/* \"\\\" diagonal — broken where the other crosses over it; leads by 10% */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -LEAD_A * DIR_B.x, DRIVE * DIR_B.x, 0],\n            y: [0, -LEAD_A * DIR_B.y, DRIVE * DIR_B.y, 0],\n            transition: { duration: DUR, delay: 0.08, times: [0, 0.2, 0.6, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M2 6h1.972a4 4 0 0 1 3.6 2.2\" />\n        <path d=\"M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45\" />\n        <path d=\"m18 14 4 4-4 4\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'shuffle',\n  gesture: 'the paths swap',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['random', 'mix'],\n}\n\nexport default ShuffleIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/shuffle.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

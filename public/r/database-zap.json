@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "database-zap",
+  "title": "database-zap",
+  "description": "Semantic animated icon — the query hits. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/database-zap.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutExpo, easeOutQuart } from '../core/easings'\n\n/**\n * Database zap — VARIANT(plug-zap): the query bolt slams down beside the\n * still cylinder, erased then pen-drawn top-to-bottom the instant it lands\n * (the path's own point order already runs high point to low, so the draw\n * reads as a strike, not a rebuild). The cylinder takes a small dip exactly\n * on the contact frame it is struck, never a beat before.\n * Base geometry: Lucide `database-zap` (ISC).\n */\nconst DUR = 0.8\n\nexport function DatabaseZapIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'database zap'}\n      {...hoverProps}\n    >\n      {/* the cylinder — still, until the bolt lands on it */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.55, -0.15, 0],\n            transition: { duration: DUR, times: [0, 0.82, 0.9, 0.96, 1], ease: ['linear', easeOutQuart, easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      >\n        <ellipse cx=\"12\" cy=\"5\" rx=\"9\" ry=\"3\" />\n        <path d=\"M3 5V19A9 3 0 0 0 15 21.84\" />\n        <path d=\"M21 5V8\" />\n        <path d=\"M3 12A9 3 0 0 0 14.59 14.87\" />\n      </motion.g>\n      {/* the bolt — erased fast, then slammed back down top-to-bottom */}\n      <motion.path\n        d=\"M21 12L18 17H22L19 22\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.14, 0.5, 0.82], ease: [easeInCubic, 'linear', easeOutExpo] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'database-zap',\n  gesture: 'the query hits',\n  family: 'draw-on' as const,\n  section: 'Workspace',\n  tags: ['db', 'fast', 'query'],\n}\n\nexport default DatabaseZapIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/database-zap.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

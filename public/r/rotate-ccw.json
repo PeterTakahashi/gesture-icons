@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "rotate-ccw",
+  "title": "rotate-ccw",
+  "description": "Semantic animated icon — it winds back once. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/rotate-ccw.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Rotate CCW — it winds back once. A small wind-up the wrong way, then a\n * full counterclockwise revolution about the glyph's own center. -360° is\n * the same picture as 0°, so the landing is free.\n * Base geometry: Lucide `rotate-ccw` (ISC).\n */\nconst DUR = 1.1\n\nexport function RotateCcwIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'rotate ccw'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 12, -360],\n            transition: { duration: DUR, times: [0, 0.18, 1], ease: [easeInOutCubic, [0.45, 0, 0.25, 1]] },\n          },\n        }}\n      >\n        <path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\" />\n        <path d=\"M3 3v5h5\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'rotate-ccw',\n  gesture: 'it winds back once',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['reset', 'counterclockwise'],\n}\n\nexport default RotateCcwIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/rotate-ccw.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

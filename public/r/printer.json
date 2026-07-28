@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "printer",
+  "title": "printer",
+  "description": "Semantic animated icon — it prints a page. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/printer.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Printer — it prints a page. A sheet rests hidden inside the body above\n * the output slot (y=14) behind a clipPath, slides down 4 units to emerge\n * onto the tray and holds there — printed — then is put back above the\n * slot in one quick move while still under the clip, like `folder.tsx`.\n * The body hums a hair on its feet while it works.\n * Base geometry: Lucide `printer` (ISC).\n */\nconst DUR = 1.1\n\nexport function PrinterIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'printer'}\n      {...hoverProps}\n    >\n      <defs>\n        {/* only the output tray area (y >= 14) is visible — the page hides above it, inside the body */}\n        <clipPath id=\"gi-printer-clip\">\n          <rect x=\"0\" y=\"14\" width=\"24\" height=\"12\" />\n        </clipPath>\n      </defs>\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -0.3, 0.3, -0.15, 0],\n            transition: { duration: DUR, times: [0, 0.42, 0.56, 0.7, 0.82], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2\" />\n        <path d=\"M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6\" />\n        <rect x=\"6\" y=\"14\" width=\"12\" height=\"8\" rx=\"1\" />\n        {/* the page: hidden above the slot at rest, revealed as it crosses y=14 */}\n        <motion.rect\n          x=\"8\" y=\"10\" width=\"8\" height=\"3\" rx=\"0.5\"\n          clipPath=\"url(#gi-printer-clip)\"\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { y: 10 },\n            animate: {\n              y: [10, 10, 14, 14, 10],\n              transition: {\n                duration: DUR,\n                times: [0, 0.24, 0.5, 0.72, 0.73],\n                ease: ['linear', gravity, 'linear', easeOutQuart],\n              },\n            },\n          }}\n        />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'printer',\n  gesture: 'it prints a page',\n  family: 'secondary' as const,\n  section: 'Devices',\n  tags: ['print', 'paper'],\n}\n\nexport default PrinterIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/printer.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cloud-rain",
+  "title": "cloud-rain",
+  "description": "Semantic animated icon — it rains one shower. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cloud-rain.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, gravity } from '../core/easings'\n\n/**\n * Cloud rain — it rains one shower. The cloud dips as it releases the\n * weight, then each drop falls straight through the frame's own bottom edge\n * (genuinely gone, not faded), is repositioned above the cloud while nobody\n * is looking, and falls back into its drawn resting position — staggered\n * so it reads as one passing shower rather than three drops in lockstep.\n * Base geometry: Lucide `cloud-rain` (ISC).\n */\nconst DUR = 1.1\n\nconst DROPS = [\n  { d: 'M16 14v6', delay: 0 },\n  { d: 'M8 14v6', delay: 0.08 },\n  { d: 'M12 16v6', delay: 0.16 },\n]\n\nexport function CloudRainIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cloud rain'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.12, 0.26], ease: easeInOutCubic },\n          },\n        }}\n      />\n      {DROPS.map((drop) => (\n        <motion.path\n          key={drop.d}\n          d={drop.d}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { y: 0 },\n            animate: {\n              y: [0, 14, 14, -20, -20, 0],\n              transition: {\n                duration: DUR,\n                delay: drop.delay,\n                times: [0, 0.4, 0.48, 0.48, 0.58, 1],\n                ease: [gravity, 'linear', 'linear', 'linear', gravity],\n              },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cloud-rain',\n  gesture: 'it rains one shower',\n  family: 'travel' as const,\n  section: 'Nature',\n  tags: ['weather', 'rain', 'storm'],\n}\n\nexport default CloudRainIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cloud-rain.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

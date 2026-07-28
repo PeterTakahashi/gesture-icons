@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "server-off",
+  "title": "server-off",
+  "description": "Semantic animated icon — it powers down. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/server-off.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen } from '../core/easings'\n\n/**\n * Server off — it powers down. The slash across the rack erases fast then\n * pen-draws back on, while the one surviving LED hard-blinks out right as\n * the cut begins and stays dark through almost the whole gesture — it only\n * snaps back on the final frame, because that is the rack's resting\n * picture, not because the light came back.\n * Base geometry: Lucide `server-off` (ISC).\n */\nconst DUR = 1.0\n\nexport function ServerOffIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'server off'}\n      {...hoverProps}\n    >\n      <path d=\"M7 2h13a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-5\" />\n      <path d=\"M10 10 2.5 2.5C2 2 2 2.5 2 5v3a2 2 0 0 0 2 2h6z\" />\n      <path d=\"M22 17v-1a2 2 0 0 0-2-2h-1\" />\n      <path d=\"M4 14a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16.5l1-.5.5.5-8-8H4z\" />\n      <motion.path\n        d=\"M6 18h.01\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { opacity: 1 },\n          animate: {\n            opacity: [1, 1, 0, 0, 1],\n            transition: { duration: DUR, times: [0, 0.14, 0.15, 0.88, 0.92], ease: 'linear' },\n          },\n        }}\n      />\n      <motion.path\n        d=\"m2 2 20 20\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.12, 0.2, 0.85], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'server-off',\n  gesture: 'it powers down',\n  family: 'draw-on' as const,\n  section: 'Workspace',\n  tags: ['offline', 'shutdown'],\n}\n\nexport default ServerOffIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/server-off.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

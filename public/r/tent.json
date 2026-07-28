@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tent",
+  "title": "tent",
+  "description": "Semantic animated icon — it is pitched. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/tent.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Tent — it is pitched. The canvas settles onto its ground line: a small\n * squash, a slight spread as the guy lines take the load, then it stands\n * taut. The ground line itself never moves — the tent settles onto it.\n * Base geometry: Lucide `tent` (ISC).\n */\nconst DUR = 0.8\n\nexport function TentIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'tent'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 21px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleX: 1, scaleY: 1 },\n          animate: {\n            scaleY: [1, 0.97, 1.015, 1],\n            scaleX: [1, 1, 1.02, 1],\n            transition: { duration: DUR, times: [0, 0.32, 0.62, 1], ease: [easeInCubic, easeOutQuart, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M3.5 21 14 3\" />\n        <path d=\"M20.5 21 10 3\" />\n        <path d=\"M15.5 21 12 15l-3.5 6\" />\n      </motion.g>\n      <path d=\"M2 21h20\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'tent',\n  gesture: 'it is pitched',\n  family: 'rigid' as const,\n  section: 'Buildings',\n  tags: ['camping', 'outdoor'],\n}\n\nexport default TentIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/tent.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

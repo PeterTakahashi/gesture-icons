@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cloud-drizzle",
+  "title": "cloud-drizzle",
+  "description": "Semantic animated icon — it drizzles. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cloud-drizzle.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, gravity } from '../core/easings'\n\n/**\n * Cloud drizzle — VARIANT(cloud-rain): it drizzles. The cloud barely\n * reacts, and the six short mist-ticks fall through the frame's own bottom\n * edge, are repositioned above the cloud while genuinely off-frame, and\n * settle back — lighter and more tightly staggered than `cloud-rain`'s\n * three full drops, since this is mist, not a storm.\n * Base geometry: Lucide `cloud-drizzle` (ISC).\n */\nconst DUR = 0.95\n\nconst TICKS = [\n  { d: 'M8 19v1', delay: 0 },\n  { d: 'M16 19v1', delay: 0.02 },\n  { d: 'M8 14v1', delay: 0.04 },\n  { d: 'M12 21v1', delay: 0.06 },\n  { d: 'M16 14v1', delay: 0.08 },\n  { d: 'M12 16v1', delay: 0.1 },\n]\n\nexport function CloudDrizzleIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cloud drizzle'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0.4, 0],\n            transition: { duration: DUR, times: [0, 0.12, 0.26], ease: easeInOutCubic },\n          },\n        }}\n      />\n      {TICKS.map((tick) => (\n        <motion.path\n          key={tick.d}\n          d={tick.d}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { y: 0 },\n            animate: {\n              y: [0, 10, 10, -16, -16, 0],\n              transition: {\n                duration: DUR,\n                delay: tick.delay,\n                times: [0, 0.34, 0.42, 0.42, 0.5, 1],\n                ease: [gravity, 'linear', 'linear', 'linear', gravity],\n              },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cloud-drizzle',\n  gesture: 'it drizzles',\n  family: 'travel' as const,\n  section: 'Nature',\n  tags: ['weather', 'rain', 'light'],\n}\n\nexport default CloudDrizzleIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cloud-drizzle.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

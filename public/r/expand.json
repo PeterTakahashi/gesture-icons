@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "expand",
+  "title": "expand",
+  "description": "Semantic animated icon — it spreads to fill. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/expand.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Expand — it spreads to fill. All four corner marks NUDGE outward along\n * their own diagonal at once — no stagger, one breath outward — wind up\n * inward, drive out past the mark, settle back home.\n * Base geometry: Lucide `expand` (ISC).\n */\nconst DUR = 0.75\nconst D = 0.7071\nconst DRIVE = 2\nconst WIND = 0.55\n\nconst corner = (sx: number, sy: number) => ({\n  normal: { x: 0, y: 0 },\n  animate: {\n    x: [0, -WIND * D * sx, DRIVE * D * sx, 0],\n    y: [0, -WIND * D * sy, DRIVE * D * sy, 0],\n    transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n  },\n})\n\nexport function ExpandIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'expand'}\n      {...hoverProps}\n    >\n      <motion.g initial=\"normal\" animate={controls} variants={corner(1, 1)}>\n        <path d=\"m15 15 6 6\" />\n        <path d=\"M21 16v5h-5\" />\n      </motion.g>\n      <motion.g initial=\"normal\" animate={controls} variants={corner(1, -1)}>\n        <path d=\"m15 9 6-6\" />\n        <path d=\"M21 8V3h-5\" />\n      </motion.g>\n      <motion.g initial=\"normal\" animate={controls} variants={corner(-1, 1)}>\n        <path d=\"M3 16v5h5\" />\n        <path d=\"m3 21 6-6\" />\n      </motion.g>\n      <motion.g initial=\"normal\" animate={controls} variants={corner(-1, -1)}>\n        <path d=\"M3 8V3h5\" />\n        <path d=\"M9 9 3 3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'expand',\n  gesture: 'it spreads to fill',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['grow', 'fullscreen'],\n}\n\nexport default ExpandIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/expand.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

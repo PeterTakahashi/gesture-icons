@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pound-sterling",
+  "title": "pound-sterling",
+  "description": "Semantic animated icon — it rings up. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/pound-sterling.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Pound sterling — it rings up. Same stamp-with-a-turn as the dollar sign:\n * press, twist a hair, pop past size, settle.\n * Base geometry: Lucide `pound-sterling` (ISC).\n */\nconst DUR = 0.7\n\nexport function PoundSterlingIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'pound sterling'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1, rotate: 0 },\n          animate: {\n            scale: [1, 0.9, 1.12, 1],\n            rotate: [0, -4, 2, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M18 7c0-5.333-8-5.333-8 0\" />\n        <path d=\"M10 7v14\" />\n        <path d=\"M6 21h12\" />\n        <path d=\"M6 13h10\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'pound-sterling',\n  gesture: 'it rings up',\n  family: 'rigid' as const,\n  section: 'Money & commerce',\n  tags: ['money', 'gbp', 'price'],\n}\n\nexport default PoundSterlingIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/pound-sterling.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

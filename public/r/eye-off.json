@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "eye-off",
+  "title": "eye-off",
+  "description": "Semantic animated icon — it looks away. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/eye-off.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, pen } from '../core/easings'\n\n/**\n * Eye off — it looks away. The slash erases and pen-redraws itself while\n * the eye arcs squint flat and hold a beat before opening back — both a\n * gesture on Lucide's already-crossed-out resting glyph, not a state change.\n * Base geometry: Lucide `eye-off` (ISC).\n */\nconst DUR = 0.9\n\nexport function EyeOffIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'eye off'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 0.7, 0.85, 0.85, 1],\n            transition: {\n              duration: DUR,\n              times: [0, 0.22, 0.4, 0.65, 0.85],\n              ease: [easeInCubic, easeOutQuart, 'linear', easeOutQuart],\n            },\n          },\n        }}\n      >\n        <path d=\"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49\" />\n        <path d=\"M14.084 14.158a3 3 0 0 1-4.242-4.242\" />\n        <path d=\"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143\" />\n      </motion.g>\n      <motion.path\n        d=\"m2 2 20 20\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.25, 0.4, 0.8], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'eye-off',\n  gesture: 'it looks away',\n  family: 'draw-on' as const,\n  section: 'Security',\n  tags: ['hidden', 'private', 'invisible'],\n}\n\nexport default EyeOffIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/eye-off.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

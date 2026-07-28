@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "screen-share",
+  "title": "screen-share",
+  "description": "Semantic animated icon — the screen goes live. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/screen-share.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Screen share — the screen goes live. The arrow NUDGEs up and to the\n * right — a wind-up down-left, the drive out, a settle-back — while the\n * screen it leaves takes a subtle press on the same beat — shared. The\n * stand beneath never moves.\n * Base geometry: Lucide `screen-share` (ISC).\n */\nconst DUR = 0.9\n\nexport function ScreenShareIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'screen share'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M13 3H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1, 0.97, 1.02, 1],\n            transition: { duration: DUR, times: [0, 0.44, 0.54, 0.66, 0.85], ease: ['linear', easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <path d=\"M8 21h8\" />\n      <path d=\"M12 17v4\" />\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -0.4, 1.2, 0],\n            y: [0, 0.4, -1.2, 0],\n            transition: { duration: DUR, times: [0, 0.16, 0.46, 0.7], ease: [easeInOutCubic, easeOutQuart, settleBack] },\n          },\n        }}\n      >\n        <path d=\"m17 8 5-5\" />\n        <path d=\"M17 3h5v5\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'screen-share',\n  gesture: 'the screen goes live',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['present', 'meeting', 'share'],\n}\n\nexport default ScreenShareIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/screen-share.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

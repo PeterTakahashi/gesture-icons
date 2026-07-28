@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "memory-stick",
+  "title": "memory-stick",
+  "description": "Semantic animated icon — it seats in the slot. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/memory-stick.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Memory stick — it seats in the slot. A press along the module's own axis:\n * a hair of load upward, a first click that almost seats it, a small give,\n * then the second click that seats it fully, and a settle back to rest —\n * a two-stage connector click, not one clean push. The five contact pins\n * along the bottom edge are the part that actually meets the slot, so they\n * lead the body by a beat on every stage.\n * Base geometry: Lucide `memory-stick` (ISC).\n */\nconst DUR = 0.85\n\nexport function MemoryStickIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'memory stick'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -0.3, 1.0, 0.65, 1.5, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.12, 0.34, 0.46, 0.68, 1],\n              ease: [easeInCubic, easeOutQuart, easeInOutCubic, easeOutQuart, settleBack],\n            },\n          },\n        }}\n      >\n        <rect x=\"2\" y=\"6\" width=\"20\" height=\"10\" rx=\"2\" />\n        <path d=\"M2 11h1.5\" />\n        <path d=\"M20.5 11H22\" />\n        <path d=\"M8 12v-2\" />\n        <path d=\"M12 12v-2\" />\n        <path d=\"M16 12v-2\" />\n      </motion.g>\n      {/* the contact pins — they meet the slot first, so they lead every stage */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -0.35, 1.15, 0.75, 1.7, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.08, 0.28, 0.4, 0.62, 0.94],\n              ease: [easeInCubic, easeOutQuart, easeInOutCubic, easeOutQuart, settleBack],\n            },\n          },\n        }}\n      >\n        <path d=\"M4 18v-2\" />\n        <path d=\"M8 18v-2\" />\n        <path d=\"M12 18v-2\" />\n        <path d=\"M16 18v-2\" />\n        <path d=\"M20 18v-2\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'memory-stick',\n  gesture: 'it seats in the slot',\n  family: 'rigid' as const,\n  section: 'Workspace',\n  tags: ['ram', 'hardware', 'chip'],\n}\n\nexport default MemoryStickIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/memory-stick.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

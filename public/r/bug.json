@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bug",
+  "title": "bug",
+  "description": "Semantic animated icon — it skitters. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/bug.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Bug — it skitters. A fast, tiny, nervous dart — smaller and quicker than\n * any other gesture in the set, because an insect's motion reads as jittery\n * only if it is genuinely fast.\n * Base geometry: Lucide `bug` (ISC).\n */\nconst DUR = 0.65\n\nexport function BugIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'bug'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 13px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, rotate: 0 },\n          animate: {\n            x: [0, -0.8, 0.9, -0.7, 0.5, 0],\n            rotate: [0, -2, 2, -1.5, 1, 0],\n            transition: { duration: DUR, times: [0, 0.16, 0.36, 0.56, 0.76, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M12 20v-9\" />\n        <path d=\"M14 7a4 4 0 0 1 4 4v3a6 6 0 0 1-12 0v-3a4 4 0 0 1 4-4z\" />\n        <path d=\"M14.12 3.88 16 2\" />\n        <path d=\"M21 21a4 4 0 0 0-3.81-4\" />\n        <path d=\"M21 5a4 4 0 0 1-3.55 3.97\" />\n        <path d=\"M22 13h-4\" />\n        <path d=\"M3 21a4 4 0 0 1 3.81-4\" />\n        <path d=\"M3 5a4 4 0 0 0 3.55 3.97\" />\n        <path d=\"M6 13H2\" />\n        <path d=\"m8 2 1.88 1.88\" />\n        <path d=\"M9 7.13V6a3 3 0 1 1 6 0v1.13\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'bug',\n  gesture: 'it skitters',\n  family: 'rigid' as const,\n  section: 'Workspace',\n  tags: ['insect', 'error', 'debug', 'issue'],\n}\n\nexport default BugIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/bug.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "archive",
+  "title": "archive",
+  "description": "Semantic animated icon — the lid shuts. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/archive.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Archive — the lid shuts. Hinged at its left end where it meets the box,\n * the lid lifts and tips back, holds a beat so the open box reads, then\n * drops shut on an accelerating fall; the box takes the thump the frame\n * after the lid actually lands — cause, then effect.\n * Base geometry: Lucide `archive` (ISC).\n */\nconst DUR = 1.0\n\nexport function ArchiveIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'archive'}\n      {...hoverProps}\n    >\n      {/* lid, hinged at its left end where it meets the box */}\n      <motion.rect\n        width=\"20\" height=\"5\" x=\"2\" y=\"3\" rx=\"1\"\n        style={{ transformBox: 'view-box', transformOrigin: '2px 8px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, -2.4, -2.4, 0],\n            rotate: [0, -4, -4, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.6, 0.86], ease: [easeOutQuart, 'linear', easeInCubic] },\n          },\n        }}\n      />\n      {/* the box takes the thump on the landing frame */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0, 0.9, 0],\n            transition: { duration: DUR, times: [0, 0.6, 0.86, 0.93, 1], ease: ['linear', 'linear', easeOutQuart, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8\" />\n        <path d=\"M10 12h4\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'archive',\n  gesture: 'the lid shuts',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['box', 'store', 'old'],\n}\n\nexport default ArchiveIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/archive.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

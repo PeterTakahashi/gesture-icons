@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "git-graph",
+  "title": "git-graph",
+  "description": "Semantic animated icon — the history draws. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/git-graph.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen, settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * Git graph — the history draws itself, git log rendered. All three lines\n * erase and all three nodes implode together, one clean wipe. Then the\n * pen rebuilds it in commit order: the root node pops first (nothing feeds\n * it), the rail draws down to the second node which pops on arrival, the\n * long branch line draws in behind it, and last the merge arc draws up to\n * the third node, which pops the instant the pen reaches it.\n * Base geometry: Lucide `git-graph` (ISC).\n */\nconst DUR = 1.4\n\nexport function GitGraphIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const line = (start: number, end: number): Variants => ({\n    normal: { pathLength: 1 },\n    animate: {\n      pathLength: [1, 0.001, 0.001, 1],\n      transition: { duration: DUR, times: [0, 0.12, start, end], ease: [easeInCubic, 'linear', pen] },\n    },\n  })\n  const node = (settleFrom: number, popAt: number, settleAt: number): Variants => ({\n    normal: { scale: 1 },\n    animate: {\n      scale: [1, 1, 0.001, 0.001, 1.3, 1],\n      transition: {\n        duration: DUR,\n        times: [0, 0.05, 0.12, settleFrom, popAt, settleAt],\n        ease: ['linear', easeInCubic, 'linear', settleBack, easeOutQuart],\n      },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'git graph'}\n      {...hoverProps}\n    >\n      {/* root — pops first, nothing feeds it */}\n      <motion.circle\n        cx=\"5\" cy=\"6\" r=\"3\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\" animate={controls} variants={node(0.12, 0.19, 0.26)}\n      />\n      {/* rail down to the second commit */}\n      <motion.path d=\"M5 9v6\" initial=\"normal\" animate={controls} variants={line(0.26, 0.44)} />\n      <motion.circle\n        cx=\"5\" cy=\"18\" r=\"3\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\" animate={controls} variants={node(0.44, 0.51, 0.58)}\n      />\n      {/* the long-lived branch line, drawn in behind it */}\n      <motion.path d=\"M12 3v18\" initial=\"normal\" animate={controls} variants={line(0.58, 0.76)} />\n      {/* the merge arc, last — arrives exactly at the third node's edge */}\n      <motion.path d=\"M16 15.7A9 9 0 0 0 19 9\" initial=\"normal\" animate={controls} variants={line(0.78, 0.94)} />\n      <motion.circle\n        cx=\"19\" cy=\"6\" r=\"3\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\" animate={controls} variants={node(0.94, 0.97, 1)}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'git-graph',\n  gesture: 'the history draws',\n  family: 'draw-on' as const,\n  section: 'Workspace',\n  tags: ['git', 'log', 'commits'],\n}\n\nexport default GitGraphIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/git-graph.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

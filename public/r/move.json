@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "move",
+  "title": "move",
+  "description": "Semantic animated icon — it tugs every way. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/move.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Move — it tugs every way. The center cross is the fixed frame the drag\n * handles pull against, so its two full-length shafts hold still; the four\n * arrowheads each nudge outward 1.5 along their own axis, in unison, and\n * settle back — the glyph stretching against its own handles, once.\n * Base geometry: Lucide `move` (ISC).\n */\nconst DUR = 0.8\n\nexport function MoveIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const outwardX = (dist: number): Variants => ({\n    normal: { x: 0 },\n    animate: {\n      x: [0, dist, 0],\n      transition: { duration: DUR, times: [0, 0.45, 1], ease: [easeOutQuart, settleBack] },\n    },\n  })\n  const outwardY = (dist: number): Variants => ({\n    normal: { y: 0 },\n    animate: {\n      y: [0, dist, 0],\n      transition: { duration: DUR, times: [0, 0.45, 1], ease: [easeOutQuart, settleBack] },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'move'}\n      {...hoverProps}\n    >\n      <path d=\"M12 2v20\" />\n      <motion.path d=\"m15 19-3 3-3-3\" initial=\"normal\" animate={controls} variants={outwardY(1.5)} />\n      <motion.path d=\"m19 9 3 3-3 3\" initial=\"normal\" animate={controls} variants={outwardX(1.5)} />\n      <path d=\"M2 12h20\" />\n      <motion.path d=\"m5 9-3 3 3 3\" initial=\"normal\" animate={controls} variants={outwardX(-1.5)} />\n      <motion.path d=\"m9 5 3-3 3 3\" initial=\"normal\" animate={controls} variants={outwardY(-1.5)} />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'move',\n  gesture: 'it tugs every way',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['drag', 'pan'],\n}\n\nexport default MoveIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/move.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

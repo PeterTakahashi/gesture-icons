@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "rabbit",
+  "title": "rabbit",
+  "description": "Semantic animated icon — it twitches. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/rabbit.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Rabbit — it twitches. Lucide's right ear is its own path, so it counter-\n * twitches about its base; the left ear is only a small notch fused into\n * the head outline, so that whole silhouette carries the opposing twitch\n * as the honest stand-in for \"the other ear.\" Then one tiny hop — alert.\n * Base geometry: Lucide `rabbit` (ISC).\n */\nconst DUR = 0.9\n\nexport function RabbitIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'rabbit'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, -1.2, 0],\n            transition: { duration: DUR, times: [0, 0.42, 0.66, 0.92], ease: [easeOutQuart, easeOutQuart] },\n          },\n        }}\n      >\n        <motion.g\n          style={{ transformBox: 'view-box', transformOrigin: '12px 4px' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { rotate: 0 },\n            animate: {\n              rotate: [0, -6, 0],\n              transition: { duration: DUR, times: [0, 0.2, 0.42], ease: easeInOutCubic },\n            },\n          }}\n        >\n          <path d=\"M13 16a3 3 0 0 1 2.24 5\" />\n          <path d=\"M18 12h.01\" />\n          <path d=\"M18 21h-8a4 4 0 0 1-4-4 7 7 0 0 1 7-7h.2L9.6 6.4a1 1 0 1 1 2.8-2.8L15.8 7h.2c3.3 0 6 2.7 6 6v1a2 2 0 0 1-2 2h-1a3 3 0 0 0-3 3\" />\n          <path d=\"M7.612 12.524a3 3 0 1 0-1.6 4.3\" />\n        </motion.g>\n        <motion.path\n          d=\"M20 8.54V4a2 2 0 1 0-4 0v3\"\n          style={{ transformBox: 'view-box', transformOrigin: '18px 8.5px' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { rotate: 0 },\n            animate: {\n              rotate: [0, 4, 0],\n              transition: { duration: DUR, times: [0, 0.2, 0.42], ease: easeInOutCubic },\n            },\n          }}\n        />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'rabbit',\n  gesture: 'it twitches',\n  family: 'rigid' as const,\n  section: 'Animals & nature',\n  tags: ['bunny', 'animal', 'fast'],\n}\n\nexport default RabbitIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/rabbit.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

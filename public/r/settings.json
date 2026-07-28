@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "settings",
+  "title": "settings",
+  "description": "Semantic animated icon — it clicks one notch. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/settings.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Settings — it clicks one notch. Lucide's gear is 8-fold symmetric (a\n * tooth every 45°), so a 45° turn lands on the exact same picture — the\n * gear reads as \"adjusted one step,\" not spun.\n * Base geometry: Lucide `settings` (ISC).\n */\nconst DUR = 0.9\n\nexport function SettingsIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'settings'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -8, 49, 45],\n            transition: {\n              duration: DUR,\n              times: [0, 0.18, 0.6, 1],\n              ease: [easeInOutCubic, [0.5, 0, 0.3, 1.15], easeOutQuart],\n            },\n          },\n        }}\n      >\n        <path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\" />\n        <circle cx=\"12\" cy=\"12\" r=\"3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'settings',\n  gesture: 'it clicks one notch',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['gear', 'preferences', 'config', 'cog'],\n}\n\nexport default SettingsIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/settings.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

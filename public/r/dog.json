@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dog",
+  "title": "dog",
+  "description": "Semantic animated icon — it perks its ears. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/dog.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, easeInOutCubic } from '../core/easings'\n\n/**\n * Dog — it perks its ears. Lucide draws both ears as one continuous shape\n * with the forehead between them, so a sideways rotate would swing one ear\n * down as the other rose — dishonest. Instead the ear shape stretches\n * upright about its own base line, both tips rising together, holds, and\n * relaxes back; the head tilts along with it. Someone's home.\n * Base geometry: Lucide `dog` (ISC).\n */\nconst DUR = 1.0\n\nexport function DogIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'dog'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 13px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 3, 3, 0],\n            transition: { duration: DUR, times: [0, 0.26, 0.62, 0.92], ease: [easeOutQuart, 'linear', easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M11.25 16.25h1.5L12 17z\" />\n        <path d=\"M16 14v.5\" />\n        <path d=\"M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309\" />\n        <path d=\"M8 14v.5\" />\n      </motion.g>\n      <motion.path\n        d=\"M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 8.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 1.18, 1.18, 1],\n            transition: { duration: DUR, times: [0, 0.22, 0.6, 0.9], ease: [easeOutQuart, 'linear', easeInOutCubic] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'dog',\n  gesture: 'it perks its ears',\n  family: 'rigid' as const,\n  section: 'Animals & nature',\n  tags: ['pet', 'puppy', 'animal'],\n}\n\nexport default DogIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/dog.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

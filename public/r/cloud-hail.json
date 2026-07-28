@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cloud-hail",
+  "title": "cloud-hail",
+  "description": "Semantic animated icon — it hails hard. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cloud-hail.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Cloud hail — VARIANT(cloud-rain): it hails hard. The three pellets fall\n * linearly (no soft gravity curve — hail is fast and mechanical, not a\n * gentle rain arc), leaving through the frame's own bottom edge and\n * re-entering from above the cloud. The cloud jolts down a hair on each\n * release, and the already-fallen dots below each column pulse when the\n * next pellet lands on them.\n * Base geometry: Lucide `cloud-hail` (ISC).\n */\nconst DUR = 0.9\n\nconst STREAKS = [\n  { d: 'M16 14v2', dot: 'M16 20h.01', delay: 0 },\n  { d: 'M8 14v2', dot: 'M8 20h.01', delay: 0.07 },\n  { d: 'M12 16v2', dot: 'M12 22h.01', delay: 0.14 },\n]\n\nexport function CloudHailIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cloud hail'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.6, 0, 0.6, 0, 0.6, 0, 0],\n            transition: { duration: DUR, times: [0, 0.05, 0.12, 0.2, 0.27, 0.35, 0.42, 0.5, 1], ease: 'easeOut' },\n          },\n        }}\n      />\n      {STREAKS.map((s) => (\n        <motion.path\n          key={s.d}\n          d={s.d}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { y: 0 },\n            animate: {\n              y: [0, 8, 8, -14, -14, 0],\n              transition: { duration: DUR, delay: s.delay, times: [0, 0.24, 0.3, 0.3, 0.38, 1], ease: 'linear' },\n            },\n          }}\n        />\n      ))}\n      {STREAKS.map((s) => (\n        <motion.path\n          key={s.dot}\n          d={s.dot}\n          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { scale: 1 },\n            animate: {\n              scale: [1, 1, 1.4, 1],\n              transition: { duration: DUR, delay: s.delay, times: [0, 0.36, 0.42, 0.5], ease: [easeOutQuart, settleBack] },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cloud-hail',\n  gesture: 'it hails hard',\n  family: 'travel' as const,\n  section: 'Nature',\n  tags: ['weather', 'storm', 'ice'],\n}\n\nexport default CloudHailIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cloud-hail.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

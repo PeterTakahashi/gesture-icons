@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "corner-down-right",
+  "title": "corner-down-right",
+  "description": "Semantic animated icon — it takes the turn. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/corner-down-right.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen } from '../core/easings'\n\n/**\n * Corner down-right — it takes the turn, mirrored from corner-down-left.tsx.\n * Both strokes erase from the arrowhead backward, then the corner line\n * pen-redraws down and into the curve, and the arrowhead redraws last,\n * landing as the line's pen arrives at it.\n * Base geometry: Lucide `corner-down-right` (ISC).\n */\nconst DUR = 1.05\n\nexport function CornerDownRightIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'corner down right'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"m15 10 5 5-5 5\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.14, 0.6, 1], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M4 4v7a4 4 0 0 0 4 4h12\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.16, 0.28, 0.72], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'corner-down-right',\n  gesture: 'it takes the turn',\n  family: 'draw-on' as const,\n  section: 'Arrows',\n  tags: ['corner', 'turn'],\n}\n\nexport default CornerDownRightIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/corner-down-right.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

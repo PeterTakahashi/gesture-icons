@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "palette",
+  "title": "palette",
+  "description": "Semantic animated icon — the colors stir. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/palette.tsx",
+      "content": "import { motion } from 'motion/react'\nimport type { Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Palette — the paint wells pop, one after another, like the colors\n * coming alive under the brush; the board itself stays perfectly still.\n * Base geometry: Lucide `palette` (ISC).\n */\nconst DUR = 0.5\nconst WELLS: Array<[number, number]> = [\n  [13.5, 6.5],\n  [17.5, 10.5],\n  [6.5, 12.5],\n  [8.5, 7.5],\n]\n\nfunction pop(delay: number): Variants {\n  return {\n    normal: { scale: 1 },\n    animate: {\n      scale: [1, 1.35, 1],\n      transition: { duration: DUR, delay, times: [0, 0.4, 1], ease: [settleBack, easeOutQuart] },\n    },\n  }\n}\n\nexport function PaletteIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'palette'}\n      {...hoverProps}\n    >\n      <path d=\"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z\" />\n      {WELLS.map(([cx, cy], i) => (\n        <motion.circle\n          key={`${cx}-${cy}`}\n          cx={cx} cy={cy} r={0.5}\n          fill={color === 'currentColor' ? 'currentColor' : color}\n          stroke=\"none\"\n          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n          initial=\"normal\" animate={controls} variants={pop(i * 0.07)}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'palette',\n  gesture: 'the colors stir',\n  family: 'secondary' as const,\n  section: 'Text & editing',\n  tags: ['color', 'art', 'design'],\n}\n\nexport default PaletteIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/palette.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

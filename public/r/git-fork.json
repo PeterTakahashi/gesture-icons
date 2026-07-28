@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "git-fork",
+  "title": "git-fork",
+  "description": "Semantic animated icon — the project forks. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/git-fork.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen, settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * Git fork — the project forks. The geometry's single root sits at the\n * bottom (12,18); the stem and the bar both climb from it up to the two\n * branch nodes, so the deviation from the spec's \"top down\" reading is\n * geometric, not a taste call. Stem and bar erase into the root together\n * and pen-redraw on the same clock; both branch nodes pop together the\n * instant the redraw completes — the frame the fork is whole again — one\n * history, two futures.\n * Base geometry: Lucide `git-fork` (ISC).\n */\nconst DUR = 1.1\n\nexport function GitForkIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const draw: Variants = {\n    normal: { pathLength: 1 },\n    animate: {\n      pathLength: [1, 0.001, 0.001, 1],\n      transition: { duration: DUR, times: [0, 0.14, 0.24, 0.68], ease: [easeInCubic, 'linear', pen] },\n    },\n  }\n  const node: Variants = {\n    normal: { scale: 1 },\n    animate: {\n      scale: [1, 1, 0.001, 0.001, 1.3, 1],\n      transition: {\n        duration: DUR,\n        times: [0, 0.1, 0.24, 0.68, 0.76, 0.85],\n        ease: ['linear', easeInCubic, 'linear', settleBack, easeOutQuart],\n      },\n    },\n  }\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'git fork'}\n      {...hoverProps}\n    >\n      <circle cx=\"12\" cy=\"18\" r=\"3\" />\n      <motion.path d=\"M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9\" initial=\"normal\" animate={controls} variants={draw} />\n      <motion.path d=\"M12 12v3\" initial=\"normal\" animate={controls} variants={draw} />\n      <motion.circle\n        cx=\"6\" cy=\"6\" r=\"3\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\" animate={controls} variants={node}\n      />\n      <motion.circle\n        cx=\"18\" cy=\"6\" r=\"3\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\" animate={controls} variants={node}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'git-fork',\n  gesture: 'the project forks',\n  family: 'draw-on' as const,\n  section: 'Workspace',\n  tags: ['git', 'fork', 'branch'],\n}\n\nexport default GitForkIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/git-fork.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

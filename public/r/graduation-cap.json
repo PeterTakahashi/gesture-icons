@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "graduation-cap",
+  "title": "graduation-cap",
+  "description": "Semantic animated icon — it is tossed. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/graduation-cap.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Graduation cap — it is tossed. The mortarboard and its tassel leave the\n * frame together (ease-in, genuinely gone past the top edge), are\n * repositioned while off-frame, and arrive back with a small landing dip —\n * the head-band they set down onto never moves, it's the ground they land\n * on. Once seated, the tassel keeps swinging a beat longer, lagging behind\n * the cap the way a hanging thing always does.\n * Base geometry: Lucide `graduation-cap` (ISC).\n */\nconst DUR = 1.2\n\nexport function GraduationCapIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'graduation cap'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -30, -30, 30, 30, 1.2, -0.3, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.24, 0.42, 0.42, 0.5, 0.86, 0.94, 1],\n              ease: [easeInCubic, 'linear', 'linear', 'linear', easeOutQuart, easeInOutCubic, easeOutQuart],\n            },\n          },\n        }}\n      >\n        <path d=\"M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z\" />\n        <motion.path\n          d=\"M22 10v6\"\n          style={{ transformBox: 'view-box', transformOrigin: '22px 10px' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { rotate: 0 },\n            animate: {\n              rotate: [0, 0, 8, -6, 3.5, -1.5, 0],\n              transition: {\n                duration: DUR,\n                times: [0, 0.82, 0.87, 0.91, 0.95, 0.98, 1],\n                ease: ['linear', easeOutQuart, easeInOutCubic, easeInOutCubic, easeInOutCubic, easeOutQuart],\n              },\n            },\n          }}\n        />\n      </motion.g>\n      <path d=\"M6 12.5V16a6 3 0 0 0 12 0v-3.5\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'graduation-cap',\n  gesture: 'it is tossed',\n  family: 'travel' as const,\n  section: 'People & emotion',\n  tags: ['education', 'graduate', 'achievement'],\n}\n\nexport default GraduationCapIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/graduation-cap.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

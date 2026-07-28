@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bookmark-plus",
+  "title": "bookmark-plus",
+  "description": "Semantic animated icon — the page is saved. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/bookmark-plus.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, gravity, settleBack } from '../core/easings'\n\n/**\n * Bookmark plus — VARIANT(bookmark): the page is saved. The ribbon dips\n * exactly as in `bookmark`, and once it settles the plus mark — a permanent\n * part of this glyph, never hidden — pops with a quick emphasis bounce\n * about its own centre, rather than appearing from nothing.\n * Base geometry: Lucide `bookmark-plus` (ISC).\n */\nconst DUR = 0.9\n\nexport function BookmarkPlusIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'bookmark plus'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 3px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, scaleY: 1 },\n          animate: {\n            y: [0, 1.6, -0.4, 0],\n            scaleY: [1, 1, 1.06, 1],\n            transition: {\n              duration: DUR,\n              y: { times: [0, 0.34, 0.64, 0.95], ease: [gravity, easeOutQuart, easeInOutCubic] },\n              scaleY: { times: [0, 0.38, 0.58, 0.95], ease: [easeInOutCubic, easeOutQuart, easeInOutCubic] },\n            },\n          },\n        }}\n      />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 10px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1, 1.3, 1],\n            transition: { duration: DUR, times: [0, 0.58, 0.78, 1], ease: ['linear', settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M12 7v6\" />\n        <path d=\"M15 10H9\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'bookmark-plus',\n  gesture: 'the page is saved',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['save', 'add', 'later'],\n}\n\nexport default BookmarkPlusIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/bookmark-plus.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

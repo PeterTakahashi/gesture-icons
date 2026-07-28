@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "gamepad",
+  "title": "gamepad",
+  "description": "Semantic animated icon — it takes the input. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/gamepad.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, easeInOutCubic } from '../core/easings'\n\n/**\n * Gamepad — it takes the input. The two action buttons fire in sequence,\n * A then B 80ms apart, and the body shakes a hair on each press — the\n * controller feeling its own buttons. The d-pad never moves.\n * Base geometry: Lucide `gamepad-2` (ISC).\n */\nconst DUR = 0.75\n\nexport function GamepadIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const press = (delay: number) => ({\n    normal: { scale: 1 },\n    animate: {\n      scale: [1, 0.6, 1.25, 1],\n      transition: { duration: DUR, delay, times: [0, 0.2, 0.46, 0.7], ease: [easeInCubic, easeOutQuart] },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'gamepad'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -1, 1, 0, -1, 1, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.28, 0.34, 0.5, 0.56, 0.62], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <line x1=\"6\" x2=\"10\" y1=\"11\" y2=\"11\" />\n      <line x1=\"8\" x2=\"8\" y1=\"9\" y2=\"13\" />\n      <motion.line\n        x1=\"15\" x2=\"15.01\" y1=\"12\" y2=\"12\"\n        style={{ transformBox: 'view-box', transformOrigin: '15px 12px' }}\n        initial=\"normal\" animate={controls} variants={press(0)}\n      />\n      <motion.line\n        x1=\"18\" x2=\"18.01\" y1=\"10\" y2=\"10\"\n        style={{ transformBox: 'view-box', transformOrigin: '18px 10px' }}\n        initial=\"normal\" animate={controls} variants={press(0.08)}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'gamepad',\n  gesture: 'it takes the input',\n  family: 'secondary' as const,\n  section: 'Devices',\n  tags: ['game', 'controller', 'play'],\n}\n\nexport default GamepadIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/gamepad.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

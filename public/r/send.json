@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "send",
+  "title": "send",
+  "description": "Semantic animated icon — the plane actually leaves. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/send.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Send — the plane actually leaves. It departs along the axis its nose\n * already points (up-right), is genuinely gone past the frame edge, is\n * repositioned while nobody can see it, and arrives back on an ease-out.\n * Hiding by fading is banned. Hiding by leaving is honest.\n * Base geometry: Lucide `send` (ISC).\n */\nexport function SendIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'send'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            // 出発 → フレーム外（見えない間に反対側へ）→ 帰還\n            x: [0, 27, 27, -27, -27, 0],\n            y: [0, -27, -27, 27, 27, 0],\n            transition: {\n              duration: 1.2,\n              times: [0, 0.28, 0.5, 0.5, 0.55, 1],\n              ease: [easeInCubic, 'linear', 'linear', 'linear', easeOutQuart],\n            },\n          },\n        }}\n      >\n        <path d=\"M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z\" />\n        <path d=\"m21.854 2.147-10.94 10.939\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'send',\n  gesture: 'the plane actually leaves',\n  family: 'travel' as const,\n  section: 'Communication',\n  tags: ['plane', 'paper', 'message', 'submit'],\n}\n\nexport default SendIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/send.tsx"
+    }
+  ],
+  "type": "registry:component"
+}
