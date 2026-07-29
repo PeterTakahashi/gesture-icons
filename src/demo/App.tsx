@@ -87,10 +87,26 @@ import ${entry.name.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(''
 
 // ── UI ─────────────────────────────────────────────────────────────────────
 
+// ── auto-play ──────────────────────────────────────────────────────────────
+// 2秒おきに「画面内の」タイルだけが一斉に踊る。514個全部を同時に走らせると
+// 重いので、tick 時に座標で可視判定して絞る。0–400ms のランダム分散で
+// 同一フレームへの集中を避ける(play() は再生中なら no-op なので安全)。
+interface AutoTile { el: HTMLElement; play: () => void }
+const autoTiles = new Set<AutoTile>()
+
 function Tile({ entry, color, onOpen }: { entry: Entry; color: string; onOpen: (e: Entry) => void }) {
   const handle = useRef<GestureHandle>(null)
+  const ref = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const item: AutoTile = { el, play: () => handle.current?.play() }
+    autoTiles.add(item)
+    return () => { autoTiles.delete(item) }
+  }, [])
   return (
     <button
+      ref={ref}
       className="tile"
       style={{ color }}
       onPointerEnter={() => handle.current?.play()}
@@ -204,7 +220,22 @@ export default function App() {
   const [query, setQuery] = useState('')
   const [section, setSection] = useState<string | null>(null)
   const [iconColor, setIconColor] = useState(DEFAULT_COLOR)
+  const [auto, setAuto] = useState(true)
   const searchRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (!auto) return
+    const iv = setInterval(() => {
+      const margin = 80
+      for (const { el, play } of autoTiles) {
+        const r = el.getBoundingClientRect()
+        if (r.bottom > -margin && r.top < window.innerHeight + margin) {
+          setTimeout(play, Math.random() * 400)
+        }
+      }
+    }, 2000)
+    return () => clearInterval(iv)
+  }, [auto])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -275,6 +306,14 @@ export default function App() {
           {iconColor !== DEFAULT_COLOR && (
             <button className="codebtn" onClick={() => setIconColor(DEFAULT_COLOR)}>reset</button>
           )}
+          <span className="spacer" />
+          <button
+            className={`chip autoplay${auto ? ' active' : ''}`}
+            onClick={() => setAuto(!auto)}
+            title="Replay every icon in view every 2 seconds"
+          >
+            {auto ? '⏸ auto-play' : '▶ auto-play'}
+          </button>
         </div>
         <div className="chipsrow">
           <button className={`chip${section === null ? ' active' : ''}`} onClick={() => setSection(null)}>All</button>
