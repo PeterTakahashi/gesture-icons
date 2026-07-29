@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "logs",
+  "title": "logs",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/logs.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, easeInOutCubic } from '../core/easings'\n\n/**\n * Logs — it does what it means. Each row (the two bullet dots and the log\n * line that share its y) nudges right and settles, top to bottom, 6% of\n * the beat apart — entries landing in their place one after another.\n * Base geometry: Lucide `logs` (ISC).\n */\nconst DUR = 0.85\nconst ROWS = [\n  { y: 5, dots: ['M3 5h1', 'M8 5h1'], line: 'M13 5h8' },\n  { y: 12, dots: ['M3 12h1', 'M8 12h1'], line: 'M13 12h8' },\n  { y: 19, dots: ['M3 19h1', 'M8 19h1'], line: 'M13 19h8' },\n]\n\nfunction nudge(delay: number): Variants {\n  return {\n    normal: { x: 0 },\n    animate: {\n      x: [0, 1.2, 1.2, 0],\n      transition: { duration: DUR, delay, times: [0, 0.3, 0.62, 1], ease: [easeOutQuart, 'linear', easeInOutCubic] },\n    },\n  }\n}\n\nexport function LogsIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'logs'}\n      {...hoverProps}\n    >\n      {ROWS.map((row, i) => (\n        <motion.g key={row.y} initial=\"normal\" animate={controls} variants={nudge(i * 0.055)}>\n          {row.dots.map((d) => (\n            <path key={d} d={d} />\n          ))}\n          <path d={row.line} />\n        </motion.g>\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'logs',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['table', 'data', 'board', 'logs'],\n}\n\nexport default LogsIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/logs.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

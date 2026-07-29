@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "loader-2",
+  "title": "loader-2",
+  "description": "Semantic animated icon — it turns. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/loader-2.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Loader 2 — it turns. VARIANT(loader): the same one honest 360° spin about\n * center; a full revolution always returns the arc to its starting picture,\n * so the landing is free no matter the shape.\n * Base geometry: Lucide `loader-2` (ISC).\n */\nconst DUR = 0.9\n\nexport function Loader2Icon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'loader 2'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M21 12a9 9 0 1 1-6.219-8.56\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 360],\n            transition: { duration: DUR, ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'loader-2',\n  gesture: 'it turns',\n  family: 'rigid' as const,\n  section: 'Workspace',\n  tags: ['loading', 'spinner', 'wait', 'loader'],\n}\n\nexport default Loader2Icon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/loader-2.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

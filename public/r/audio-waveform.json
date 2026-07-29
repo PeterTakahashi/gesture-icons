@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "audio-waveform",
+  "title": "audio-waveform",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/audio-waveform.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Audio waveform — it does what it means. VARIANT(waves/audio-lines):\n * Lucide draws this waveform as one continuous connected path, so unlike\n * audio-lines' independent bars it carries its verb as a single rigid\n * part — an amplitude pulse about its own centerline, levels dancing,\n * landing exactly at rest.\n * Base geometry: Lucide `audio-waveform` (ISC).\n */\nconst DUR = 1.0\n\nexport function AudioWaveformIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'audio waveform'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M2 13a2 2 0 0 0 2-2V7a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0V4a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0v-4a2 2 0 0 1 2-2\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 1.3, 0.85, 1.1, 1],\n            transition: { duration: DUR, times: [0, 0.25, 0.5, 0.75, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'audio-waveform',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['wave', 'signal', 'audio', 'waveform'],\n}\n\nexport default AudioWaveformIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/audio-waveform.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

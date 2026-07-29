@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "speech",
+  "title": "speech",
+  "description": "Semantic animated icon — it takes the floor. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/speech.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, easeInOutCubic } from '../core/easings'\n\n/**\n * Speech — it takes the floor. The head gives a small nod as the sound\n * arcs emit once from the mouth — erased then redrawn by length, nearer arc\n * first — a point made, never a fade.\n * Base geometry: Lucide `speech` (ISC).\n */\nconst DUR = 0.95\n\nexport function SpeechIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'speech'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M8.8 20v-4.1l1.9.2a2.3 2.3 0 0 0 2.164-2.1V8.3A5.37 5.37 0 0 0 2 8.25c0 2.8.656 3.054 1 4.55a5.77 5.77 0 0 1 .029 2.758L2 20\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0.8, 0.8, 0, 0],\n            transition: { duration: DUR, times: [0, 0.24, 0.5, 0.75, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M17 15a3.5 3.5 0 0 0-.025-4.975\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1, 1],\n            transition: { duration: DUR, times: [0, 0.16, 0.3, 0.62, 1], ease: [easeInCubic, 'linear', easeOutQuart, 'linear'] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M19.8 17.8a7.5 7.5 0 0 0 .003-10.603\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1, 1],\n            transition: { duration: DUR, times: [0, 0.16, 0.4, 0.78, 1], ease: [easeInCubic, 'linear', easeOutQuart, 'linear'] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'speech',\n  gesture: 'it takes the floor',\n  family: 'rigid' as const,\n  section: 'Communication',\n  tags: ['talk', 'accessibility', 'speech'],\n}\n\nexport default SpeechIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/speech.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

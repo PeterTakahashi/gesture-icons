@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "x-circle",
+  "title": "x-circle",
+  "description": "Semantic animated icon — it shakes no. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/x-circle.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * X circle — the frame holds still; the mark inside shakes no. The X\n * rotates about its own center, decaying with each swing, same language as\n * x.tsx, while the ring takes one soft breath so it reads as reacting\n * rather than dead weight.\n * Base geometry: Lucide `x-circle` (ISC).\n */\nconst DUR = 0.85\n\nexport function XCircleIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'x circle'}\n      {...hoverProps}\n    >\n      <motion.circle\n        cx=\"12\" cy=\"12\" r=\"10\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.03, 1],\n            transition: { duration: DUR, times: [0, 0.45, 0.85], ease: easeOutQuart },\n          },\n        }}\n      />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -14, 11, -7, 4, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.36, 0.56, 0.76, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m15 9-6 6\" />\n        <path d=\"m9 9 6 6\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'x-circle',\n  gesture: 'it shakes no',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['frame', 'mark', 'circle'],\n}\n\nexport default XCircleIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/x-circle.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

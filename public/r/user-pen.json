@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "user-pen",
+  "title": "user-pen",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/user-pen.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, pen } from '../core/easings'\n\n/**\n * User pen — the pen mark performs its own verb; the person holds still,\n * the same \"one actor\" choice as user-x.tsx. The pen writes, tip-pivoted at\n * the point of its blade (~13, 22) with a small x/y jot, same language as\n * edit.tsx.\n * Base geometry: Lucide `user-pen` (ISC).\n */\nconst DUR = 0.85\n\nexport function UserPenIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'user pen'}\n      {...hoverProps}\n    >\n      <path d=\"M11.5 15H7a4 4 0 0 0-4 4v2\" />\n      <circle cx=\"10\" cy=\"7\" r=\"4\" />\n      <motion.path\n        d=\"M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z\"\n        style={{ transformBox: 'view-box', transformOrigin: '13.6px 22px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, x: 0, y: 0 },\n          animate: {\n            rotate: [0, -9, 4, 0],\n            x: [0, 0, -1, 0],\n            y: [0, 0, 1, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.65, 1], ease: [easeInOutCubic, pen, easeInOutCubic] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'user-pen',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'People',\n  tags: ['user', 'member', 'pen'],\n}\n\nexport default UserPenIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/user-pen.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tent-tree",
+  "title": "tent-tree",
+  "description": "Semantic animated icon — camp is made. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/tent-tree.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Tent tree — VARIANT(tent): camp is made. The tent settles onto its ground\n * line exactly as in tent.tsx — a small squash, a slight spread as the guy\n * lines take the load, then taut. The pine beside it sways once, 3% later,\n * hinged where its trunk meets the ground. The sky mark holds still.\n * Base geometry: Lucide `tent-tree` (ISC).\n */\nconst DUR = 0.8\n\nexport function TentTreeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'tent tree'}\n      {...hoverProps}\n    >\n      <circle cx=\"4\" cy=\"4\" r=\"2\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '17px 14px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 4, -2.5, 1, 0],\n            transition: { duration: DUR, delay: DUR * 0.03, times: [0, 0.3, 0.6, 0.85, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m14 5 3-3 3 3\" />\n        <path d=\"m14 10 3-3 3 3\" />\n        <path d=\"M17 14V2\" />\n      </motion.g>\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 21px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleX: 1, scaleY: 1 },\n          animate: {\n            scaleY: [1, 0.97, 1.015, 1],\n            scaleX: [1, 1, 1.02, 1],\n            transition: { duration: DUR, times: [0, 0.32, 0.62, 1], ease: [easeInCubic, easeOutQuart, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M17 14H7l-5 8h20Z\" />\n        <path d=\"M8 14v8\" />\n        <path d=\"m9 14 5 8\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'tent-tree',\n  gesture: 'camp is made',\n  family: 'rigid' as const,\n  section: 'Buildings',\n  tags: ['outdoor', 'forest', 'camping', 'tent', 'tree'],\n}\n\nexport default TentTreeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/tent-tree.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "utility-pole",
+  "title": "utility-pole",
+  "description": "Semantic animated icon — the lines carry on. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/utility-pole.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Utility pole — the lines carry on. Lucide draws both wire spans as one\n * path meeting at a shared sag point; they are split here into two\n * identical-pixel segments so each can sway from its own attachment post,\n * left then right, 5% apart — wind on the line, the pole and crossbar still.\n * Base geometry: Lucide `utility-pole` (ISC).\n */\nconst DUR = 0.9\nconst STEP = DUR * 0.05\n\nexport function UtilityPoleIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'utility pole'}\n      {...hoverProps}\n    >\n      <path d=\"M12 2v20\" />\n      <path d=\"M2 5h20\" />\n      <path d=\"M3 3v2\" />\n      <path d=\"M7 3v2\" />\n      <path d=\"M17 3v2\" />\n      <path d=\"M21 3v2\" />\n      {/* left span, from its own post */}\n      <motion.path\n        d=\"M12 12l-7-7\"\n        style={{ transformBox: 'view-box', transformOrigin: '5px 5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 1.06, 1],\n            transition: { duration: DUR, delay: 0, times: [0, 0.5, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      {/* right span, follows 5% later */}\n      <motion.path\n        d=\"M19 5l-7 7\"\n        style={{ transformBox: 'view-box', transformOrigin: '19px 5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 1.06, 1],\n            transition: { duration: DUR, delay: STEP, times: [0, 0.5, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'utility-pole',\n  gesture: 'the lines carry on',\n  family: 'rigid' as const,\n  section: 'Buildings',\n  tags: ['power', 'infrastructure', 'utility', 'pole'],\n}\n\nexport default UtilityPoleIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/utility-pole.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

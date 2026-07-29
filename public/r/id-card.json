@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "id-card",
+  "title": "id-card",
+  "description": "Semantic animated icon — it is shown. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/id-card.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * ID card — it is shown. The whole card lifts and tips up about its own\n * bottom edge — flashed at the door — then settles back flat; the portrait\n * and text marks ride along rigidly, holding their place on the card rather\n * than getting any secondary motion of their own.\n * Base geometry: Lucide `id-card` (ISC).\n */\nconst DUR = 0.8\n\nexport function IdCardIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'id card'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 19px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, y: 0 },\n          animate: {\n            rotate: [0, -3, 0],\n            y: [0, -1.5, 0],\n            transition: { duration: DUR, times: [0, 0.4, 1], ease: [easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <rect x=\"2\" y=\"5\" width=\"20\" height=\"14\" rx=\"2\" />\n        <path d=\"M16 10h2\" />\n        <path d=\"M16 14h2\" />\n        <path d=\"M6.17 15a3 3 0 0 1 5.66 0\" />\n        <circle cx=\"9\" cy=\"11\" r=\"2\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'id-card',\n  gesture: 'it is shown',\n  family: 'rigid' as const,\n  section: 'Security',\n  tags: ['badge', 'identity', 'pass', 'card'],\n}\n\nexport default IdCardIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/id-card.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

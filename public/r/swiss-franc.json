@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "swiss-franc",
+  "title": "swiss-franc",
+  "description": "Semantic animated icon — it lands with intent. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/swiss-franc.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Swiss franc — it rings up. VARIANT(dollar-sign): the whole glyph presses\n * down, twists a hair, and pops back past its own size before settling —\n * cha-ching without the sound.\n * Base geometry: Lucide `swiss-franc` (ISC).\n */\nconst DUR = 0.7\n\nexport function SwissFrancIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'swiss franc'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1, rotate: 0 },\n          animate: {\n            scale: [1, 0.9, 1.12, 1],\n            rotate: [0, -4, 2, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M10 21V3h8\" />\n        <path d=\"M6 16h9\" />\n        <path d=\"M10 9.5h7\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'swiss-franc',\n  gesture: 'it lands with intent',\n  family: 'rigid' as const,\n  section: 'Money & commerce',\n  tags: ['money', 'currency', 'swiss', 'franc'],\n}\n\nexport default SwissFrancIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/swiss-franc.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

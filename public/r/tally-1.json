@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tally-1",
+  "title": "tally-1",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/tally-1.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { pen } from '../core/easings'\n\n/**\n * Tally 1 — it counts out loud. The single stroke erases then pen-redraws —\n * one tally mark, one beat.\n * Base geometry: Lucide `tally-1` (ISC).\n */\nconst DUR = 0.7\n\nexport function Tally1Icon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'tally 1'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M4 4v16\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.15, 0.45, 0.85], ease: ['linear', 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'tally-1',\n  gesture: 'it draws itself',\n  family: 'draw-on' as const,\n  section: 'Charts & math',\n  tags: ['count', 'score', 'tally'],\n}\n\nexport default Tally1Icon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/tally-1.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

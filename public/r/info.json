@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "info",
+  "title": "info",
+  "description": "Semantic animated icon — it clears its throat. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/info.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Info — it clears its throat. The dot dips and pops back past its size\n * before settling, then the stem gives a small nod once the dot has\n * finished — ahem, a word.\n * Base geometry: Lucide `info` (ISC).\n */\nconst DUR = 0.9\n\nexport function InfoIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'info'}\n      {...hoverProps}\n    >\n      <circle cx=\"12\" cy=\"12\" r=\"10\" />\n      <motion.path\n        d=\"M12 16v-4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.55, 0.75, 1], ease: ['linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M12 8h.01\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 8px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.6, 1.35, 1],\n            transition: { duration: DUR, times: [0, 0.2, 0.42, 0.6], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'info',\n  gesture: 'it clears its throat',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['information', 'about', 'help', 'info'],\n}\n\nexport default InfoIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/info.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

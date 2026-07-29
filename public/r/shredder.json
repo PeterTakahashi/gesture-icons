@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "shredder",
+  "title": "shredder",
+  "description": "Semantic animated icon — the document is destroyed. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/shredder.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Shredder — the document is destroyed. The paper feeds down past the slot\n * line and is genuinely gone, clipped away rather than faded — a clip-path\n * fixed at the slot stands in for the machine's throat. Once hidden it is\n * repositioned, still hidden, above the frame, then a fresh sheet drops back\n * into place on an ease-out. The strips below wiggle only while a sheet is\n * actually passing through them; the body never moves.\n * Base geometry: Lucide `shredder` (ISC).\n */\nconst DUR = 1.2\n\nexport function ShredderIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'shredder'}\n      {...hoverProps}\n    >\n      <defs>\n        <clipPath id=\"gi-shredder-clip\">\n          <rect x=\"-4\" y=\"-15\" width=\"32\" height=\"28\" />\n        </clipPath>\n      </defs>\n      <g clipPath=\"url(#gi-shredder-clip)\">\n        <motion.g\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { y: 0 },\n            animate: {\n              // slide down and vanish behind the slot clip, hold gone, then an\n              // equal-times jump (13 -> -15 at the same instant) repositions it\n              // above the frame while still hidden, and it arrives from there\n              y: [0, 13, 13, -15, 0],\n              transition: {\n                duration: DUR,\n                times: [0, 0.36, 0.42, 0.42, 1],\n                ease: [gravity, 'linear', 'linear', easeOutQuart],\n              },\n            },\n          }}\n        >\n          <path d=\"M4 13V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v5\" />\n          <path d=\"M14 2v5a1 1 0 0 0 1 1h5\" />\n        </motion.g>\n      </g>\n      <path d=\"M2 13h20\" />\n      {[\n        { d: 'M10 22v-5', delay: 0.32 },\n        { d: 'M14 19v-2', delay: 0.34 },\n        { d: 'M18 20v-3', delay: 0.33 },\n        { d: 'M6 20v-3', delay: 0.31 },\n      ].map((strip) => (\n        <motion.path\n          key={strip.d}\n          d={strip.d}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { x: 0 },\n            animate: {\n              x: [0, 0.5, -0.5, 0.5, 0],\n              transition: { duration: DUR * 0.25, delay: DUR * strip.delay, times: [0, 0.3, 0.55, 0.8, 1], ease: 'linear' },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'shredder',\n  gesture: 'the document is destroyed',\n  family: 'secondary' as const,\n  section: 'Objects',\n  tags: ['paper', 'secure', 'delete', 'shredder'],\n}\n\nexport default ShredderIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/shredder.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

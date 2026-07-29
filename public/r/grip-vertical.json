@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "grip-vertical",
+  "title": "grip-vertical",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/grip-vertical.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * Grip vertical — the dots do a wave. Each column pops 40ms after the one\n * before it — a texture you can grab, never a synced blink. Every dot lands\n * back at its resting size.\n * Base geometry: Lucide `grip-vertical` (ISC).\n */\nconst DUR = 0.55\nconst COL_STAGGER = 0.04\n\nconst DOTS: { cx: number; cy: number; col: number }[] = [\n  { cx: 9, cy: 12, col: 0 }, { cx: 9, cy: 5, col: 0 }, { cx: 9, cy: 19, col: 0 },\n  { cx: 15, cy: 12, col: 1 }, { cx: 15, cy: 5, col: 1 }, { cx: 15, cy: 19, col: 1 },\n]\n\nconst pop = (delay: number): Variants => ({\n  normal: { scale: 1 },\n  animate: {\n    scale: [1, 1.35, 1],\n    transition: { duration: DUR, delay, times: [0, 0.4, 1], ease: [settleBack, easeOutQuart] },\n  },\n})\n\nexport function GripVerticalIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'grip vertical'}\n      {...hoverProps}\n    >\n      {DOTS.map((d) => (\n        <motion.circle\n          key={`${d.cx}-${d.cy}`}\n          cx={d.cx} cy={d.cy} r=\"1\"\n          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={pop(d.col * COL_STAGGER)}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'grip-vertical',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['drag', 'handle', 'grip', 'vertical'],\n}\n\nexport default GripVerticalIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/grip-vertical.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

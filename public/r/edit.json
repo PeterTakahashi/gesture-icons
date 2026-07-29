@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "edit",
+  "title": "edit",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/edit.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, pen } from '../core/easings'\n\n/**\n * Edit — VARIANT(pencil): the pen writes, tip-pivoted at the point of the\n * blade (8.64, 15.98) with a small x/y jot; the folder frame beneath holds\n * still — it is the document being edited, not the thing doing the editing.\n * Base geometry: Lucide `edit` (ISC).\n */\nconst DUR = 0.85\n\nexport function EditIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'edit'}\n      {...hoverProps}\n    >\n      <path d=\"M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7\" />\n      <motion.path\n        d=\"M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z\"\n        style={{ transformBox: 'view-box', transformOrigin: '8.64px 15.98px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, x: 0, y: 0 },\n          animate: {\n            rotate: [0, -9, 4, 0],\n            x: [0, 0, -1, 0],\n            y: [0, 0, 1, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.65, 1], ease: [easeInOutCubic, pen, easeInOutCubic] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'edit',\n  gesture: 'it draws itself',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['edit', 'write'],\n}\n\nexport default EditIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/edit.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

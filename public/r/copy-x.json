@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "copy-x",
+  "title": "copy-x",
+  "description": "Semantic animated icon — it refuses. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/copy-x.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Copy x — it refuses. VARIANT(x): only the X shakes \"no\" — a decaying\n * rotation about its own center (15px, 15px, the midpoint of its two\n * diagonals) — while the front sheet and the back sheet hold perfectly\n * still.\n * Base geometry: Lucide `copy-x` (ISC).\n */\nconst DUR = 0.85\n\nexport function CopyXIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'copy x'}\n      {...hoverProps}\n    >\n      <rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\" />\n      <path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '15px 15px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -10, 8, -5, 3, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.36, 0.56, 0.76, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <line x1=\"12\" x2=\"18\" y1=\"12\" y2=\"18\" />\n        <line x1=\"12\" x2=\"18\" y1=\"18\" y2=\"12\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'copy-x',\n  gesture: 'it refuses',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['cancel', 'remove', 'copy'],\n}\n\nexport default CopyXIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/copy-x.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

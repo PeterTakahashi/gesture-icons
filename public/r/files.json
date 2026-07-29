@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "files",
+  "title": "files",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/files.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Files — the stacked copies fan once. The front file (dog-eared, z-top,\n * upper-right) noses further up-right along the stack's own offset, the\n * back file (lower-left, partly hidden) counter-noses down-left, then both\n * settle back into the exact resting overlap.\n * Base geometry: Lucide `files` (ISC).\n */\nconst DUR = 0.9\n\nexport function FilesIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'files'}\n      {...hoverProps}\n    >\n      {/* front file, the deeper end of the stack */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, 1.5, 0],\n            y: [0, -1.5, 0],\n            transition: { duration: DUR, times: [0, 0.5, 1], ease: [easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8\" />\n        <path d=\"M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z\" />\n      </motion.g>\n      {/* back file, counter-nudges the other way */}\n      <motion.path\n        d=\"M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -0.8, 0],\n            y: [0, 0.8, 0],\n            transition: { duration: DUR, times: [0, 0.5, 1], ease: [easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'files',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['collection', 'stack', 'files'],\n}\n\nexport default FilesIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/files.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

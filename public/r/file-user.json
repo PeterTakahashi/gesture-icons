@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "file-user",
+  "title": "file-user",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/file-user.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * File user — it draws itself. The page holds, dipping once on the accent\n * frame; the little reader bows — a small, dignified dip of head and\n * shoulders about their own base (user.tsx's bow), then straightens.\n * Base geometry: Lucide `file-user` (ISC).\n */\nconst DUR = 0.9\n\nexport function FileUserIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'file user'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.4, 0],\n            transition: { duration: DUR, times: [0, 0.45, 0.6, 0.95], ease: [easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\" />\n        <path d=\"M14 2v5a1 1 0 0 0 1 1h5\" />\n      </motion.g>\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 22px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 6, 6, 0],\n            transition: { duration: 0.75, delay: 0.15, times: [0, 0.32, 0.7, 0.95], ease: [easeInOutCubic, 'linear', easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M16 22a4 4 0 0 0-8 0\" />\n        <circle cx=\"12\" cy=\"15\" r=\"3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'file-user',\n  gesture: 'it draws itself',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['file', 'document', 'user'],\n}\n\nexport default FileUserIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/file-user.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

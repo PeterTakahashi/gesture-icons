@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "lectern",
+  "title": "lectern",
+  "description": "Semantic animated icon — the speech begins. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/lectern.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Lectern — the speech begins. Hands set down on it with a quick press,\n * the whole stand giving a hair under the weight and springing back, then\n * a small tilt into the audience once it's steady — \"thank you all for\n * coming.\"\n * Base geometry: Lucide `lectern` (ISC).\n */\nconst DUR = 0.9\n\nexport function LecternIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'lectern'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, 0.8, 0],\n            rotate: [0, 0, -1.5, 0],\n            transition: {\n              duration: DUR,\n              y: { times: [0, 0.35, 0.7], ease: [easeInCubic, easeOutQuart] },\n              rotate: { times: [0, 0.55, 0.8, 1], ease: ['linear', easeOutQuart, easeInOutCubic] },\n            },\n          },\n        }}\n      >\n        <path d=\"M16 12h3a2 2 0 0 0 1.902-1.38l1.056-3.333A1 1 0 0 0 21 6H3a1 1 0 0 0-.958 1.287l1.056 3.334A2 2 0 0 0 5 12h3\" />\n        <path d=\"M18 6V3a1 1 0 0 0-1-1h-3\" />\n        <rect width=\"8\" height=\"12\" x=\"8\" y=\"10\" rx=\"1\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'lectern',\n  gesture: 'the speech begins',\n  family: 'rigid' as const,\n  section: 'Objects',\n  tags: ['podium', 'speech', 'present', 'lectern'],\n}\n\nexport default LecternIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/lectern.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

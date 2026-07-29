@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ticket-x",
+  "title": "ticket-x",
+  "description": "Semantic animated icon — it is refused. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/ticket-x.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Ticket x — it is refused. Only the X shakes no — a decaying rotation\n * about its own center, same language as x-circle.tsx and shield-x.tsx —\n * while the ticket body holds perfectly still.\n * Base geometry: Lucide `ticket-x` (ISC).\n */\nconst DUR = 0.85\n\nexport function TicketXIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'ticket x'}\n      {...hoverProps}\n    >\n      <path d=\"M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -14, 11, -7, 4, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.36, 0.56, 0.76, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m9.5 14.5 5-5\" />\n        <path d=\"m9.5 9.5 5 5\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'ticket-x',\n  gesture: 'it is refused',\n  family: 'rigid' as const,\n  section: 'Money & commerce',\n  tags: ['cancel', 'remove', 'ticket'],\n}\n\nexport default TicketXIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/ticket-x.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

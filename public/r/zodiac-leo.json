@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "zodiac-leo",
+  "title": "zodiac-leo",
+  "description": "Semantic animated icon — a constellation shimmer. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/zodiac-leo.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Zodiac leo — a constellation shimmer. The whole glyph gathers in and\n * twists (ease-in, the pull), then blooms back out past its own size\n * before settling — starlight energy, small and quick.\n * Base geometry: Lucide `zodiac-leo` (ISC).\n */\nconst DUR = 0.8\n\nexport function ZodiacLeoIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'zodiac leo'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1, rotate: 0 },\n          animate: {\n            scale: [1, 0.85, 1.08, 1],\n            rotate: [0, -8, 3, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M10 16c0-4-3-4.5-3-8a5 5 0 0 1 10 0c0 3.466-3 6.196-3 10a3 3 0 0 0 6 0\" />\n        <circle cx=\"7\" cy=\"16\" r=\"3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'zodiac-leo',\n  gesture: 'a constellation shimmer',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['zodiac', 'astrology', 'star', 'leo'],\n}\n\nexport default ZodiacLeoIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/zodiac-leo.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

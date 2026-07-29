@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "help-circle",
+  "title": "help-circle",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/help-circle.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Help circle — it draws itself. The inner mark performs its own verb\n * inside a still frame: the \"?\" tilts curious — a small head-tilt, held a\n * beat, then eased back level — while the ring breathes once around it.\n * Base geometry: Lucide `help-circle` (ISC).\n */\nconst DUR = 0.9\n\nexport function HelpCircleIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'help circle'}\n      {...hoverProps}\n    >\n      <motion.circle\n        cx=\"12\" cy=\"12\" r=\"10\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.03, 1],\n            transition: { duration: DUR, times: [0, 0.5, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 3, -15, -15, 0],\n            transition: { duration: DUR, times: [0, 0.12, 0.4, 0.68, 1], ease: [easeInOutCubic, easeOutQuart, 'linear', easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\" />\n        <path d=\"M12 17h.01\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'help-circle',\n  gesture: 'it draws itself',\n  family: 'rigid' as const,\n  section: 'Shapes',\n  tags: ['frame', 'mark', 'help', 'circle'],\n}\n\nexport default HelpCircleIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/help-circle.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

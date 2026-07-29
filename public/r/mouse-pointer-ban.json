@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mouse-pointer-ban",
+  "title": "mouse-pointer-ban",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/mouse-pointer-ban.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Mouse pointer ban — it does what it means. VARIANT(mouse-pointer): the\n * cursor still NUDGEs down-right into its click, hard stop, settle back —\n * the ban ring and slash hold fixed in place, the block that stops it.\n * Base geometry: Lucide `mouse-pointer-ban` (ISC).\n */\nconst DUR = 0.7\nconst D = 0.7071\nconst DRIVE = 1.2\nconst WIND = 0.3\n\nexport function MousePointerBanIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'mouse pointer ban'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M2.034 2.681a.498.498 0 0 1 .647-.647l9 3.5a.5.5 0 0 1-.033.944L8.204 7.545a1 1 0 0 0-.66.66l-1.066 3.443a.5.5 0 0 1-.944.033z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -WIND * D, DRIVE * D, DRIVE * D, 0],\n            y: [0, -WIND * D, DRIVE * D, DRIVE * D, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.12, 0.32, 0.5, 0.85],\n              ease: [easeInOutCubic, easeOutQuart, 'linear', settleBack],\n            },\n          },\n        }}\n      />\n      <circle cx=\"16\" cy=\"16\" r=\"6\" />\n      <path d=\"m11.8 11.8 8.4 8.4\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'mouse-pointer-ban',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['cursor', 'click', 'pointer', 'mouse', 'ban'],\n}\n\nexport default MousePointerBanIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/mouse-pointer-ban.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

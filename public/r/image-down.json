@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "image-down",
+  "title": "image-down",
+  "description": "Semantic animated icon — it urges downward. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/image-down.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * Image down — it urges downward. NUDGE: the download-arrow badge winds up\n * a hair, drives down, and settles back on its resting mark; the frame,\n * mountain, and sun hold still — a picture doesn't move when you save it.\n * Base geometry: Lucide `image-down` (ISC).\n */\nconst DUR = 0.9\n\nexport function ImageDownIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'image down'}\n      {...hoverProps}\n    >\n      <path d=\"M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21\" />\n      <circle cx=\"9\" cy=\"9\" r=\"2\" />\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1, 2.5, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 0.85], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"m14 19 3 3v-5.5\" />\n        <path d=\"m17 22 3-3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'image-down',\n  gesture: 'it urges downward',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['down', 'image'],\n}\n\nexport default ImageDownIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/image-down.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

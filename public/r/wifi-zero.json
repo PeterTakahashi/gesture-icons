@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "wifi-zero",
+  "title": "wifi-zero",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/wifi-zero.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\n\n/**\n * Wifi zero — it draws itself. This glyph has no arcs to redraw — zero bars\n * means there is no signal to bring back. The honest alternative: the dot\n * (the device itself) gives two hard binary blinks, like a receiver\n * checking for a signal and coming up empty, then holds steady — never a\n * fade, per the opacity-gate rule.\n * Base geometry: Lucide `wifi-zero` (ISC).\n */\nconst DUR = 0.7\n\nexport function WifiZeroIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'wifi zero'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M12 20h.01\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { opacity: 1 },\n          animate: {\n            opacity: [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n            transition: {\n              duration: DUR,\n              times: [0, 0.09, 0.1, 0.22, 0.23, 0.35, 0.36, 0.48, 0.49, 0.55],\n              ease: 'linear',\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'wifi-zero',\n  gesture: 'it draws itself',\n  family: 'draw-on' as const,\n  section: 'Communication',\n  tags: ['signal', 'network', 'wifi', 'zero'],\n}\n\nexport default WifiZeroIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/wifi-zero.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

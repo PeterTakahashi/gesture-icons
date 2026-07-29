@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tram-front",
+  "title": "tram-front",
+  "description": "Semantic animated icon — it glides to the stop. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/tram-front.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuint, easeOutQuart, easeInOutCubic } from '../core/easings'\n\n/**\n * Tram front — VARIANT(train): it glides to the stop. Departs right at\n * speed, is repositioned to the far side while genuinely off-frame, and\n * pulls IN from the left on a long arrival curve — the readable beat is the\n * arrival, so it gets most of the clock — with a small settle dip as it\n * stops.\n * Base geometry: Lucide `tram-front` (ISC).\n */\nconst DUR = 1.2\n\nexport function TramFrontIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'tram front'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, 26, -26, 0],\n            y: [0, 0, 0.6, 0],\n            transition: {\n              duration: DUR,\n              x: { times: [0, 0.15, 0.16, 1], ease: [easeInCubic, 'linear', easeOutQuint] },\n              y: { times: [0, 0.88, 0.94, 1], ease: ['linear', easeOutQuart, easeInOutCubic] },\n            },\n          },\n        }}\n      >\n        <rect width=\"16\" height=\"16\" x=\"4\" y=\"3\" rx=\"2\" />\n        <path d=\"M4 11h16\" />\n        <path d=\"M12 3v8\" />\n        <path d=\"m8 19-2 3\" />\n        <path d=\"m18 22-2-3\" />\n        <path d=\"M8 15h.01\" />\n        <path d=\"M16 15h.01\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'tram-front',\n  gesture: 'it glides to the stop',\n  family: 'travel' as const,\n  section: 'Transport',\n  tags: ['streetcar', 'transit', 'tram', 'front'],\n}\n\nexport default TramFrontIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/tram-front.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

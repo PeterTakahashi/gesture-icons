@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "workflow",
+  "title": "workflow",
+  "description": "Semantic animated icon — it wires itself up. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/workflow.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutQuart, pen, settleBack } from '../core/easings'\n\n/**\n * Workflow — it wires itself up. The top-left node survives; the connector\n * erases then pen-redraws down into the bottom-right node, which implodes\n * as the line drains past it and pops back as the pen arrives — the exact\n * dependency-order language of git-branch.tsx.\n * Base geometry: Lucide `workflow` (ISC).\n */\nconst DUR = 1.15\n\nexport function WorkflowIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'workflow'}\n      {...hoverProps}\n    >\n      {/* the source node survives — everything else is rewritten around it */}\n      <rect width=\"8\" height=\"8\" x=\"3\" y=\"3\" rx=\"2\" />\n      <motion.path\n        d=\"M7 11v4a2 2 0 0 0 2 2h4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0, 0, 1],\n            transition: { duration: DUR, times: [0, 0.26, 0.42, 0.9], ease: [easeInOutQuart, 'linear', pen] },\n          },\n        }}\n      />\n      <motion.rect\n        width=\"8\" height=\"8\" x=\"13\" y=\"13\" rx=\"2\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            // implodes as the line drains past it; pops back once the pen returns\n            scale: [1, 1, 0.001, 0.001, 1.25, 1],\n            transition: {\n              duration: DUR,\n              times: [0, 0.12, 0.26, 0.66, 0.82, 0.95],\n              ease: ['linear', easeInCubic, 'linear', settleBack, [0.25, 1, 0.5, 1]],\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'workflow',\n  gesture: 'it wires itself up',\n  family: 'draw-on' as const,\n  section: 'Workspace',\n  tags: ['nodes', 'structure', 'workflow'],\n}\n\nexport default WorkflowIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/workflow.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

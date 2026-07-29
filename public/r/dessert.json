@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dessert",
+  "title": "dessert",
+  "description": "Semantic animated icon — it wobbles. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/dessert.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Dessert — it wobbles. The dome squashes and stretches on counter-phase\n * axes — gelatin physics, scaleX and scaleY trading places — twice about\n * the plate it sits on; the plate itself never moves.\n * Base geometry: Lucide `dessert` (ISC).\n */\nconst DUR = 1.0\n\nexport function DessertIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'dessert'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 15px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleX: 1, scaleY: 1 },\n          animate: {\n            scaleX: [1, 1.05, 0.96, 1.05, 0.96, 1],\n            scaleY: [1, 0.96, 1.05, 0.96, 1.05, 1],\n            transition: { duration: DUR, times: [0, 0.2, 0.4, 0.6, 0.8, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M10.162 3.167A10 10 0 0 0 2 13a2 2 0 0 0 4 0v-1a2 2 0 0 1 4 0v4a2 2 0 0 0 4 0v-4a2 2 0 0 1 4 0v1a2 2 0 0 0 4-.006 10 10 0 0 0-8.161-9.826\" />\n        <circle cx=\"12\" cy=\"4\" r=\"2\" />\n      </motion.g>\n      <path d=\"M20.804 14.869a9 9 0 0 1-17.608 0\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'dessert',\n  gesture: 'it wobbles',\n  family: 'rigid' as const,\n  section: 'Food & drink',\n  tags: ['pudding', 'sweet', 'jelly', 'dessert'],\n}\n\nexport default DessertIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/dessert.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

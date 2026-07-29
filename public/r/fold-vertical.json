@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "fold-vertical",
+  "title": "fold-vertical",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/fold-vertical.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Fold vertical — the top and bottom halves pull toward the seam. Each\n * arrow-and-rail NUDGEs inward along the axis in the name: a small wind-up\n * away from center, a drive in past the mark, settleBack home. The dashed\n * fold line at the seam is the fixed thing being folded toward, so it holds.\n * Base geometry: Lucide `fold-vertical` (ISC).\n */\nconst DUR = 0.8\nconst WIND = 0.6\nconst DRIVE = 2\n\nexport function FoldVerticalIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'fold vertical'}\n      {...hoverProps}\n    >\n      {/* top arrow + rail nudges down toward the seam */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -WIND, DRIVE, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.6, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M12 8V2\" />\n        <path d=\"m15 5-3 3-3-3\" />\n      </motion.g>\n      {/* bottom arrow + rail nudges up toward the seam */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, WIND, -DRIVE, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.6, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M12 22v-6\" />\n        <path d=\"m15 19-3-3-3 3\" />\n      </motion.g>\n      {/* the fold line itself is fixed — the seam being folded toward */}\n      <path d=\"M4 12H2\" />\n      <path d=\"M10 12H8\" />\n      <path d=\"M16 12h-2\" />\n      <path d=\"M22 12h-2\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'fold-vertical',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['layout', 'arrange', 'fold', 'vertical'],\n}\n\nexport default FoldVerticalIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/fold-vertical.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "sliders",
+  "title": "sliders",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/sliders.tsx",
+      "content": "import { motion } from 'motion/react'\nimport type { Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Sliders — the knobs slide. Each horizontal knob nudges up or down along\n * its own vertical track (alternating direction per knob) and returns —\n * settings being tried, one at a time. The tracks themselves hold still.\n * Base geometry: Lucide `sliders` (ISC).\n */\nconst DUR = 0.9\n\nfunction knob(dir: 1 | -1, delay: number): Variants {\n  return {\n    normal: { y: 0 },\n    animate: {\n      y: [0, -0.5 * dir, 2 * dir, 0],\n      transition: { duration: DUR, delay, times: [0, 0.22, 0.58, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n    },\n  }\n}\n\nexport function SlidersIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'sliders'}\n      {...hoverProps}\n    >\n      <path d=\"M12 21v-9\" />\n      <path d=\"M12 8V3\" />\n      <path d=\"M19 12V3\" />\n      <path d=\"M19 21v-5\" />\n      <path d=\"M5 10V3\" />\n      <path d=\"M5 21v-7\" />\n      <motion.path d=\"M3 14h4\" initial=\"normal\" animate={controls} variants={knob(1, 0)} />\n      <motion.path d=\"M10 8h4\" initial=\"normal\" animate={controls} variants={knob(-1, 0.054)} />\n      <motion.path d=\"M17 16h4\" initial=\"normal\" animate={controls} variants={knob(1, 0.108)} />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'sliders',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['settings', 'adjust', 'filters', 'sliders'],\n}\n\nexport default SlidersIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/sliders.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

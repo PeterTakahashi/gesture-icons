@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "file-image",
+  "title": "file-image",
+  "description": "Semantic animated icon — the sun rises in the thumbnail. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/file-image.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * File image — the sun rises in the thumbnail. VARIANT(file-text) crossed\n * with `image.tsx`: the page holds still except a small dip on the frame\n * the sun settles; the little sun lifts and drops back while the mountain\n * line stays put, exactly as the bare image glyph does.\n * Base geometry: Lucide `file-image` (ISC).\n */\nconst DUR = 1.0\n\nexport function FileImageIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'file image'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.5, 0.62, 0.85], ease: ['linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\" />\n        <path d=\"M14 2v5a1 1 0 0 0 1 1h5\" />\n        <path d=\"m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22\" />\n      </motion.g>\n      <motion.circle\n        cx=\"10\" cy=\"12\" r=\"2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1.8, 0.2, 0],\n            transition: { duration: DUR, times: [0, 0.4, 0.72, 1], ease: [easeOutQuart, easeInOutCubic, easeInOutCubic] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'file-image',\n  gesture: 'the sun rises in the thumbnail',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['file', 'document', 'image'],\n}\n\nexport default FileImageIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/file-image.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

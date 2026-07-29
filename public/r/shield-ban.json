@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "shield-ban",
+  "title": "shield-ban",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/shield-ban.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Shield ban — it does what it means. VARIANT(shield): the shield gives\n * one firm brace (a pulse with overshoot) while the ban stroke shakes a\n * decaying \"no\" about its own midpoint, timed through the shield's settle.\n * Base geometry: Lucide `shield-ban` (ISC).\n */\nconst DUR = 1.0\n\nexport function ShieldBanIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'shield ban'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.95, 1.03, 1],\n            transition: { duration: DUR, times: [0, 0.3, 0.6, 0.85], ease: settleBack },\n          },\n        }}\n      />\n      <motion.path\n        d=\"m4.243 5.21 14.39 12.472\"\n        style={{ transformBox: 'view-box', transformOrigin: '11.44px 11.45px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -8, 6, -4, 2, 0],\n            transition: {\n              duration: DUR * 0.65,\n              delay: DUR * 0.35,\n              times: [0, 0.18, 0.36, 0.56, 0.76, 1],\n              ease: easeInOutCubic,\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'shield-ban',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Security',\n  tags: ['security', 'shield', 'ban'],\n}\n\nexport default ShieldBanIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/shield-ban.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

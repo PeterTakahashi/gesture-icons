@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "train-track",
+  "title": "train-track",
+  "description": "Semantic animated icon — the rails hum. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/train-track.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Train track — the rails hum. The two long rails never move; the five\n * sleepers nudge down a hair in sequence, left to right, 5% of the beat\n * apart — a train passing somewhere down the line, felt through the ties.\n * Base geometry: Lucide `train-track` (ISC).\n */\nconst DUR = 0.8\nconst STEP = DUR * 0.05\n\nconst TIES = ['m2 14 8 8', 'm5 11 8 8', 'm8 8 8 8', 'm11 5 8 8', 'm14 2 8 8']\n\nexport function TrainTrackIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'train track'}\n      {...hoverProps}\n    >\n      <path d=\"M2 17 17 2\" />\n      {TIES.map((d, i) => (\n        <motion.path\n          key={d}\n          d={d}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { y: 0 },\n            animate: {\n              y: [0, 0.8, 0],\n              transition: { duration: DUR, delay: i * STEP, times: [0, 0.5, 1], ease: easeInOutCubic },\n            },\n          }}\n        />\n      ))}\n      <path d=\"M7 22 22 7\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'train-track',\n  gesture: 'the rails hum',\n  family: 'rigid' as const,\n  section: 'Transport',\n  tags: ['railway', 'journey', 'train', 'track'],\n}\n\nexport default TrainTrackIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/train-track.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

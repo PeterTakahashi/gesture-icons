@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "origami",
+  "title": "origami",
+  "description": "Semantic animated icon — the crane bows. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/origami.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Origami — the crane bows. The head/neck fold (the thin point running up\n * from the body crease at (12,12)) dips forward, while the long wing\n * crease lifts a hair the opposite way — a small counterbalance, the way\n * a paper crane's fold gives when you tip it. The outer body silhouette\n * holds its shape; paper doesn't bend, it only pivots at its creases.\n * Base geometry: Lucide `origami` (ISC).\n */\nconst DUR = 1.0\n\nexport function OrigamiIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'origami'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M12 12V4a1 1 0 0 1 1-1h6.297a1 1 0 0 1 .651 1.759l-4.696 4.025\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 5, 0],\n            transition: { duration: DUR, times: [0, 0.45, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <motion.path\n        d=\"m12 21-7.414-7.414A2 2 0 0 1 4 12.172V6.415a1.002 1.002 0 0 1 1.707-.707L20 20.009\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1, 0],\n            transition: { duration: DUR, times: [0, 0.45, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <path d=\"m12.214 3.381 8.414 14.966a1 1 0 0 1-.167 1.199l-1.168 1.163a1 1 0 0 1-.706.291H6.351a1 1 0 0 1-.625-.219L3.25 18.8a1 1 0 0 1 .631-1.781l4.165.027\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'origami',\n  gesture: 'the crane bows',\n  family: 'rigid' as const,\n  section: 'Objects',\n  tags: ['paper', 'craft', 'japan', 'origami'],\n}\n\nexport default OrigamiIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/origami.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

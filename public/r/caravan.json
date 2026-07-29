@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "caravan",
+  "title": "caravan",
+  "description": "Semantic animated icon — it is hitched. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/caravan.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Caravan — it is hitched. The tow takes up the slack: the body tugs back\n * and forward about the wheel's contact point, rocking slightly, then\n * settles. The wheel itself never turns — it's the hitch pulling taut, not\n * the road rolling past.\n * Base geometry: Lucide `caravan` (ISC).\n */\nconst DUR = 0.85\n\nexport function CaravanIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'caravan'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '8px 19px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, rotate: 0 },\n          animate: {\n            x: [0, -1.5, 0.8, 0],\n            rotate: [0, 1.5, -0.8, 0],\n            transition: { duration: DUR, times: [0, 0.36, 0.68, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M18 19V9a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v8a2 2 0 0 0 2 2h2\" />\n        <path d=\"M2 9h3a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2\" />\n        <path d=\"M22 17v1a1 1 0 0 1-1 1H10v-9a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v9\" />\n      </motion.g>\n      <circle cx=\"8\" cy=\"19\" r=\"2\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'caravan',\n  gesture: 'it is hitched',\n  family: 'rigid' as const,\n  section: 'Transport',\n  tags: ['camping', 'trailer', 'travel', 'caravan'],\n}\n\nexport default CaravanIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/caravan.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

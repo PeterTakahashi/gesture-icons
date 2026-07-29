@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "omega",
+  "title": "omega",
+  "description": "Semantic animated icon — the limit is reached. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/omega.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutQuart, pen } from '../core/easings'\n\n/**\n * Omega — the limit is reached. The glyph erases then pen-redraws as one\n * continuous stroke. The path is drawn as Lucide wrote it — foot to foot —\n * so the write-on naturally begins on the left foot and lands on the\n * right foot: the stroke is bracketed by feet, not preceded by them.\n * Base geometry: Lucide `omega` (ISC).\n */\nconst DUR = 1.2\n\nexport function OmegaIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'omega'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M3 20h4.5a.5.5 0 0 0 .5-.5v-.282a.52.52 0 0 0-.247-.437 8 8 0 1 1 8.494-.001.52.52 0 0 0-.247.438v.282a.5.5 0 0 0 .5.5H21\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0, 0, 1],\n            transition: { duration: DUR, times: [0, 0.32, 0.42, 1], ease: [easeInCubic, easeInOutQuart, pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'omega',\n  gesture: 'the limit is reached',\n  family: 'draw-on' as const,\n  section: 'Charts & math',\n  tags: ['math', 'greek', 'end', 'omega'],\n}\n\nexport default OmegaIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/omega.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cloud-sync",
+  "title": "cloud-sync",
+  "description": "Semantic animated icon — it completes one sync pass. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cloud-sync.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * Cloud sync — it completes one sync pass. In Lucide's source the top sync\n * arc is drawn as the same continuous path as the cloud's own dome (they\n * share a stroke), so the two can't be pulled apart without inventing new\n * geometry — the honest move is one small turn of the whole glyph, the way\n * a dial gives a click when a sync finishes, rather than isolating an arrow\n * that isn't actually a separate shape. The two arrowheads (which *are*\n * independent marks) each give a small confirming pop right as the turn\n * settles.\n * Base geometry: Lucide `cloud-sync` (ISC).\n */\nconst DUR = 1.0\n\nexport function CloudSyncIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cloud sync'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -8, 10, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 0.85], ease: [easeInOutCubic, easeOutQuart, settleBack] },\n          },\n        }}\n      >\n        <path d=\"m17 18-1.535 1.605a5 5 0 0 1-8-1.5\" />\n        <motion.path\n          d=\"M17 22v-4h-4\"\n          style={{ transformBox: 'view-box', transformOrigin: '15px 20px' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { scale: 1 },\n            animate: {\n              scale: [1, 1, 1.25, 1],\n              transition: { duration: DUR, times: [0, 0.45, 0.6, 0.85], ease: ['linear', settleBack, easeOutQuart] },\n            },\n          }}\n        />\n        <path d=\"M20.996 15.251A4.5 4.5 0 0 0 17.495 8h-1.79a7 7 0 1 0-12.709 5.607\" />\n        <motion.path\n          d=\"M7 10v4h4\"\n          style={{ transformBox: 'view-box', transformOrigin: '9px 12px' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { scale: 1 },\n            animate: {\n              scale: [1, 1, 1.25, 1],\n              transition: { duration: DUR, delay: 0.05, times: [0, 0.45, 0.6, 0.85], ease: ['linear', settleBack, easeOutQuart] },\n            },\n          }}\n        />\n        <path d=\"m7 14 1.535-1.605a5 5 0 0 1 8 1.5\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cloud-sync',\n  gesture: 'it completes one sync pass',\n  family: 'rigid' as const,\n  section: 'Nature',\n  tags: ['weather', 'cloud', 'sync'],\n}\n\nexport default CloudSyncIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cloud-sync.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

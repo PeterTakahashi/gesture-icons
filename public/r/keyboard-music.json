@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "keyboard-music",
+  "title": "keyboard-music",
+  "description": "Semantic animated icon — a chord lands. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/keyboard-music.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Keyboard music — a chord lands. The three key marks along the top row\n * press down together and spring back as one, in sync since a chord is\n * struck at once, not staggered — one chord, frame still.\n * Base geometry: Lucide `keyboard-music` (ISC).\n */\nconst DUR = 0.7\n\nexport function KeyboardMusicIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const press = {\n    normal: { scale: 1 },\n    animate: {\n      scale: [1, 0.7, 1.1, 1],\n      transition: { duration: DUR, times: [0, 0.3, 0.62, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n    },\n  }\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'keyboard music'}\n      {...hoverProps}\n    >\n      <rect width=\"20\" height=\"16\" x=\"2\" y=\"4\" rx=\"2\" />\n      <motion.path\n        d=\"M6 8h4\"\n        style={{ transformBox: 'view-box', transformOrigin: '8px 8px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={press}\n      />\n      <motion.path\n        d=\"M14 8h.01\"\n        style={{ transformBox: 'view-box', transformOrigin: '14px 8px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={press}\n      />\n      <motion.path\n        d=\"M18 8h.01\"\n        style={{ transformBox: 'view-box', transformOrigin: '18px 8px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={press}\n      />\n      <path d=\"M2 12h20\" />\n      <path d=\"M6 12v4\" />\n      <path d=\"M10 12v4\" />\n      <path d=\"M14 12v4\" />\n      <path d=\"M18 12v4\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'keyboard-music',\n  gesture: 'a chord lands',\n  family: 'secondary' as const,\n  section: 'Media',\n  tags: ['piano', 'midi', 'keys', 'keyboard', 'music'],\n}\n\nexport default KeyboardMusicIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/keyboard-music.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

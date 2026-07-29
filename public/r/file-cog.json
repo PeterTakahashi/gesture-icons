@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "file-cog",
+  "title": "file-cog",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/file-cog.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * File cog — it draws itself. VARIANT(file-text): the page holds still; the\n * cog's eight teeth are 45°-fold symmetric, so a one-tooth turn (wind-up,\n * overshoot, click home) lands on the same picture it left, the same\n * mechanic as cog.tsx just at a coarser fold. The page dips on the frame\n * the tooth clicks home.\n * Base geometry: Lucide `file-cog` (ISC).\n */\nconst DUR = 1.0\nconst OVERSHOOT_TURN: [number, number, number, number] = [0.5, 0, 0.3, 1.15]\n\nexport function FileCogIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'file cog'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.6, -0.15, 0],\n            transition: { duration: DUR, times: [0, 0.6, 0.74, 0.88, 1], ease: ['linear', easeOutQuart, 'linear'] },\n          },\n        }}\n      >\n        <path d=\"M15 8a1 1 0 0 1-1-1V2a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8z\" />\n        <path d=\"M20 8v12a2 2 0 0 1-2 2h-4.182\" />\n        <path d=\"M4 10.592V4a2 2 0 0 1 2-2h8\" />\n      </motion.g>\n      <circle cx=\"7\" cy=\"18\" r=\"3\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '7px 18px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -6, 51, 45],\n            transition: { duration: DUR, times: [0, 0.2, 0.6, 0.86], ease: [easeInOutCubic, OVERSHOOT_TURN, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"m3.305 19.53.923-.382\" />\n        <path d=\"m4.228 16.852-.924-.383\" />\n        <path d=\"m5.852 15.228-.383-.923\" />\n        <path d=\"m5.852 20.772-.383.924\" />\n        <path d=\"m8.148 15.228.383-.923\" />\n        <path d=\"m8.53 21.696-.382-.924\" />\n        <path d=\"m9.773 16.852.922-.383\" />\n        <path d=\"m9.773 19.148.922.383\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'file-cog',\n  gesture: 'it draws itself',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['file', 'document', 'cog'],\n}\n\nexport default FileCogIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/file-cog.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

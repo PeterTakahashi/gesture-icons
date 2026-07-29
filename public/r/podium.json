@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "podium",
+  "title": "podium",
+  "description": "Semantic animated icon — the winner steps up. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/podium.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, easeOutQuint, settleBack } from '../core/easings'\n\n/**\n * Podium — the winner steps up. The #1 block (with its flag) rises\n * proudly with a small overshoot, while the flanking blocks dip in\n * deference at the same time, then everything settles back level.\n * Base geometry: Lucide `podium` (ISC).\n */\nconst DUR = 1.0\n\nexport function PodiumIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'podium'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1.8, -1.5, 0],\n            transition: { duration: DUR, times: [0, 0.35, 0.6, 1], ease: [easeOutQuint, settleBack, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M12 6V2h-1\" />\n        <path d=\"M9 21V11a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v10\" />\n      </motion.g>\n      <motion.path\n        d=\"M9 15a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0.6, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.35, 0.6, 1], ease: [easeOutQuart, 'linear', easeInOutCubic] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'podium',\n  gesture: 'the winner steps up',\n  family: 'rigid' as const,\n  section: 'Sport & games',\n  tags: ['winner', 'rank', 'ceremony', 'podium'],\n}\n\nexport default PodiumIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/podium.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

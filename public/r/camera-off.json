@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "camera-off",
+  "title": "camera-off",
+  "description": "Semantic animated icon — it is switched off. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/camera-off.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, pen } from '../core/easings'\n\n/**\n * Camera off — it is switched off. The slash erases then pen-redraws\n * across the camera (never a fade) while the body gives one small\n * defeated sag-and-tilt about its base and settles.\n * Base geometry: Lucide `camera-off` (ISC).\n */\nconst DUR = 0.9\n\nexport function CameraOffIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'camera off'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 20px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, 2, 0],\n            rotate: [0, 2.5, 0],\n            transition: { duration: DUR, times: [0, 0.5, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M14.564 14.558a3 3 0 1 1-4.122-4.121\" />\n        <path d=\"M20 20H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 .819-.175\" />\n        <path d=\"M9.695 4.024A2 2 0 0 1 10.004 4h3.993a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v7.344\" />\n      </motion.g>\n      <motion.path\n        d=\"m2 2 20 20\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.2, 0.35, 0.85], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'camera-off',\n  gesture: 'it is switched off',\n  family: 'draw-on' as const,\n  section: 'Media',\n  tags: ['disabled', 'off', 'camera'],\n}\n\nexport default CameraOffIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/camera-off.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

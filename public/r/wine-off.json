@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "wine-off",
+  "title": "wine-off",
+  "description": "Semantic animated icon — it is switched off. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/wine-off.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, pen } from '../core/easings'\n\n/**\n * Wine off — it is switched off. The slash erases then pen-redraws itself,\n * the same beat as eye-off.tsx, while the glass gives one small defeated\n * sag-and-tilt and straightens back up. The slash is Lucide's own `<line>`\n * element here rather than a `<path>` — pathLength drives it exactly the\n * same way.\n * Base geometry: Lucide `wine-off` (ISC).\n */\nconst DUR = 0.95\n\nexport function WineOffIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'wine off'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '11px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, 2.4, 2.4, 0],\n            rotate: [0, 3, 3, 0],\n            transition: { duration: DUR, times: [0, 0.4, 0.62, 0.92], ease: [easeInOutCubic, 'linear', easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M8 22h8\" />\n        <path d=\"M7 10h3m7 0h-1.343\" />\n        <path d=\"M12 15v7\" />\n        <path d=\"M7.307 7.307A12.33 12.33 0 0 0 7 10a5 5 0 0 0 7.391 4.391M8.638 2.981C8.75 2.668 8.872 2.34 9 2h6c1.5 4 2 6 2 8 0 .407-.05.809-.145 1.198\" />\n      </motion.g>\n      <motion.line\n        x1=\"2\" x2=\"22\" y1=\"2\" y2=\"22\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.25, 0.4, 0.8], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'wine-off',\n  gesture: 'it is switched off',\n  family: 'draw-on' as const,\n  section: 'Food & drink',\n  tags: ['disabled', 'off', 'wine'],\n}\n\nexport default WineOffIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/wine-off.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "shapes",
+  "title": "shapes",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/shapes.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen, settleBack } from '../core/easings'\n\n/**\n * Shapes — it draws itself. There are no connector lines in this glyph, so\n * each shape draws itself in turn — triangle, then square, then circle —\n * erasing fast and pen-redrawing on its own beat, popping softly the\n * instant its own stroke completes, git-branch.tsx's language applied to\n * three independent shapes instead of one line.\n * Base geometry: Lucide `shapes` (ISC).\n */\nconst DUR = 1.0\n\nfunction shape(delay: number): { path: Variants; pop: Variants } {\n  return {\n    path: {\n      normal: { pathLength: 1 },\n      animate: {\n        pathLength: [1, 0.001, 0.001, 1],\n        transition: { duration: DUR, delay, times: [0, 0.18, 0.3, 0.62], ease: [easeInCubic, 'linear', pen] },\n      },\n    },\n    pop: {\n      normal: { scale: 1 },\n      animate: {\n        scale: [1, 1, 1.15, 1],\n        transition: { duration: DUR, delay, times: [0, 0.6, 0.75, 0.92], ease: ['linear', settleBack, 'easeOut'] },\n      },\n    },\n  }\n}\n\nexport function ShapesIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const triangle = shape(0)\n  const square = shape(0.15)\n  const circle = shape(0.3)\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'shapes'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12.2px 6.2px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={triangle.pop}\n      >\n        <motion.path\n          d=\"M8.3 10a.7.7 0 0 1-.626-1.079L11.4 3a.7.7 0 0 1 1.198-.043L16.3 8.9a.7.7 0 0 1-.572 1.1Z\"\n          initial=\"normal\"\n          animate={controls}\n          variants={triangle.path}\n        />\n      </motion.g>\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '6.5px 17.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={square.pop}\n      >\n        <motion.rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\" initial=\"normal\" animate={controls} variants={square.path} />\n      </motion.g>\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '17.5px 17.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={circle.pop}\n      >\n        <motion.circle cx=\"17.5\" cy=\"17.5\" r=\"3.5\" initial=\"normal\" animate={controls} variants={circle.path} />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'shapes',\n  gesture: 'it draws itself',\n  family: 'draw-on' as const,\n  section: 'Shapes',\n  tags: ['nodes', 'structure', 'shapes'],\n}\n\nexport default ShapesIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/shapes.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

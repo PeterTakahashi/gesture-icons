@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "list-x",
+  "title": "list-x",
+  "description": "Semantic animated icon — it refuses. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/list-x.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * List x — it refuses. VARIANT(x): only the X shakes \"no\" — a decaying\n * rotation about its own center (18px, 12px, the midpoint of its two\n * diagonals) — while the three list lines hold perfectly still.\n * Base geometry: Lucide `list-x` (ISC).\n */\nconst DUR = 0.85\n\nexport function ListXIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'list x'}\n      {...hoverProps}\n    >\n      <path d=\"M16 5H3\" />\n      <path d=\"M11 12H3\" />\n      <path d=\"M16 19H3\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '18px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -10, 8, -5, 3, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.36, 0.56, 0.76, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m15.5 9.5 5 5\" />\n        <path d=\"m20.5 9.5-5 5\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'list-x',\n  gesture: 'it refuses',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['cancel', 'remove', 'list'],\n}\n\nexport default ListXIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/list-x.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

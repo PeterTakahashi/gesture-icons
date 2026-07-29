@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "line-squiggle",
+  "title": "line-squiggle",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/line-squiggle.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Line squiggle — it does what it means. VARIANT(waves): this glyph is a\n * single continuous stroke, so there is no second bar to stagger against —\n * instead the whole line does a decaying shimmy along x, the same\n * lag-and-settle shape as bell.tsx's swing, landing dead still.\n * Base geometry: Lucide `line-squiggle` (ISC).\n */\nconst DUR = 1.0\n\nexport function LineSquiggleIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'line squiggle'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M7 3.5c5-2 7 2.5 3 4C1.5 10 2 15 5 16c5 2 9-10 14-7s.5 13.5-4 12c-5-2.5.5-11 6-2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -1.5, 1.3, -0.9, 0.5, -0.2, 0],\n            transition: { duration: DUR, times: [0, 0.16, 0.36, 0.54, 0.7, 0.86, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'line-squiggle',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['wave', 'signal', 'line', 'squiggle'],\n}\n\nexport default LineSquiggleIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/line-squiggle.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

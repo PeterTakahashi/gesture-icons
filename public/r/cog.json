@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cog",
+  "title": "cog",
+  "description": "Semantic animated icon — the gears mesh. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cog.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Cog — the gears mesh. Lucide's cog is 12-fold symmetric (a tooth every\n * 30°), so the outer ring's one-tooth turn lands on the same picture it\n * left — wind-up first, then the click. The inner hub counter-rotates a\n * shorter arc on the same clock and returns home, reading as the meshed\n * transmission passing through it (a plain circle has no marks to free-land\n * against, so it resets to 0 rather than landing free like the ring does).\n * Base geometry: Lucide `cog` (ISC).\n */\nconst DUR = 0.9\nconst OVERSHOOT_TURN: [number, number, number, number] = [0.5, 0, 0.3, 1.15]\n\nexport function CogIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cog'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -6, 34, 30],\n            transition: { duration: DUR, times: [0, 0.18, 0.6, 1], ease: [easeInOutCubic, OVERSHOOT_TURN, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M11 10.27 7 3.34\" />\n        <path d=\"m11 13.73-4 6.93\" />\n        <path d=\"M12 22v-2\" />\n        <path d=\"M12 2v2\" />\n        <path d=\"M14 12h8\" />\n        <path d=\"m17 20.66-1-1.73\" />\n        <path d=\"m17 3.34-1 1.73\" />\n        <path d=\"M2 12h2\" />\n        <path d=\"m20.66 17-1.73-1\" />\n        <path d=\"m20.66 7-1.73 1\" />\n        <path d=\"m3.34 17 1.73-1\" />\n        <path d=\"m3.34 7 1.73 1\" />\n        <circle cx=\"12\" cy=\"12\" r=\"8\" />\n      </motion.g>\n      <motion.circle\n        cx=\"12\" cy=\"12\" r=\"2\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 5, -18, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.62, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cog',\n  gesture: 'the gears mesh',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['settings', 'machine', 'cog'],\n}\n\nexport default CogIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cog.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

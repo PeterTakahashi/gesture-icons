@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "monitor-x",
+  "title": "monitor-x",
+  "description": "Semantic animated icon — it is refused. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/monitor-x.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Monitor X — it is refused. A head-shake \"no\": the X rotates about its\n * own center, decaying with each swing (x.tsx's shake), while the monitor\n * body and its stand hold still.\n * Base geometry: Lucide `monitor-x` (ISC).\n */\nconst DUR = 0.85\n\nexport function MonitorXIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'monitor x'}\n      {...hoverProps}\n    >\n      <rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\" />\n      <path d=\"M12 17v4\" />\n      <path d=\"M8 21h8\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 10px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -14, 11, -7, 4, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.36, 0.56, 0.76, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m14.5 12.5-5-5\" />\n        <path d=\"m9.5 12.5 5-5\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'monitor-x',\n  gesture: 'it is refused',\n  family: 'rigid' as const,\n  section: 'Devices',\n  tags: ['cancel', 'remove', 'monitor'],\n}\n\nexport default MonitorXIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/monitor-x.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

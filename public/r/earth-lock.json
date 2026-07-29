@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "earth-lock",
+  "title": "earth-lock",
+  "description": "Semantic animated icon — it is locked. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/earth-lock.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, gravity, settleBack } from '../core/easings'\n\n/**\n * Earth lock — it is locked. VARIANT(lock): the mini shackle lifts clear,\n * holds a beat, and drops shut with the lock body taking the hit exactly on\n * the contact frame — the same beat as `lock.tsx`, scaled to the badge. The\n * earth's rim and continent lines never move; a planet doesn't react to a\n * padlock clicking shut on its corner.\n * Base geometry: Lucide `earth-lock` (ISC).\n */\nconst DUR = 1.0\n\nexport function EarthLockIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'earth lock'}\n      {...hoverProps}\n    >\n      <path d=\"M7 3.34V5a3 3 0 0 0 3 3\" />\n      <path d=\"M11 21.95V18a2 2 0 0 0-2-2 2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05\" />\n      <path d=\"M21.54 15H17a2 2 0 0 0-2 2v4.54\" />\n      <path d=\"M12 2a10 10 0 1 0 9.54 13\" />\n      <motion.path\n        d=\"M20 6V4a2 2 0 1 0-4 0v2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1.3, -1.3, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.55, 0.8], ease: [easeOutQuart, 'linear', gravity] },\n          },\n        }}\n      />\n      <motion.rect\n        width=\"8\" height=\"5\" x=\"14\" y=\"6\" rx=\"1\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0, 0.6, 0],\n            transition: { duration: DUR, times: [0, 0.6, 0.78, 0.85, 1], ease: ['linear', 'linear', gravity, settleBack] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'earth-lock',\n  gesture: 'it is locked',\n  family: 'rigid' as const,\n  section: 'Transport',\n  tags: ['secure', 'private', 'earth', 'lock'],\n}\n\nexport default EarthLockIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/earth-lock.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

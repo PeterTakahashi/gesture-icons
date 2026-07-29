@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "edit-2",
+  "title": "edit-2",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/edit-2.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, pen } from '../core/easings'\n\n/**\n * Edit 2 — VARIANT(pencil): the same glyph as pencil.tsx, so it writes the\n * same way — tip-pivoted at (2, 21.35) with a small x/y jot.\n * Base geometry: Lucide `edit-2` (ISC).\n */\nconst DUR = 0.85\n\nexport function Edit2Icon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'edit 2'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\"\n        style={{ transformBox: 'view-box', transformOrigin: '2px 21.35px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, x: 0, y: 0 },\n          animate: {\n            rotate: [0, -9, 4, 0],\n            x: [0, 0, -1, 0],\n            y: [0, 0, 1, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.65, 1], ease: [easeInOutCubic, pen, easeInOutCubic] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'edit-2',\n  gesture: 'it draws itself',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['edit', 'write'],\n}\n\nexport default Edit2Icon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/edit-2.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

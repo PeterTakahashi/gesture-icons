@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "vegan",
+  "title": "vegan",
+  "description": "Semantic animated icon — it sprouts. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/vegan.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Vegan — it sprouts. VARIANT(sprout): the circular band holds still while\n * the V-shaped stem rises with a scaleY lift about its base tip, and the\n * small leaf at its end unfolds rotate ±4 about the point where it attaches\n * — a day's growth in one beat.\n * Base geometry: Lucide `vegan` (ISC).\n */\nconst DUR = 1.0\n\nexport function VeganIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'vegan'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M16 8q6 0 6-6-6 0-6 6\"\n        style={{ transformBox: 'view-box', transformOrigin: '16px 8px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 4, 0],\n            transition: { duration: DUR, times: [0, 0.45, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <path d=\"M17.41 3.59a10 10 0 1 0 3 3\" />\n      <motion.path\n        d=\"M2 2a26.6 26.6 0 0 1 10 20c.9-6.82 1.5-9.5 4-14\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 22px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 1.06, 1],\n            transition: { duration: DUR, times: [0, 0.45, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'vegan',\n  gesture: 'it sprouts',\n  family: 'rigid' as const,\n  section: 'Food & drink',\n  tags: ['plant', 'diet', 'green', 'vegan'],\n}\n\nexport default VeganIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/vegan.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

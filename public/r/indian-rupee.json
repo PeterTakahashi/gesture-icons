@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "indian-rupee",
+  "title": "indian-rupee",
+  "description": "Semantic animated icon — it lands with intent. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/indian-rupee.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Indian rupee — it rings up. Same stamp-with-a-turn as dollar-sign.tsx:\n * press, twist a hair, pop past size, settle — the till closing on a sale.\n * Base geometry: Lucide `indian-rupee` (ISC).\n */\nconst DUR = 0.7\n\nexport function IndianRupeeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'indian rupee'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1, rotate: 0 },\n          animate: {\n            scale: [1, 0.9, 1.12, 1],\n            rotate: [0, -4, 2, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M6 3h12\" />\n        <path d=\"M6 8h12\" />\n        <path d=\"m6 13 8.5 8\" />\n        <path d=\"M6 13h3\" />\n        <path d=\"M9 13c6.667 0 6.667-10 0-10\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'indian-rupee',\n  gesture: 'it lands with intent',\n  family: 'rigid' as const,\n  section: 'Money & commerce',\n  tags: ['money', 'currency', 'indian', 'rupee'],\n}\n\nexport default IndianRupeeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/indian-rupee.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

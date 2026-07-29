@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "printer-x",
+  "title": "printer-x",
+  "description": "Semantic animated icon — it is refused. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/printer-x.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Printer X — it is refused. The X shakes \"no\" — a decaying rotation about\n * its own center — while the printer body holds completely still; the\n * refusal belongs to the mark, not the machine.\n * Base geometry: Lucide `printer-x` (ISC).\n */\nconst DUR = 0.85\n\nexport function PrinterXIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'printer x'}\n      {...hoverProps}\n    >\n      <path d=\"M12.531 22H7a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h6.377\" />\n      <path d=\"M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v1.5\" />\n      <path d=\"M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '19px 19px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -10, 8, -5, 3, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.36, 0.56, 0.76, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m16.5 16.5 5 5\" />\n        <path d=\"m16.5 21.5 5-5\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'printer-x',\n  gesture: 'it is refused',\n  family: 'rigid' as const,\n  section: 'Devices',\n  tags: ['cancel', 'remove', 'printer'],\n}\n\nexport default PrinterXIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/printer-x.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chevron-last",
+  "title": "chevron-last",
+  "description": "Semantic animated icon — it makes its move. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/chevron-last.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Chevron last — the chevron nudges toward the bar it means to reach: a\n * small wind-up away, then the drive right toward the edge stop. The bar\n * takes a 1-unit contact nudge exactly on the frame the chevron arrives,\n * then both settle home.\n * Base geometry: Lucide `chevron-last` (ISC).\n */\nconst DUR = 0.85\n\nexport function ChevronLastIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'chevron last'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"m7 18 6-6-6-6\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -0.7, 2.3, 2.3, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.55, 0.72, 1], ease: [easeInOutCubic, easeOutQuart, 'linear', easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M17 6v12\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, 0, 1, 0],\n            transition: { duration: DUR, times: [0, 0.55, 0.7, 0.9], ease: ['linear', easeOutQuart, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'chevron-last',\n  gesture: 'it makes its move',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['navigate', 'step', 'chevron', 'last'],\n}\n\nexport default ChevronLastIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/chevron-last.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

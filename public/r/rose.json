@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "rose",
+  "title": "rose",
+  "description": "Semantic animated icon — it blooms for you. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/rose.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Rose — VARIANT(flower-2): it blooms for you. The bloom (the folded petal\n * marks and the center) turns toward the light and takes a small proud\n * swell, hinged at the neck where the stem meets the head — the same\n * heliotropic turn as flower-2, plus the bloom scale this spec asks for.\n * The stem and the thorn-marked leaf stand still beneath it.\n * Base geometry: Lucide `rose` (ISC).\n */\nconst DUR = 0.9\n\nexport function RoseIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'rose'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '9.77px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, scale: 1 },\n          animate: {\n            rotate: [0, -7, 3, 0],\n            scale: [1, 1.06, 1.02, 1],\n            transition: { duration: DUR, times: [0, 0.4, 0.75, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M17 10h-1a4 4 0 1 1 4-4v.534\" />\n        <path d=\"M17 6h1a4 4 0 0 1 1.42 7.74l-2.29.87a6 6 0 0 1-5.339-10.68l2.069-1.31\" />\n        <circle cx=\"17\" cy=\"8\" r=\"2\" />\n      </motion.g>\n      <path d=\"M4.5 17c2.8-.5 4.4 0 5.5.8s1.8 2.2 2.3 3.7c-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2\" />\n      <path d=\"M9.77 12C4 15 2 22 2 22\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'rose',\n  gesture: 'it blooms for you',\n  family: 'rigid' as const,\n  section: 'Animals & nature',\n  tags: ['flower', 'romance', 'love', 'rose'],\n}\n\nexport default RoseIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/rose.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

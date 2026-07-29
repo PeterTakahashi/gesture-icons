@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "philippine-peso",
+  "title": "philippine-peso",
+  "description": "Semantic animated icon — it lands with intent. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/philippine-peso.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Philippine peso — it rings up. A stamp with a tiny turn: the whole glyph\n * presses down, twists a hair, and pops back past its own size before\n * settling — cha-ching without the sound, same beat as dollar-sign.tsx.\n * Base geometry: Lucide `philippine-peso` (ISC).\n */\nconst DUR = 0.7\n\nexport function PhilippinePesoIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'philippine peso'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1, rotate: 0 },\n          animate: {\n            scale: [1, 0.9, 1.12, 1],\n            rotate: [0, -4, 2, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M20 11H4\" />\n        <path d=\"M20 7H4\" />\n        <path d=\"M7 21V4a1 1 0 0 1 1-1h4a1 1 0 0 1 0 12H7\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'philippine-peso',\n  gesture: 'it lands with intent',\n  family: 'rigid' as const,\n  section: 'Charts & math',\n  tags: ['money', 'currency', 'philippine', 'peso'],\n}\n\nexport default PhilippinePesoIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/philippine-peso.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

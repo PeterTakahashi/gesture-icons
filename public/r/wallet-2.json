@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "wallet-2",
+  "title": "wallet-2",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/wallet-2.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Wallet 2 — the snap gets pressed. The dot is the wallet's clasp, so it\n * takes the stamp: a press down past its own size, a pop back with\n * overshoot — the click of the wallet being opened — while the body gives\n * the same subtle give as wallet.tsx, timed to the same click.\n * Base geometry: Lucide `wallet-2` (ISC).\n */\nconst DUR = 0.75\n\nexport function Wallet2Icon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'wallet 2'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M7 7h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.985, 1, 1],\n            transition: { duration: DUR, times: [0, 0.3, 0.6, 1], ease: easeOutQuart },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M17 14h.01\"\n        style={{ transformBox: 'view-box', transformOrigin: '17px 14px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.5, 1.35, 1],\n            transition: { duration: DUR, times: [0, 0.24, 0.55, 0.85], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'wallet-2',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Money & commerce',\n  tags: ['money', 'payment', 'wallet'],\n}\n\nexport default Wallet2Icon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/wallet-2.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

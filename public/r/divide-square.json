@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "divide-square",
+  "title": "divide-square",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/divide-square.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Divide square — the frame breathes once while the ÷ inside performs\n * divide.tsx's own verb: the two dots nudge apart vertically and return, the\n * bar takes a slight press right as they reach their widest point.\n * Base geometry: Lucide `divide-square` (ISC).\n */\nconst DUR = 0.9\n\nexport function DivideSquareIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'divide square'}\n      {...hoverProps}\n    >\n      <motion.rect\n        width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" ry=\"2\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.03, 1],\n            transition: { duration: DUR, times: [0, 0.45, 0.85], ease: easeOutQuart },\n          },\n        }}\n      />\n      <motion.line\n        x1=\"12\" x2=\"12\" y1=\"8\" y2=\"8\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y1: 8, y2: 8 },\n          animate: {\n            y1: [8, 8.3, 6.5, 8],\n            y2: [8, 8.3, 6.5, 8],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, easeOutQuart, settleBack] },\n          },\n        }}\n      />\n      <motion.line\n        x1=\"8\" x2=\"16\" y1=\"12\" y2=\"12\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 1, 0.75, 1.1, 1],\n            transition: { duration: DUR, times: [0, 0.4, 0.55, 0.75, 1], ease: ['linear', easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.line\n        x1=\"12\" x2=\"12\" y1=\"16\" y2=\"16\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y1: 16, y2: 16 },\n          animate: {\n            y1: [16, 15.7, 17.5, 16],\n            y2: [16, 15.7, 17.5, 16],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, easeOutQuart, settleBack] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'divide-square',\n  gesture: 'it draws itself',\n  family: 'rigid' as const,\n  section: 'Charts & math',\n  tags: ['frame', 'mark', 'divide', 'square'],\n}\n\nexport default DivideSquareIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/divide-square.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

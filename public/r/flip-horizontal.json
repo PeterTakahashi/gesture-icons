@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "flip-horizontal",
+  "title": "flip-horizontal",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/flip-horizontal.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Flip horizontal — the two mirrored halves swap emphasis about the axis:\n * the left bracket grows as the right shrinks, then they reverse, each\n * scaling about its own center — a flip considered, not committed. The\n * dashed axis line holds still.\n * Base geometry: Lucide `flip-horizontal` (ISC).\n */\nconst DUR = 1.0\n\nexport function FlipHorizontalIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'flip horizontal'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M8 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h3\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.06, 1, 0.94, 1],\n            transition: { duration: DUR, times: [0, 0.25, 0.5, 0.75, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.94, 1, 1.06, 1],\n            transition: { duration: DUR, times: [0, 0.25, 0.5, 0.75, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <path d=\"M12 20v2\" />\n      <path d=\"M12 14v2\" />\n      <path d=\"M12 8v2\" />\n      <path d=\"M12 2v2\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'flip-horizontal',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['flip', 'mirror', 'transform', 'horizontal'],\n}\n\nexport default FlipHorizontalIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/flip-horizontal.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

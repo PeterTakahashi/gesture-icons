@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mars",
+  "title": "mars",
+  "description": "Semantic animated icon — the shield raises. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/mars.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Mars — the arrow asserts its direction. The arrowhead and its shaft (the\n * part of the glyph that actually points somewhere) wind up back toward the\n * circle, then drive out along their own up-right diagonal past the tip,\n * and settle home — the same NUDGE-along-its-own-axis language as\n * arrow-up-right, scaled up. The circle stays put; it isn't the part with a\n * direction.\n * Base geometry: Lucide `mars` (ISC).\n */\nconst DUR = 0.8\n\nexport function MarsIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'mars'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -0.9, 1.8, 0],\n            y: [0, 0.9, -1.8, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.62, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M16 3h5v5\" />\n        <path d=\"m21 3-6.75 6.75\" />\n      </motion.g>\n      <circle cx=\"10\" cy=\"14\" r=\"6\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'mars',\n  gesture: 'the shield raises',\n  family: 'rigid' as const,\n  section: 'People & emotion',\n  tags: ['gender', 'male', 'symbol', 'mars'],\n}\n\nexport default MarsIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/mars.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

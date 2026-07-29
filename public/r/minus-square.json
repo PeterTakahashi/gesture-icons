@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "minus-square",
+  "title": "minus-square",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/minus-square.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * Minus square — the inner mark performs its own verb inside a still frame:\n * the dash NUDGEs down and back like a key being pressed, while the frame\n * takes one small breath. VARIANT(minus-circle).\n * Base geometry: Lucide `minus-square` (ISC).\n */\nconst DUR = 0.8\n\nexport function MinusSquareIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'minus square'}\n      {...hoverProps}\n    >\n      <motion.rect\n        width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.03, 1],\n            transition: { duration: DUR, times: [0, 0.45, 0.85], ease: easeOutQuart },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M8 12h8\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -0.4, 1.2, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.55, 0.85], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'minus-square',\n  gesture: 'it draws itself',\n  family: 'rigid' as const,\n  section: 'Shapes',\n  tags: ['frame', 'mark', 'minus', 'square'],\n}\n\nexport default MinusSquareIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/minus-square.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

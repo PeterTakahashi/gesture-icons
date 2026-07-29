@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "radiation",
+  "title": "radiation",
+  "description": "Semantic animated icon — it emits. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/radiation.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuint, settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * Radiation — it emits. The trefoil is 3-fold symmetric, so a 120° turn\n * about its center is a free landing — visually identical to rest. A\n * small counter wind-up, then the turn, and the center dot pulses once\n * exactly on the landing frame.\n * Base geometry: Lucide `radiation` (ISC).\n */\nconst DUR = 1.0\n\nexport function RadiationIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'radiation'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -10, 120],\n            transition: { duration: DUR, times: [0, 0.18, 0.85], ease: [easeInOutCubic, easeOutQuint] },\n          },\n        }}\n      >\n        <path d=\"M14 15.4641a4 4 0 0 1-4 0L7.52786 19.74597 A 1 1 0 0 0 7.99303 21.16211 10 10 0 0 0 16.00697 21.16211 1 1 0 0 0 16.47214 19.74597z\" />\n        <path d=\"M16 12a4 4 0 0 0-2-3.464l2.472-4.282a1 1 0 0 1 1.46-.305 10 10 0 0 1 4.006 6.94A1 1 0 0 1 21 12z\" />\n        <path d=\"M8 12a4 4 0 0 1 2-3.464L7.528 4.254a1 1 0 0 0-1.46-.305 10 10 0 0 0-4.006 6.94A1 1 0 0 0 3 12z\" />\n      </motion.g>\n      <motion.path\n        d=\"M12 12h.01\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1, 1.4, 1],\n            transition: { duration: DUR, times: [0, 0.8, 0.92, 1], ease: ['linear', settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'radiation',\n  gesture: 'it emits',\n  family: 'rigid' as const,\n  section: 'Security',\n  tags: ['nuclear', 'hazard', 'radiation'],\n}\n\nexport default RadiationIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/radiation.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

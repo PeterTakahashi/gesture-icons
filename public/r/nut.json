@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "nut",
+  "title": "nut",
+  "description": "Semantic animated icon — it threads on. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/nut.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuint } from '../core/easings'\n\n/**\n * Nut — it threads on. A hex nut is 6-fold symmetric, so a 60° turn is a\n * free landing — visually identical to rest. It turns in two ratchet\n * clicks (a small counter wind-up, a first click, a dip as the wrench\n * resets, a second click home) rather than one smooth spin, the way a\n * hand actually tightens one.\n * Base geometry: Lucide `nut` (ISC).\n */\nconst DUR = 1.0\n\nexport function NutIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'nut'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -6, 30, 22, 60],\n            transition: {\n              duration: DUR,\n              times: [0, 0.15, 0.42, 0.58, 0.85],\n              ease: [easeInOutCubic, [0.5, 0, 0.3, 1.1], easeInOutCubic, easeOutQuint],\n            },\n          },\n        }}\n      >\n        <path d=\"M12 4V2\" />\n        <path d=\"M5 10v4a7.004 7.004 0 0 0 5.277 6.787c.412.104.802.292 1.102.592L12 22l.621-.621c.3-.3.69-.488 1.102-.592A7.003 7.003 0 0 0 19 14v-4\" />\n        <path d=\"M12 4C8 4 4.5 6 4 8c-.243.97-.919 1.952-2 3 1.31-.082 1.972-.29 3-1 .54.92.982 1.356 2 2 1.452-.647 1.954-1.098 2.5-2 .595.995 1.151 1.427 2.5 2 1.31-.621 1.862-1.058 2.5-2 .629.977 1.162 1.423 2.5 2 1.209-.548 1.68-.967 2-2 1.032.916 1.683 1.157 3 1-1.297-1.036-1.758-2.03-2-3-.5-2-4-4-8-4Z\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'nut',\n  gesture: 'it threads on',\n  family: 'rigid' as const,\n  section: 'Tools',\n  tags: ['hardware', 'bolt', 'nut'],\n}\n\nexport default NutIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/nut.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

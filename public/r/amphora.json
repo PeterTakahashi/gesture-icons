@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "amphora",
+  "title": "amphora",
+  "description": "Semantic animated icon — it is set on the shelf. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/amphora.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, easeOutQuint } from '../core/easings'\n\n/**\n * Amphora — it is set on the shelf. Museum hands: a careful lift with a\n * small cautious rotation, then a fragile, no-overshoot descent — nothing\n * this old gets a bouncy landing.\n * Base geometry: Lucide `amphora` (ISC).\n */\nconst DUR = 1.2\n\nexport function AmphoraIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'amphora'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 22px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, -1.5, -1.5, 0],\n            rotate: [0, -3, 2, 0],\n            transition: {\n              duration: DUR,\n              y: { times: [0, 0.3, 0.68, 1], ease: [easeOutQuart, 'linear', easeOutQuint] },\n              rotate: { times: [0, 0.4, 0.75, 1], ease: [easeOutQuart, easeOutQuart, easeOutQuint] },\n            },\n          },\n        }}\n      >\n        <path d=\"M10 2v5.632c0 .424-.272.795-.653.982A6 6 0 0 0 6 14c.006 4 3 7 5 8\" />\n        <path d=\"M10 5H8a2 2 0 0 0 0 4h.68\" />\n        <path d=\"M14 2v5.632c0 .424.272.795.652.982A6 6 0 0 1 18 14c0 4-3 7-5 8\" />\n        <path d=\"M14 5h2a2 2 0 0 1 0 4h-.68\" />\n        <path d=\"M18 22H6\" />\n        <path d=\"M9 2h6\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'amphora',\n  gesture: 'it is set on the shelf',\n  family: 'rigid' as const,\n  section: 'Objects',\n  tags: ['vase', 'ancient', 'pottery', 'amphora'],\n}\n\nexport default AmphoraIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/amphora.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

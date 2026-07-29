@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "file-clock",
+  "title": "file-clock",
+  "description": "Semantic animated icon — a moment ticks by. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/file-clock.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * File clock — a moment ticks by. VARIANT(file-text): the page holds still\n * except for a small dip on the frame the clock settles; only the hand\n * ticks forward about the clock's own center and comes back — the face\n * itself never moves.\n * Base geometry: Lucide `file-clock` (ISC).\n */\nconst DUR = 1.0\n\nexport function FileClockIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'file clock'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.5, 0.62, 0.85], ease: ['linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M16 22h2a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v2.85\" />\n        <path d=\"M14 2v5a1 1 0 0 0 1 1h5\" />\n      </motion.g>\n      <circle cx=\"8\" cy=\"16\" r=\"6\" />\n      <motion.path\n        d=\"M8 14v2.2l1.6 1\"\n        style={{ transformBox: 'view-box', transformOrigin: '8px 16px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -6, 20, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.62, 0.85], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'file-clock',\n  gesture: 'a moment ticks by',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['file', 'document', 'clock'],\n}\n\nexport default FileClockIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/file-clock.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

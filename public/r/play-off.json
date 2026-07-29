@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "play-off",
+  "title": "play-off",
+  "description": "Semantic animated icon — it is switched off. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/play-off.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, pen } from '../core/easings'\n\n/**\n * Play off — it is switched off. The slash erases and pen-redraws across the\n * triangle while it gives one small defeated tilt about its own center —\n * a 2-unit sag that settles rather than bounces.\n * Base geometry: Lucide `play-off` (ISC).\n */\nconst DUR = 0.9\n\nexport function PlayOffIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'play off'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '11px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, y: 0 },\n          animate: {\n            rotate: [0, 3, 0],\n            y: [0, 1.5, 0],\n            transition: { duration: DUR, times: [0, 0.45, 0.85], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m10.215 4.56 9.79 5.71a2 2 0 0 1 .003 3.458l-.393.23\" />\n        <path d=\"m16.042 16.042-8.034 4.686A2 2 0 0 1 5 19V5\" />\n      </motion.g>\n      <motion.path\n        d=\"m2 2 20 20\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.22, 0.38, 0.8], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'play-off',\n  gesture: 'it is switched off',\n  family: 'draw-on' as const,\n  section: 'Communication',\n  tags: ['disabled', 'off', 'play'],\n}\n\nexport default PlayOffIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/play-off.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

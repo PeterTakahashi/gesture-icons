@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "heart-plus",
+  "title": "heart-plus",
+  "description": "Semantic animated icon — one more is added. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/heart-plus.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Heart plus — one more is added. VARIANT: the plus pops — dips to nothing\n * and overshoots back, the same beat as `user-plus.tsx` — while the heart\n * dips y+0.5 exactly on the frame the plus lands; the heart's own outline\n * never changes shape.\n * Base geometry: Lucide `heart-plus` (ISC).\n */\nconst DUR = 1.0\n\nexport function HeartPlusIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'heart plus'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"m14.479 19.374-.971.939a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5a5.2 5.2 0 0 1-.219 1.49\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.5, 0.62, 0.85], ease: ['linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '18px 15px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.001, 1.3, 1],\n            transition: { duration: DUR, times: [0, 0.25, 0.55, 0.85], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M15 15h6\" />\n        <path d=\"M18 12v6\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'heart-plus',\n  gesture: 'one more is added',\n  family: 'rigid' as const,\n  section: 'Commerce & feedback',\n  tags: ['add', 'new', 'heart', 'plus'],\n}\n\nexport default HeartPlusIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/heart-plus.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

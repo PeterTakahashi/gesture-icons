@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "clipboard-edit",
+  "title": "clipboard-edit",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/clipboard-edit.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, pen } from '../core/easings'\n\n/**\n * Clipboard edit — the pen writes, tip-pivoted exactly as pencil.tsx does: a\n * wind-up rotation with a small jot in x/y about the point where its tip\n * meets the page, while the clipboard beneath it holds perfectly still.\n * Base geometry: Lucide `clipboard-edit` (ISC).\n */\nconst DUR = 0.85\n\nexport function ClipboardEditIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'clipboard edit'}\n      {...hoverProps}\n    >\n      <path d=\"M16 4h2a2 2 0 0 1 2 2v2\" />\n      <path d=\"M8 22H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2\" />\n      <rect x=\"8\" y=\"2\" width=\"8\" height=\"4\" rx=\"1\" />\n      <motion.path\n        d=\"M21.34 15.664a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 21.4px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, x: 0, y: 0 },\n          animate: {\n            rotate: [0, -9, 4, 0],\n            x: [0, 0, -1, 0],\n            y: [0, 0, 1, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.65, 1], ease: [easeInOutCubic, pen, easeInOutCubic] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'clipboard-edit',\n  gesture: 'it draws itself',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['edit', 'write', 'clipboard'],\n}\n\nexport default ClipboardEditIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/clipboard-edit.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

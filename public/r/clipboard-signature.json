@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "clipboard-signature",
+  "title": "clipboard-signature",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/clipboard-signature.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, pen } from '../core/easings'\n\n/**\n * Clipboard signature — the pen jots, tip-pivoted, then the underline\n * pen-redraws right after it lifts — the signature landing under its own\n * mark. The clipboard beneath holds still throughout.\n * Base geometry: Lucide `clipboard-signature` (ISC).\n */\nconst DUR = 1.1\n\nexport function ClipboardSignatureIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'clipboard signature'}\n      {...hoverProps}\n    >\n      <rect width=\"8\" height=\"4\" x=\"8\" y=\"2\" rx=\"1\" />\n      <path d=\"M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-.5\" />\n      <path d=\"M16 4h2a2 2 0 0 1 1.73 1\" />\n      <motion.path\n        d=\"M21.378 12.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z\"\n        style={{ transformBox: 'view-box', transformOrigin: '13px 17.4px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, x: 0, y: 0 },\n          animate: {\n            rotate: [0, -9, 4, 0],\n            x: [0, 0, -1, 0],\n            y: [0, 0, 1, 0],\n            transition: { duration: DUR * 0.65, times: [0, 0.3, 0.65, 1], ease: [easeInOutCubic, pen, easeInOutCubic] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M8 18h1\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.62, 0.7, 0.95], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'clipboard-signature',\n  gesture: 'it draws itself',\n  family: 'draw-on' as const,\n  section: 'Text & editing',\n  tags: ['edit', 'write', 'clipboard', 'signature'],\n}\n\nexport default ClipboardSignatureIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/clipboard-signature.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

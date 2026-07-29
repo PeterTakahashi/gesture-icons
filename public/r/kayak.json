@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "kayak",
+  "title": "kayak",
+  "description": "Semantic animated icon — it paddles a stroke. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/kayak.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Kayak — it paddles a stroke. The hull rocks about its own center while\n * the whole boat drives forward on the stroke and glides, drifting back as\n * the push fades — one stroke, glide, drift back.\n * Base geometry: Lucide `kayak` (ISC).\n */\nconst DUR = 1.0\n\nexport function KayakIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'kayak'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, x: 0 },\n          animate: {\n            rotate: [0, -3, 3, -1, 0],\n            x: [0, 2, 0],\n            transition: {\n              duration: DUR,\n              rotate: { times: [0, 0.22, 0.46, 0.7, 1], ease: easeInOutCubic },\n              x: { times: [0, 0.5, 1], ease: [easeOutQuart, easeInOutCubic] },\n            },\n          },\n        }}\n      >\n        <path d=\"M18 17a1 1 0 0 0-1 1v1a2 2 0 1 0 2-2z\" />\n        <path d=\"M20.97 3.61a.45.45 0 0 0-.58-.58C10.2 6.6 6.6 10.2 3.03 20.39a.45.45 0 0 0 .58.58C13.8 17.4 17.4 13.8 20.97 3.61\" />\n        <path d=\"m6.707 6.707 10.586 10.586\" />\n        <path d=\"M7 5a2 2 0 1 0-2 2h1a1 1 0 0 0 1-1z\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'kayak',\n  gesture: 'it paddles a stroke',\n  family: 'rigid' as const,\n  section: 'Sport & games',\n  tags: ['water', 'boat', 'outdoor', 'kayak'],\n}\n\nexport default KayakIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/kayak.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

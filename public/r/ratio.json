@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ratio",
+  "title": "ratio",
+  "description": "Semantic animated icon — it makes its move. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/ratio.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Ratio — it makes its move. There is no separate corner handle here, only\n * the two frames themselves — so each frame IS its own handle: the tall\n * portrait frame NUDGEs along its long (vertical) axis, the wide landscape\n * frame NUDGEs along its long (horizontal) axis, both outward with a small\n * wind-up and a settleBack, on one shared clock — the two ratios flexing\n * once, side by side, and landing exactly as Lucide drew them.\n * Base geometry: Lucide `ratio` (ISC).\n */\nconst DUR = 0.85\n\nexport function RatioIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'ratio'}\n      {...hoverProps}\n    >\n      <motion.rect\n        width=\"12\" height=\"20\" x=\"6\" y=\"2\" rx=\"2\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 0.96, 1.05, 1],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.rect\n        width=\"20\" height=\"12\" x=\"2\" y=\"6\" rx=\"2\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleX: 1 },\n          animate: {\n            scaleX: [1, 0.96, 1.05, 1],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'ratio',\n  gesture: 'it makes its move',\n  family: 'rigid' as const,\n  section: 'Animals & nature',\n  tags: ['frame', 'select', 'ratio'],\n}\n\nexport default RatioIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/ratio.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

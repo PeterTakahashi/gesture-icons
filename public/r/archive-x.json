@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "archive-x",
+  "title": "archive-x",
+  "description": "Semantic animated icon — it is refused. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/archive-x.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Archive x — it is refused. Only the X shakes no — a decaying rotation\n * about its own center, same language as x-circle.tsx and shield-x.tsx —\n * while the archive body holds perfectly still.\n * Base geometry: Lucide `archive-x` (ISC).\n */\nconst DUR = 0.85\n\nexport function ArchiveXIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'archive x'}\n      {...hoverProps}\n    >\n      <rect width=\"20\" height=\"5\" x=\"2\" y=\"3\" rx=\"1\" />\n      <path d=\"M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 14.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -14, 11, -7, 4, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.36, 0.56, 0.76, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m9.5 17 5-5\" />\n        <path d=\"m9.5 12 5 5\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'archive-x',\n  gesture: 'it is refused',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['cancel', 'remove', 'archive'],\n}\n\nexport default ArchiveXIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/archive-x.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

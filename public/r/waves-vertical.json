@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "waves-vertical",
+  "title": "waves-vertical",
+  "description": "Semantic animated icon — they roll through. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/waves-vertical.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Waves vertical — they roll through. VARIANT(waves): each line nudges\n * along its own (vertical) axis, left to right, each 8% of the beat behind\n * the last, same language as waves.tsx rotated ninety degrees.\n * Base geometry: Lucide `waves-vertical` (ISC).\n */\nconst LINE_DUR = 0.7\nconst STEP = 0.06\n\nconst line = (delay: number): Variants => ({\n  normal: { y: 0 },\n  animate: {\n    y: [0, 2, 0],\n    transition: { duration: LINE_DUR, delay, times: [0, 0.5, 1], ease: easeInOutCubic },\n  },\n})\n\nexport function WavesVerticalIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'waves vertical'}\n      {...hoverProps}\n    >\n      <motion.path d=\"M5 2q2 2.5 0 5t0 5 0 5 0 5\" initial=\"normal\" animate={controls} variants={line(0)} />\n      <motion.path d=\"M12 2q2 2.5 0 5t0 5 0 5 0 5\" initial=\"normal\" animate={controls} variants={line(STEP)} />\n      <motion.path d=\"M19 2q2 2.5 0 5t0 5 0 5 0 5\" initial=\"normal\" animate={controls} variants={line(2 * STEP)} />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'waves-vertical',\n  gesture: 'they roll through',\n  family: 'rigid' as const,\n  section: 'Animals & nature',\n  tags: ['wave', 'signal', 'waves', 'vertical'],\n}\n\nexport default WavesVerticalIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/waves-vertical.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

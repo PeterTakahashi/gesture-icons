@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "save-off",
+  "title": "save-off",
+  "description": "Semantic animated icon — it is switched off. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/save-off.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, pen } from '../core/easings'\n\n/**\n * Save off — it is switched off. The slash erases then pen-redraws itself,\n * the same beat as eye-off.tsx, while the disk gives one small defeated\n * sag-and-tilt (a couple of units) and straightens back up. The source\n * geometry includes a stray curve entirely outside the 24x24 viewBox\n * (`M29.5 11.5s5 5 4 5`) — it is kept verbatim and left un-animated since it\n * is invisible at rest and stays that way.\n * Base geometry: Lucide `save-off` (ISC).\n */\nconst DUR = 0.95\n\nexport function SaveOffIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'save off'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, 2.6, 2.6, 0],\n            rotate: [0, 3, 3, 0],\n            transition: { duration: DUR, times: [0, 0.4, 0.62, 0.92], ease: [easeInOutCubic, 'linear', easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M13 13H8a1 1 0 0 0-1 1v7\" />\n        <path d=\"M14 8h1\" />\n        <path d=\"M17 21v-4\" />\n        <path d=\"M20.41 20.41A2 2 0 0 1 19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 .59-1.41\" />\n        <path d=\"M29.5 11.5s5 5 4 5\" />\n        <path d=\"M9 3h6.2a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V15\" />\n      </motion.g>\n      <motion.path\n        d=\"m2 2 20 20\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.25, 0.4, 0.8], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'save-off',\n  gesture: 'it is switched off',\n  family: 'draw-on' as const,\n  section: 'Files & time',\n  tags: ['disabled', 'off', 'save'],\n}\n\nexport default SaveOffIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/save-off.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

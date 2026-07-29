@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "clipboard-paste",
+  "title": "clipboard-paste",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/clipboard-paste.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Clipboard paste — the arrow does the pasting: a wind-up left, then the\n * drive right along its own shaft, dropping the content in and landing\n * back exactly on the resting glyph. The board underneath takes its\n * familiar soft dip.\n * Base geometry: Lucide `clipboard-paste` (ISC).\n */\nconst DUR = 0.9\n\nexport function ClipboardPasteIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'clipboard paste'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.8, 0],\n            transition: { duration: DUR, times: [0, 0.6, 0.78, 1], ease: ['linear', easeOutQuart, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M16 4h2a2 2 0 0 1 2 2v1.344\" />\n        <path d=\"M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 1.793-1.113\" />\n        <rect x=\"8\" y=\"2\" width=\"8\" height=\"4\" rx=\"1\" />\n      </motion.g>\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -1, 1.8, 0],\n            transition: { duration: DUR, times: [0, 0.24, 0.6, 0.85], ease: [easeInOutCubic, easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M11 14h10\" />\n        <path d=\"m17 18 4-4-4-4\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'clipboard-paste',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['clipboard', 'tasks', 'paste'],\n}\n\nexport default ClipboardPasteIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/clipboard-paste.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

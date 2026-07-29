@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "helicopter",
+  "title": "helicopter",
+  "description": "Semantic animated icon — the rotor spools. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/helicopter.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Helicopter — the rotor spools. The blade bar spins two full turns about\n * its own hub, linear the whole way — nothing in free flight is eased —\n * while the cabin bobs on its skids and settles; the skids themselves stay\n * planted on the ground.\n * Base geometry: Lucide `helicopter` (ISC).\n */\nconst DUR = 1.1\n\nexport function HelicopterIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'helicopter'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M6 3h16\"\n        style={{ transformBox: 'view-box', transformOrigin: '14px 3px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 720],\n            transition: { duration: DUR, ease: 'linear' },\n          },\n        }}\n      />\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1, 0.2, -0.05, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.55, 0.8, 1], ease: [easeOutQuart, gravity, easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M11 17v4\" />\n        <path d=\"M14 3v8a2 2 0 0 0 2 2h5.865\" />\n        <path d=\"M17 17v4\" />\n        <path d=\"M18 17a4 4 0 0 0 4-4 8 6 0 0 0-8-6 6 5 0 0 0-6 5v3a2 2 0 0 0 2 2z\" />\n        <path d=\"M2 10v5\" />\n        <path d=\"M8 13H2\" />\n      </motion.g>\n      <path d=\"M7 21h14\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'helicopter',\n  gesture: 'the rotor spools',\n  family: 'rigid' as const,\n  section: 'Transport',\n  tags: ['fly', 'chopper', 'helicopter'],\n}\n\nexport default HelicopterIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/helicopter.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

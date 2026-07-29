@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "wifi-pen",
+  "title": "wifi-pen",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/wifi-pen.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Wifi pen — the signal arrives. The pen holds still — it is the editor\n * sitting in the corner, not the signal, same reasoning as the dot in\n * wifi.tsx. All three arcs erase together, then redraw smallest (closest)\n * first, staggered, never a fade.\n * Base geometry: Lucide `wifi-pen` (ISC).\n */\nconst DUR = 1.1\n\nexport function WifiPenIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const arc = (redrawStart: number, redrawEnd: number): Variants => ({\n    normal: { pathLength: 1 },\n    animate: {\n      pathLength: [1, 0.001, 0.001, 1],\n      transition: {\n        duration: DUR,\n        times: [0, 0.12, redrawStart, redrawEnd],\n        ease: [easeInCubic, 'linear', easeOutQuart],\n      },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'wifi pen'}\n      {...hoverProps}\n    >\n      <path d=\"M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z\" />\n      <motion.path d=\"M8.5 16.429a5 5 0 0 1 3-1.406\" initial=\"normal\" animate={controls} variants={arc(0.12, 0.42)} />\n      <motion.path d=\"M5 12.859a10 10 0 0 1 10.5-2.222\" initial=\"normal\" animate={controls} variants={arc(0.22, 0.55)} />\n      <motion.path d=\"M2 8.82a15 15 0 0 1 20 0\" initial=\"normal\" animate={controls} variants={arc(0.32, 0.68)} />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'wifi-pen',\n  gesture: 'it draws itself',\n  family: 'draw-on' as const,\n  section: 'Communication',\n  tags: ['signal', 'network', 'wifi', 'pen'],\n}\n\nexport default WifiPenIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/wifi-pen.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "book-lock",
+  "title": "book-lock",
+  "description": "Semantic animated icon — it locks shut. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/book-lock.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, gravity, settleBack } from '../core/easings'\n\n/**\n * Book lock — it locks shut. The mini shackle lifts clear of its body,\n * holds a beat open, then drops with gravity; the lock body takes the hit\n * exactly on the contact frame and settles flat. The book itself never\n * moves — only the lock does the locking.\n * Base geometry: Lucide `book-lock` (ISC).\n */\nconst DUR = 1.0\n\nexport function BookLockIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'book lock'}\n      {...hoverProps}\n    >\n      <path d=\"M20 15v6a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20\" />\n      <path d=\"M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H10\" />\n      <motion.path\n        d=\"M18 6V4a2 2 0 1 0-4 0v2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1.5, -1.5, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.55, 0.8], ease: [easeOutQuart, 'linear', gravity] },\n          },\n        }}\n      />\n      <motion.rect\n        x=\"12\" y=\"6\" width=\"8\" height=\"5\" rx=\"1\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0, 0.6, 0],\n            transition: { duration: DUR, times: [0, 0.6, 0.78, 0.85, 1], ease: ['linear', 'linear', gravity, settleBack] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'book-lock',\n  gesture: 'it locks shut',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['secure', 'private', 'book', 'lock'],\n}\n\nexport default BookLockIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/book-lock.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

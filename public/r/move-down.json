@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "move-down",
+  "title": "move-down",
+  "description": "Semantic animated icon — it urges downward. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/move-down.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Move down — it urges downward. A wind-up up then a drive down past the\n * mark before it settles home (arrow-up.tsx's beat, mirrored); the\n * chevron head runs slightly ahead of the shaft the whole beat.\n * Base geometry: Lucide `move-down` (ISC).\n */\nconst DUR = 0.75\n\nexport function MoveDownIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'move down'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M8 18L12 22L16 18\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1.5, 3, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.59, 0.97], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M12 2V22\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1.5, 3, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.62, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'move-down',\n  gesture: 'it urges downward',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['down', 'move'],\n}\n\nexport default MoveDownIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/move-down.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

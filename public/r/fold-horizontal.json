@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "fold-horizontal",
+  "title": "fold-horizontal",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/fold-horizontal.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Fold horizontal — the two chevrons NUDGE inward toward the crease: a\n * small wind-up outward first, then a drive in past the mark, settling back\n * home — one clock, so the fold reads as meeting in the middle. The rails\n * and the dashed crease line are the fixed track, so they hold still.\n * Base geometry: Lucide `fold-horizontal` (ISC).\n */\nconst DUR = 0.8\n\nexport function FoldHorizontalIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'fold horizontal'}\n      {...hoverProps}\n    >\n      <path d=\"M2 12h6\" />\n      <path d=\"M22 12h-6\" />\n      <path d=\"M12 2v2\" />\n      <path d=\"M12 8v2\" />\n      <path d=\"M12 14v2\" />\n      <path d=\"M12 20v2\" />\n      <motion.path\n        d=\"m19 9-3 3 3 3\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, 0.5, -2, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.62, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"m5 15 3-3-3-3\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -0.5, 2, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.62, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'fold-horizontal',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['layout', 'arrange', 'fold', 'horizontal'],\n}\n\nexport default FoldHorizontalIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/fold-horizontal.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

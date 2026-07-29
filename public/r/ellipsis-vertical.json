@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ellipsis-vertical",
+  "title": "ellipsis-vertical",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/ellipsis-vertical.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Ellipsis vertical — something is pending. The three dots pop in reading\n * order, top to bottom, each a scale beat (never opacity) 80ms apart,\n * landing back at their resting size.\n * Base geometry: Lucide `ellipsis-vertical` (ISC).\n */\nconst DOT_DUR = 0.5\nconst STEP = 0.08\nconst DOTS = [5, 12, 19]\n\nexport function EllipsisVerticalIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'ellipsis vertical'}\n      {...hoverProps}\n    >\n      {DOTS.map((cy, i) => (\n        <motion.circle\n          key={cy}\n          cx=\"12\" cy={cy} r=\"1\"\n          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { scale: 1 },\n            animate: {\n              scale: [1, 0.6, 1.3, 1],\n              transition: {\n                duration: DOT_DUR,\n                delay: i * STEP,\n                times: [0, 0.3, 0.65, 1],\n                ease: [easeInCubic, settleBack, easeOutQuart],\n              },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'ellipsis-vertical',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['menu', 'more', 'options', 'ellipsis', 'vertical'],\n}\n\nexport default EllipsisVerticalIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/ellipsis-vertical.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

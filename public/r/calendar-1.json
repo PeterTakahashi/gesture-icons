@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "calendar-1",
+  "title": "calendar-1",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/calendar-1.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Calendar 1 — it does what it means. The date numeral lifts and drops\n * back onto the page with gravity, landing dip included; the frame around\n * it takes a small dip exactly on that landing frame, the way a page turns\n * to reveal the day.\n * Base geometry: Lucide `calendar-1` (ISC).\n */\nconst DUR = 0.9\n\nexport function Calendar1Icon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'calendar 1'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.4, 0],\n            transition: { duration: DUR, times: [0, 0.5, 0.55, 0.65], ease: ['linear', easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M16 2v4\" />\n        <path d=\"M3 10h18\" />\n        <path d=\"M8 2v4\" />\n        <rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\" />\n      </motion.g>\n      <motion.path\n        d=\"M11 14h1v4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -3, 0.4, 0],\n            transition: { duration: DUR, times: [0, 0.35, 0.55, 0.7], ease: [easeOutQuart, gravity, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'calendar-1',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['calendar', 'date'],\n}\n\nexport default Calendar1Icon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/calendar-1.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

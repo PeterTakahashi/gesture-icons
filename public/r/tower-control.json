@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tower-control",
+  "title": "tower-control",
+  "description": "Semantic animated icon — cleared for takeoff. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/tower-control.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\n\n/**\n * Tower control — cleared for takeoff. The tower body, legs and struts hold\n * still; only the beacon tip on top of the mast blinks, a true binary step\n * with no fade, twice, then steady on — traffic managed.\n * Base geometry: Lucide `tower-control` (ISC).\n */\nconst DUR = 1.0\n\nexport function TowerControlIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'tower control'}\n      {...hoverProps}\n    >\n      <path d=\"M18.2 12.27 20 6H4l1.8 6.27a1 1 0 0 0 .95.73h10.5a1 1 0 0 0 .96-.73Z\" />\n      <path d=\"M8 13v9\" />\n      <path d=\"M16 22v-9\" />\n      <path d=\"m9 6 1 7\" />\n      <path d=\"m15 6-1 7\" />\n      <path d=\"M12 6V2\" />\n      {/* beacon tip: a true binary blink, never a fade */}\n      <motion.path\n        d=\"M13 2h-2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { opacity: 1 },\n          animate: {\n            opacity: [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n            transition: {\n              duration: DUR,\n              times: [0, 0.09, 0.1, 0.22, 0.23, 0.35, 0.36, 0.48, 0.49, 0.55],\n              ease: 'linear',\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'tower-control',\n  gesture: 'cleared for takeoff',\n  family: 'secondary' as const,\n  section: 'Transport',\n  tags: ['airport', 'atc', 'tower', 'control'],\n}\n\nexport default TowerControlIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/tower-control.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "proportions",
+  "title": "proportions",
+  "description": "Semantic animated icon — it makes its move. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/proportions.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Proportions — it makes its move. The inner selection bracket — the L-path\n * marking the right-hand box's own corner — NUDGEs outward along its own\n * diagonal, growing the proportion it frames: a small wind-up in, a drive\n * out past the mark, a settle back home. The outer frame and the shared\n * divider hold still; they are the static rails the box is measured against.\n * Base geometry: Lucide `proportions` (ISC).\n */\nconst DUR = 0.8\n\nexport function ProportionsIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'proportions'}\n      {...hoverProps}\n    >\n      <rect width=\"20\" height=\"16\" x=\"2\" y=\"4\" rx=\"2\" />\n      <path d=\"M12 9v11\" />\n      <motion.path\n        d=\"M2 9h13a2 2 0 0 1 2 2v9\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -0.4, 1.3, 0],\n            y: [0, -0.4, 1.3, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'proportions',\n  gesture: 'it makes its move',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['frame', 'select', 'proportions'],\n}\n\nexport default ProportionsIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/proportions.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

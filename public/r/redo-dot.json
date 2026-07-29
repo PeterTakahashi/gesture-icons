@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "redo-dot",
+  "title": "redo-dot",
+  "description": "Semantic animated icon — one thing waits. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/redo-dot.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Redo dot — one thing waits. The dot is the point of the icon, so it POPs —\n * squished to nothing and overshot back, settling on the exact glyph — while\n * the redo hook gives only a 3%-late micro-dip, a beat behind the dot rather\n * than the full turn redo.tsx performs.\n * Base geometry: Lucide `redo-dot` (ISC).\n */\nconst DUR = 0.9\n\nexport function RedoDotIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'redo dot'}\n      {...hoverProps}\n    >\n      <motion.circle\n        cx=\"12\" cy=\"17\" r=\"1\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 17px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.001, 1.4, 1],\n            transition: { duration: DUR, times: [0, 0.22, 0.5, 0.78], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, -0.4, 0],\n            transition: { duration: DUR, delay: DUR * 0.03, times: [0, 0.25, 0.48, 0.72], ease: ['linear', easeOutQuart, 'linear'] },\n          },\n        }}\n      >\n        <path d=\"M21 7v6h-6\" />\n        <path d=\"M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'redo-dot',\n  gesture: 'one thing waits',\n  family: 'secondary' as const,\n  section: 'Arrows',\n  tags: ['indicator', 'unread', 'redo', 'dot'],\n}\n\nexport default RedoDotIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/redo-dot.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

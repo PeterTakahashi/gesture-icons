@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "stretch-horizontal",
+  "title": "stretch-horizontal",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/stretch-horizontal.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Stretch horizontal — each bar stretches. Both ends extend outward from\n * center by 1.5 units and spring back — the bars are tried at full width\n * before settling to rest.\n * Base geometry: Lucide `stretch-horizontal` (ISC).\n */\nconst DUR = 0.8\n\nexport function StretchHorizontalIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'stretch horizontal'}\n      {...hoverProps}\n    >\n      <motion.rect\n        width=\"20\" height=\"6\" x=\"2\" y=\"4\" rx=\"2\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 7px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleX: 1 },\n          animate: {\n            scaleX: [1, 1.15, 1],\n            transition: { duration: DUR, times: [0, 0.5, 1], ease: [easeInOutCubic, settleBack] },\n          },\n        }}\n      />\n      <motion.rect\n        width=\"20\" height=\"6\" x=\"2\" y=\"14\" rx=\"2\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 17px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleX: 1 },\n          animate: {\n            scaleX: [1, 1.15, 1],\n            transition: { duration: DUR, delay: 0.05, times: [0, 0.5, 1], ease: [easeInOutCubic, settleBack] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'stretch-horizontal',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['layout', 'arrange', 'stretch', 'horizontal'],\n}\n\nexport default StretchHorizontalIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/stretch-horizontal.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

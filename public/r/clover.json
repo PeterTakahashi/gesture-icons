@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "clover",
+  "title": "clover",
+  "description": "Semantic animated icon — luck turns up. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/clover.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Clover — luck turns up. The stem breaks the leaf's four-fold symmetry, so\n * a true 90° turn would land on a different picture than it started on —\n * instead the whole clover sways side to side about the junction where its\n * lobes meet, with a small hopeful scale pop, and settles back exactly home.\n * Base geometry: Lucide `clover` (ISC).\n */\nconst DUR = 0.85\n\nexport function CloverIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'clover'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, scale: 1 },\n          animate: {\n            rotate: [0, -8, 8, 0],\n            scale: [1, 1.06, 1.06, 1],\n            transition: { duration: DUR, times: [0, 0.32, 0.66, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M16.17 7.83 2 22\" />\n        <path d=\"M4.02 12a2.827 2.827 0 1 1 3.81-4.17A2.827 2.827 0 1 1 12 4.02a2.827 2.827 0 1 1 4.17 3.81A2.827 2.827 0 1 1 19.98 12a2.827 2.827 0 1 1-3.81 4.17A2.827 2.827 0 1 1 12 19.98a2.827 2.827 0 1 1-4.17-3.81A1 1 0 1 1 4 12\" />\n        <path d=\"m7.83 7.83 8.34 8.34\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'clover',\n  gesture: 'luck turns up',\n  family: 'rigid' as const,\n  section: 'Animals & nature',\n  tags: ['luck', 'irish', 'four-leaf', 'clover'],\n}\n\nexport default CloverIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/clover.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

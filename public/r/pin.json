@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pin",
+  "title": "pin",
+  "description": "Semantic animated icon — it pins the note. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/pin.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Pin — it pins the note. VARIANT(map-pin): lifted, then dropped with\n * gravity — but unlike the map pin, it does not bounce. A pushpin meets a\n * cork board and stops dead, the head pressing in a hair on contact. That\n * hard, no-overshoot landing is what separates a corkboard pin from a\n * map marker.\n * Base geometry: Lucide `pin` (ISC).\n */\nconst DUR = 0.9\n\nexport function PinIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'pin'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 22px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, scaleY: 1 },\n          animate: {\n            y: [0, -3, -3, 0, 0],\n            scaleY: [1, 1, 1, 0.94, 1],\n            transition: {\n              duration: DUR,\n              y: { times: [0, 0.3, 0.5, 0.66, 0.85], ease: [easeOutQuart, 'linear', gravity, easeOutQuart] },\n              scaleY: { times: [0, 0.5, 0.62, 0.7, 0.85], ease: ['linear', 'linear', easeOutQuart, easeOutQuart] },\n            },\n          },\n        }}\n      >\n        <path d=\"M12 17v5\" />\n        <path d=\"M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'pin',\n  gesture: 'it pins the note',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['pushpin', 'save', 'stick', 'pin'],\n}\n\nexport default PinIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/pin.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

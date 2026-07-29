@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cooking-pot",
+  "title": "cooking-pot",
+  "description": "Semantic animated icon — it simmers. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cooking-pot.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutExpo } from '../core/easings'\n\n/**\n * Cooking pot — it simmers. The lid rattles against the rim in a quick\n * series of small bumps, and two ticks of steam draw themselves up through\n * the gaps between the rattles — dash length, never a fade — and are erased\n * again as they dissipate. Handles and body never move.\n * Base geometry: Lucide `cooking-pot` (ISC).\n */\nconst DUR = 1.0\n\nexport function CookingPotIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const steam = (delay: number): Variants => ({\n    normal: { pathLength: 0.001, opacity: 0 },\n    animate: {\n      pathLength: [0.001, 0.001, 1, 1, 0.001, 0.001],\n      opacity: [0, 0, 1, 1, 0, 0],\n      transition: {\n        duration: DUR,\n        delay,\n        pathLength: { times: [0, 0.1, 0.4, 0.6, 0.85, 1], ease: ['linear', easeOutExpo, 'linear', easeInOutCubic, 'linear'] },\n        opacity: { times: [0, 0.09, 0.1, 0.84, 0.85, 1], ease: 'linear' },\n      },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cooking pot'}\n      {...hoverProps}\n    >\n      <path d=\"M2 12h20\" />\n      <path d=\"M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8\" />\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -0.8, 0, -0.5, 0],\n            transition: { duration: DUR, times: [0, 0.12, 0.24, 0.36, 0.48], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m4 8 16-4\" />\n        <path d=\"m8.86 6.78-.45-1.81a2 2 0 0 1 1.45-2.43l1.94-.48a2 2 0 0 1 2.43 1.46l.45 1.8\" />\n      </motion.g>\n      <motion.path\n        d=\"M9 4.2v-2.6\"\n        strokeWidth={strokeWidth * 0.85}\n        initial=\"normal\"\n        animate={controls}\n        variants={steam(0.1)}\n      />\n      <motion.path\n        d=\"M13.5 3.2v-2.6\"\n        strokeWidth={strokeWidth * 0.85}\n        initial=\"normal\"\n        animate={controls}\n        variants={steam(0.3)}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cooking-pot',\n  gesture: 'it simmers',\n  family: 'secondary' as const,\n  section: 'Food & drink',\n  tags: ['cook', 'stew', 'kitchen', 'cooking', 'pot'],\n}\n\nexport default CookingPotIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cooking-pot.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

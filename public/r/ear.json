@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ear",
+  "title": "ear",
+  "description": "Semantic animated icon — it listens closely. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/ear.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Ear — it listens closely. It leans in about the lobe, a hair bigger while\n * it strains to catch the words, holds through the listening beat, and\n * returns upright — say that again?\n * Base geometry: Lucide `ear` (ISC).\n */\nconst DUR = 0.9\n\nexport function EarIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'ear'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '9px 19px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, scale: 1 },\n          animate: {\n            rotate: [0, 4, 4, 0],\n            scale: [1, 1.04, 1.04, 1],\n            transition: { duration: DUR, times: [0, 0.3, 0.7, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M6 8.5a6.5 6.5 0 1 1 13 0c0 6-6 6-6 10a3.5 3.5 0 1 1-7 0\" />\n        <path d=\"M15 8.5a2.5 2.5 0 0 0-5 0v1a2 2 0 1 1 0 4\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'ear',\n  gesture: 'it listens closely',\n  family: 'rigid' as const,\n  section: 'People & emotion',\n  tags: ['hear', 'sound', 'listen', 'ear'],\n}\n\nexport default EarIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/ear.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

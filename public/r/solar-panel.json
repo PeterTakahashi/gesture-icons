@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "solar-panel",
+  "title": "solar-panel",
+  "description": "Semantic animated icon — it drinks the sun. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/solar-panel.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Solar panel — it drinks the sun. The panel face and its front strut tilt\n * up toward the sky about the mount, hold there charging, and settle back;\n * one of the sun's rays gives a hard binary flick — never a fade — right at\n * the peak of the tilt. The post and the other rays hold still.\n * Base geometry: Lucide `solar-panel` (ISC).\n */\nconst DUR = 1.1\n\nexport function SolarPanelIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'solar panel'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M11 2h2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { opacity: 1 },\n          animate: {\n            opacity: [1, 1, 0, 1, 1],\n            transition: { duration: DUR, times: [0, 0.3, 0.33, 0.36, 1], ease: 'linear' },\n          },\n        }}\n      />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '8px 14px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -5, -5, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.7, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m14.28 14-4.56 8\" />\n        <path d=\"M6.245 15.04A2 2 0 0 1 8 14h12a1 1 0 0 1 .864 1.505l-3.11 5.457A2 2 0 0 1 16 22H4a1 1 0 0 1-.863-1.506z\" />\n      </motion.g>\n      <path d=\"m21 22-1.558-4H4.558\" />\n      <path d=\"M3 10v2\" />\n      <path d=\"M7 2a4 4 0 0 1-4 4\" />\n      <path d=\"m8.66 7.66 1.41 1.41\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'solar-panel',\n  gesture: 'it drinks the sun',\n  family: 'rigid' as const,\n  section: 'Buildings',\n  tags: ['energy', 'green', 'power', 'solar', 'panel'],\n}\n\nexport default SolarPanelIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/solar-panel.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "list-check",
+  "title": "list-check",
+  "description": "Semantic animated icon — it is confirmed. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/list-check.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutQuart, easeInOutCubic, easeOutQuart, pen } from '../core/easings'\n\n/**\n * List check — it is confirmed. VARIANT(check): the check erases then\n * pen-redraws, exactly as `check.tsx`; the list body dips y+0.6 exactly on\n * the frame it finishes writing.\n * Base geometry: Lucide `list-check` (ISC).\n */\nconst DUR = 0.9\n\nexport function ListCheckIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'list check'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.6, 0],\n            transition: { duration: DUR, times: [0, 0.65, 0.75, 0.9], ease: ['linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M16 5H3\" />\n        <path d=\"M16 12H3\" />\n        <path d=\"M11 19H3\" />\n      </motion.g>\n      <motion.path\n        d=\"m15 18 2 2 4-4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.2, 0.35, 0.75], ease: [easeInOutQuart, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'list-check',\n  gesture: 'it is confirmed',\n  family: 'draw-on' as const,\n  section: 'Text & editing',\n  tags: ['done', 'verified', 'list', 'check'],\n}\n\nexport default ListCheckIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/list-check.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

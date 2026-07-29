@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "wrap-text",
+  "title": "wrap-text",
+  "description": "Semantic animated icon — the line wraps. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/wrap-text.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Wrap text — the line wraps. The wrapping arrow (its curved body and\n * chevron head, moving as one) NUDGEs along its own bend — right along the\n * top, then down and left toward where the chevron points — before it\n * settles back home. The text lines above and below hold still.\n * Base geometry: Lucide `wrap-text` (ISC).\n */\nconst DUR = 0.9\n\nexport function WrapTextIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'wrap text'}\n      {...hoverProps}\n    >\n      <path d=\"M3 5h18\" />\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -0.3, 1.2, -0.8, 0],\n            y: [0, -0.2, 0.2, 1.1, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.15, 0.45, 0.75, 1],\n              ease: [easeInOutCubic, easeOutQuart, easeInOutCubic, settleBack],\n            },\n          },\n        }}\n      >\n        <path d=\"M3 12h14.5a1 1 0 0 1 0 7H13\" />\n        <path d=\"m16 16-3 3 3 3\" />\n      </motion.g>\n      <path d=\"M3 19h6\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'wrap-text',\n  gesture: 'the line wraps',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['format', 'break', 'wrap', 'text'],\n}\n\nexport default WrapTextIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/wrap-text.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

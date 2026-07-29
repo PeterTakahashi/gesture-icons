@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "qr-code",
+  "title": "qr-code",
+  "description": "Semantic animated icon — it signals. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/qr-code.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\n\n/**\n * QR code — it signals. The three finder squares hold — they are the fixed\n * reference a scanner locks onto. The data modules hard-BLINK in three\n * groups, left to right, equal-times steps, then all go steady — being\n * read by a laser, not a human. Same mechanic as barcode.tsx.\n * Base geometry: Lucide `qr-code` (ISC).\n */\nconst DUR = 0.55\nconst GROUPS = [\n  ['M3 12h.01', 'M12 7v3a2 2 0 0 1-2 2H7', 'M12 3h.01'],\n  ['M12 16v.01', 'M12 21v-1', 'M16 12h1'],\n  ['M21 16h-3a2 2 0 0 0-2 2v3', 'M21 21v.01', 'M21 12v.01'],\n]\n\nexport function QrCodeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'qr code'}\n      {...hoverProps}\n    >\n      <rect width=\"5\" height=\"5\" x=\"3\" y=\"3\" rx=\"1\" />\n      <rect width=\"5\" height=\"5\" x=\"16\" y=\"3\" rx=\"1\" />\n      <rect width=\"5\" height=\"5\" x=\"3\" y=\"16\" rx=\"1\" />\n      {GROUPS.map((group, gi) =>\n        group.map((d) => (\n          <motion.path\n            key={d}\n            d={d}\n            initial=\"normal\"\n            animate={controls}\n            variants={{\n              normal: { opacity: 1 },\n              animate: {\n                opacity: [1, 1, 0, 0, 1, 1],\n                transition: {\n                  duration: DUR,\n                  delay: gi * 0.18,\n                  times: [0, 0.25, 0.3, 0.75, 0.8, 1],\n                  ease: 'linear',\n                },\n              },\n            }}\n          />\n        )),\n      )}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'qr-code',\n  gesture: 'it signals',\n  family: 'secondary' as const,\n  section: 'Workspace',\n  tags: ['code', 'scan'],\n}\n\nexport default QrCodeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/qr-code.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

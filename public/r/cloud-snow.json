@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cloud-snow",
+  "title": "cloud-snow",
+  "description": "Semantic animated icon — a flurry passes through. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cloud-snow.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, gravity } from '../core/easings'\n\n/**\n * Cloud snow — a flurry passes through. The cloud dips as it lets go, and\n * each flake genuinely falls out through the frame's own bottom edge, is\n * repositioned above the cloud while nobody is looking (SVG overflow does\n * the hiding, never opacity), and drops back into its drawn resting spot —\n * staggered so it reads as a flurry rather than six flakes in lockstep.\n * Base geometry: Lucide `cloud-snow` (ISC).\n */\nconst DUR = 1.15\n\nconst FLAKES = [\n  { d: 'M8 15h.01', delay: 0 },\n  { d: 'M16 15h.01', delay: 0.04 },\n  { d: 'M12 17h.01', delay: 0.08 },\n  { d: 'M8 19h.01', delay: 0.14 },\n  { d: 'M16 19h.01', delay: 0.18 },\n  { d: 'M12 21h.01', delay: 0.22 },\n]\n\nexport function CloudSnowIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cloud snow'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.12, 0.26], ease: easeInOutCubic },\n          },\n        }}\n      />\n      {FLAKES.map((f) => (\n        <motion.path\n          key={f.d}\n          d={f.d}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { y: 0 },\n            animate: {\n              // falls out the bottom edge, is put back above the cloud while\n              // genuinely off-frame, falls back into its resting spot\n              y: [0, 10, 10, -24, -24, 0],\n              transition: {\n                duration: DUR,\n                delay: f.delay,\n                times: [0, 0.4, 0.48, 0.48, 0.58, 1],\n                ease: [gravity, 'linear', 'linear', 'linear', gravity],\n              },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cloud-snow',\n  gesture: 'a flurry passes through',\n  family: 'rigid' as const,\n  section: 'Nature',\n  tags: ['weather', 'cloud', 'snow'],\n}\n\nexport default CloudSnowIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cloud-snow.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

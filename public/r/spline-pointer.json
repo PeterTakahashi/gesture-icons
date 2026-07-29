@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spline-pointer",
+  "title": "spline-pointer",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/spline-pointer.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Spline pointer — the cursor clicks. The pointer nudges down-right along\n * its own aim, hits a hard stop, and settles back with a small overshoot —\n * one click. The spline curve and its two handles are what's being pointed\n * at, so they hold still.\n * Base geometry: Lucide `spline-pointer` (ISC).\n */\nconst DUR = 0.7\n\nexport function SplinePointerIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'spline pointer'}\n      {...hoverProps}\n    >\n      <path d=\"M5 17A12 12 0 0 1 17 5\" />\n      <circle cx=\"19\" cy=\"5\" r=\"2\" />\n      <circle cx=\"5\" cy=\"19\" r=\"2\" />\n      <motion.path\n        d=\"M12.034 12.681a.498.498 0 0 1 .647-.647l9 3.5a.5.5 0 0 1-.033.943l-3.444 1.068a1 1 0 0 0-.66.66l-1.067 3.443a.5.5 0 0 1-.943.033z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -0.17, 0.85, 0.85, 0],\n            y: [0, -0.17, 0.85, 0.85, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.12, 0.32, 0.5, 0.85],\n              ease: [easeInOutCubic, easeOutQuart, 'linear', settleBack],\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'spline-pointer',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'People & emotion',\n  tags: ['cursor', 'click', 'pointer', 'spline'],\n}\n\nexport default SplinePointerIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/spline-pointer.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

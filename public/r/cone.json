@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cone",
+  "title": "cone",
+  "description": "Semantic animated icon — it stands watch. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cone.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Cone — it stands watch. VARIANT(traffic-cone): a passing lean about the\n * base, decaying back upright — wobbled, not toppled.\n * Base geometry: Lucide `cone` (ISC).\n */\nconst DUR = 0.9\n\nexport function ConeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cone'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 19px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -4, 2.5, -1, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.48, 0.72, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m20.9 18.55-8-15.98a1 1 0 0 0-1.8 0l-8 15.98\" />\n        <ellipse cx=\"12\" cy=\"19\" rx=\"9\" ry=\"3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cone',\n  gesture: 'it stands watch',\n  family: 'rigid' as const,\n  section: 'Shapes',\n  tags: ['geometry', '3d', 'cone'],\n}\n\nexport default ConeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cone.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

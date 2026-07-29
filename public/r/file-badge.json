@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "file-badge",
+  "title": "file-badge",
+  "description": "Semantic animated icon — it is certified. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/file-badge.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * File badge — it is certified. VARIANT(file-text): the page and its folded\n * corner hold still except for a small dip on the frame the badge settles;\n * the badge itself gives one firm press pulse about its own center, like a\n * seal being pressed down.\n * Base geometry: Lucide `file-badge` (ISC).\n */\nconst DUR = 1.0\n\nexport function FileBadgeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'file badge'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.5, 0.62, 0.85], ease: ['linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M13 22h5a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v3.3\" />\n        <path d=\"M14 2v5a1 1 0 0 0 1 1h5\" />\n      </motion.g>\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '6px 14px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.95, 1.03, 1],\n            transition: { duration: DUR, times: [0, 0.3, 0.6, 0.85], ease: settleBack },\n          },\n        }}\n      >\n        <path d=\"m7.69 16.479 1.29 4.88a.5.5 0 0 1-.698.591l-1.843-.849a1 1 0 0 0-.879.001l-1.846.85a.5.5 0 0 1-.692-.593l1.29-4.88\" />\n        <circle cx=\"6\" cy=\"14\" r=\"3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'file-badge',\n  gesture: 'it is certified',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['file', 'document', 'badge'],\n}\n\nexport default FileBadgeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/file-badge.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

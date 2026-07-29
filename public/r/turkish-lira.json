@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "turkish-lira",
+  "title": "turkish-lira",
+  "description": "Semantic animated icon — it rings up. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/turkish-lira.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Turkish lira — it rings up. A stamp with a tiny turn: the whole glyph\n * presses down, twists a hair, and pops back past its own size before\n * settling — cha-ching without the sound, exactly as dollar-sign.tsx.\n * Base geometry: Lucide `turkish-lira` (ISC).\n */\nconst DUR = 0.7\n\nexport function TurkishLiraIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'turkish lira'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1, rotate: 0 },\n          animate: {\n            scale: [1, 0.9, 1.12, 1],\n            rotate: [0, -4, 2, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M15 4 5 9\" />\n        <path d=\"m15 8.5-10 5\" />\n        <path d=\"M18 12a9 9 0 0 1-9 9V3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'turkish-lira',\n  gesture: 'it rings up',\n  family: 'rigid' as const,\n  section: 'Money & commerce',\n  tags: ['money', 'currency', 'turkish', 'lira'],\n}\n\nexport default TurkishLiraIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/turkish-lira.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

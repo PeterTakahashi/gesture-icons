@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "user-lock",
+  "title": "user-lock",
+  "description": "Semantic animated icon — it is locked. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/user-lock.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, gravity, settleBack } from '../core/easings'\n\n/**\n * User lock — it is locked. The mini shackle lifts clear of the body, holds\n * a beat open, then drops shut with gravity; the lock body takes the hit\n * exactly on the contact frame and settles back flat, per `lock.tsx`\n * scaled down. The person underneath holds completely still.\n * Base geometry: Lucide `user-lock` (ISC).\n */\nconst DUR = 1.0\n\nexport function UserLockIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'user lock'}\n      {...hoverProps}\n    >\n      <path d=\"M9.5 15H7a4 4 0 0 0-4 4v2\" />\n      <circle cx=\"10\" cy=\"7\" r=\"4\" />\n      <motion.path\n        d=\"M19 16v-2a2 2 0 0 0-4 0v2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1.8, -1.8, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.6, 0.85], ease: [easeOutQuart, 'linear', gravity] },\n          },\n        }}\n      />\n      <motion.rect\n        x=\"13\" y=\"16\" width=\"8\" height=\"5\" rx=\".899\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.6, 0.78, 0.85, 1], ease: ['linear', 'linear', gravity, settleBack] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'user-lock',\n  gesture: 'it is locked',\n  family: 'rigid' as const,\n  section: 'People',\n  tags: ['secure', 'private', 'user', 'lock'],\n}\n\nexport default UserLockIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/user-lock.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,60 @@
+import { motion } from 'motion/react'
+import { useGesture } from '../core/useGesture'
+import { svgDefaults, type GestureIconProps } from '../core/types'
+import { easeInCubic, easeOutQuart, settleBack } from '../core/easings'
+
+/**
+ * Ellipsis vertical — something is pending. The three dots pop in reading
+ * order, top to bottom, each a scale beat (never opacity) 80ms apart,
+ * landing back at their resting size.
+ * Base geometry: Lucide `ellipsis-vertical` (ISC).
+ */
+const DOT_DUR = 0.5
+const STEP = 0.08
+const DOTS = [5, 12, 19]
+
+export function EllipsisVerticalIcon({
+  size = 24, color = 'currentColor', strokeWidth = 2,
+  trigger, className, style, handleRef, ...rest
+}: GestureIconProps) {
+  const { controls, hoverProps } = useGesture({ trigger, handleRef })
+  return (
+    <svg
+      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}
+      className={className} style={style} role="img" aria-label={rest['aria-label'] ?? 'ellipsis vertical'}
+      {...hoverProps}
+    >
+      {DOTS.map((cy, i) => (
+        <motion.circle
+          key={cy}
+          cx="12" cy={cy} r="1"
+          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
+          initial="normal"
+          animate={controls}
+          variants={{
+            normal: { scale: 1 },
+            animate: {
+              scale: [1, 0.6, 1.3, 1],
+              transition: {
+                duration: DOT_DUR,
+                delay: i * STEP,
+                times: [0, 0.3, 0.65, 1],
+                ease: [easeInCubic, settleBack, easeOutQuart],
+              },
+            },
+          }}
+        />
+      ))}
+    </svg>
+  )
+}
+
+export const meta = {
+  name: 'ellipsis-vertical',
+  gesture: 'it does what it means',
+  family: 'rigid' as const,
+  section: 'Interface',
+  tags: ['menu', 'more', 'options', 'ellipsis', 'vertical'],
+}
+
+export default EllipsisVerticalIcon

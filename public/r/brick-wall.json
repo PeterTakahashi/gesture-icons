@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "brick-wall",
+  "title": "brick-wall",
+  "description": "Semantic animated icon — it is laid true. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/brick-wall.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, easeInOutCubic } from '../core/easings'\n\n/**\n * Brick wall — it is laid true. The top course settles down onto the row\n * below it — mortar taking the weight — and the joint line beneath it\n * isn't hit until the bricks actually arrive, so it dips 3% later on the\n * same curve, smaller. Everything else in the wall stays put.\n * Base geometry: Lucide `brick-wall` (ISC).\n */\nconst DUR = 0.9\n\nexport function BrickWallIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'brick wall'}\n      {...hoverProps}\n    >\n      <rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" />\n      <motion.path\n        d=\"M16 3v6\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0.8, 0.2, 0],\n            transition: { duration: DUR, times: [0, 0.4, 0.72, 1], ease: [easeOutQuart, easeInOutCubic, easeInOutCubic] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M8 3v6\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0.8, 0.2, 0],\n            transition: { duration: DUR, times: [0, 0.4, 0.72, 1], ease: [easeOutQuart, easeInOutCubic, easeInOutCubic] },\n          },\n        }}\n      />\n      <path d=\"M12 9v6\" />\n      <path d=\"M16 15v6\" />\n      <path d=\"M8 15v6\" />\n      <path d=\"M3 15h18\" />\n      <motion.path\n        d=\"M3 9h18\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.5, 0.1, 0],\n            transition: { duration: DUR, times: [0, 0.03, 0.42, 0.74, 1], ease: ['linear', easeOutQuart, easeInOutCubic, easeInOutCubic] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'brick-wall',\n  gesture: 'it is laid true',\n  family: 'rigid' as const,\n  section: 'Buildings',\n  tags: ['construction', 'wall', 'solid', 'brick'],\n}\n\nexport default BrickWallIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/brick-wall.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

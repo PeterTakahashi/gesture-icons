@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "venetian-mask",
+  "title": "venetian-mask",
+  "description": "Semantic animated icon — . Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/venetian-mask.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Venetian mask — the masquerade begins. The whole mask, cheek marks\n * included, tilts as one rigid piece about its own center — regarding you\n * sideways, with a tiny lift — before it settles back level. Who's asking?\n * Base geometry: Lucide `venetian-mask` (ISC).\n */\nconst DUR = 1.0\n\nexport function VenetianMaskIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'venetian mask'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, y: 0 },\n          animate: {\n            rotate: [0, -5, 3, 0],\n            y: [0, -0.4, 0.1, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.65, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M18 11c-1.5 0-2.5.5-3 2\" />\n        <path d=\"M4 6a2 2 0 0 0-2 2v4a5 5 0 0 0 5 5 8 8 0 0 1 5 2 8 8 0 0 1 5-2 5 5 0 0 0 5-5V8a2 2 0 0 0-2-2h-3a8 8 0 0 0-5 2 8 8 0 0 0-5-2z\" />\n        <path d=\"M6 11c1.5 0 2.5.5 3 2\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'venetian-mask',\n  gesture: \"the masquerade begins\",\n  family: 'rigid' as const,\n  section: 'Objects',\n  tags: ['mask', 'carnival', 'mystery', 'venetian'],\n}\n\nexport default VenetianMaskIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/venetian-mask.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

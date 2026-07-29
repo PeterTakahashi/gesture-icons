@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pyramid",
+  "title": "pyramid",
+  "description": "Semantic animated icon — it endures the ages. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/pyramid.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Pyramid — it endures the ages. VARIANT(mountain): the near-stillness\n * gesture — a barely perceptible swell about its base — plus a single\n * glint tick at the apex, rest-hidden at scale 0.001, catching the light\n * once at the peak of the swell.\n * Base geometry: Lucide `pyramid` (ISC).\n */\nconst DUR = 1.5\n\nexport function PyramidIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const fillColor = color === 'currentColor' ? 'currentColor' : color\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'pyramid'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 21px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.015, 1],\n            transition: { duration: DUR, times: [0, 0.5, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M2.5 16.88a1 1 0 0 1-.32-1.43l9-13.02a1 1 0 0 1 1.64 0l9 13.01a1 1 0 0 1-.32 1.44l-8.51 4.86a2 2 0 0 1-1.98 0Z\" />\n        <path d=\"M12 2v20\" />\n      </motion.g>\n      {/* a single glint at the apex, rest-hidden */}\n      <motion.circle\n        cx=\"12\" cy=\"2.6\" r=\"0.6\" fill={fillColor} stroke=\"none\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 0.001 },\n          animate: {\n            scale: [0.001, 1, 0.001, 0.001],\n            transition: { duration: DUR, times: [0, 0.45, 0.55, 1], ease: [settleBack, 'linear'] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'pyramid',\n  gesture: 'it endures the ages',\n  family: 'rigid' as const,\n  section: 'Shapes',\n  tags: ['3d', 'egypt', 'geometry', 'pyramid'],\n}\n\nexport default PyramidIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/pyramid.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "square-m",
+  "title": "square-m",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/square-m.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen } from '../core/easings'\n\n/**\n * Square M — it draws itself. The letter is a plain glyph, not an arrow,\n * check, X, plus, or play head, so none of those menu items honestly apply —\n * the closest honest verb for a stroke letter is a pen redraw: it erases\n * fast then writes itself back on, pen-eased into the stop. The square frame\n * around it holds still.\n * Base geometry: Lucide `square-m` (ISC).\n */\nconst DUR = 0.9\n\nexport function SquareMIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'square m'}\n      {...hoverProps}\n    >\n      <rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" />\n      <motion.path\n        d=\"M8 16V8.5a.5.5 0 0 1 .9-.3l2.7 3.599a.5.5 0 0 0 .8 0l2.7-3.6a.5.5 0 0 1 .9.3V16\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.26, 0.42, 0.9], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'square-m',\n  gesture: 'it draws itself',\n  family: 'rigid' as const,\n  section: 'Shapes',\n  tags: ['square'],\n}\n\nexport default SquareMIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/square-m.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

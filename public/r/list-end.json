@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "list-end",
+  "title": "list-end",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/list-end.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * List end — it does what it means. The three rows hold still; the end\n * bracket and its arrow (physically one connected mark) NUDGE down as a\n * unit — wind-up up, drive down past the mark, settleBack home — reading as\n * the jump-to-end it points at.\n * Base geometry: Lucide `list-end` (ISC).\n */\nconst DUR = 0.8\n\nexport function ListEndIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'list end'}\n      {...hoverProps}\n    >\n      <path d=\"M16 5H3\" />\n      <path d=\"M16 12H3\" />\n      <path d=\"M9 19H3\" />\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1, 2.2, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.6, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"m16 16-3 3 3 3\" />\n        <path d=\"M21 5v12a2 2 0 0 1-2 2h-6\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'list-end',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['list', 'end'],\n}\n\nexport default ListEndIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/list-end.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

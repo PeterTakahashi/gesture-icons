@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "user-key",
+  "title": "user-key",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/user-key.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeInOutQuart, easeOutQuart } from '../core/easings'\n\n/**\n * User key — the key mark performs its own verb; the person holds still,\n * the same \"one actor\" choice as user-x.tsx. The key turns about its own\n * ring (its bow), same pun as key.tsx: a small counter-grip wind-up, the\n * turn past its mark, a held beat, then back home.\n * Base geometry: Lucide `user-key` (ISC).\n */\nconst DUR = 1.05\n\nexport function UserKeyIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'user key'}\n      {...hoverProps}\n    >\n      <path d=\"M3 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 2.072.578\" />\n      <circle cx=\"10\" cy=\"7\" r=\"4\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '20px 19px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -10, 80, 80, -4, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.14, 0.4, 0.58, 0.86, 1],\n              ease: [easeInOutCubic, [0.5, 0, 0.3, 1.1], 'linear', easeInOutQuart, easeOutQuart],\n            },\n          },\n        }}\n      >\n        <path d=\"M20 11v6\" />\n        <path d=\"M20 13h2\" />\n        <circle cx=\"20\" cy=\"19\" r=\"2\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'user-key',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'People',\n  tags: ['user', 'member', 'key'],\n}\n\nexport default UserKeyIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/user-key.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

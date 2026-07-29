@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "webcam-off",
+  "title": "webcam-off",
+  "description": "Semantic animated icon — it is switched off. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/webcam-off.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, pen } from '../core/easings'\n\n/**\n * Webcam off — it is switched off. VARIANT: the slash erases then\n * pen-redraws across (like eye-off.tsx) while the lens gives one small\n * defeated tilt about its own center and settles. The stand never moves.\n * Base geometry: Lucide `webcam-off` (ISC).\n */\nconst DUR = 0.9\n\nexport function WebcamOffIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'webcam off'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 10px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, 1, 1, 0],\n            rotate: [0, 2.5, 2.5, 0],\n            transition: { duration: DUR, times: [0, 0.32, 0.68, 1], ease: [easeOutQuart, 'linear', easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M12.754 7.096a3 3 0 0 1 2.15 2.15\" />\n        <path d=\"M12.863 12.873a3 3 0 0 1-3.736-3.735\" />\n        <path d=\"M16.566 16.57A8 8 0 0 1 5.43 5.433\" />\n        <path d=\"M8.478 2.817a8 8 0 0 1 10.705 10.705\" />\n      </motion.g>\n      <path d=\"M12 22v-4\" />\n      <path d=\"M7 22h10\" />\n      <motion.path\n        d=\"m2 2 20 20\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.26, 0.42, 0.82], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'webcam-off',\n  gesture: 'it is switched off',\n  family: 'draw-on' as const,\n  section: 'Devices',\n  tags: ['disabled', 'off', 'webcam'],\n}\n\nexport default WebcamOffIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/webcam-off.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

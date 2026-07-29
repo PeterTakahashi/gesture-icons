@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "move-right",
+  "title": "move-right",
+  "description": "Semantic animated icon — it makes its move. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/move-right.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Move right — it makes its move. NUDGE right: wind-up left, drive right\n * past the mark, settle home — the chevron head running a touch ahead of\n * the shaft the whole beat, the center line it grows from.\n * Base geometry: Lucide `move-right` (ISC).\n */\nconst DUR = 0.75\n\nexport function MoveRightIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'move right'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M18 8L22 12L18 16\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -1.5, 3, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.59, 0.97], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M2 12H22\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -1.5, 3, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.62, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'move-right',\n  gesture: 'it makes its move',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['move', 'drag', 'right'],\n}\n\nexport default MoveRightIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/move-right.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

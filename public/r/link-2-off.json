@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "link-2-off",
+  "title": "link-2-off",
+  "description": "Semantic animated icon — it is switched off. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/link-2-off.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, pen } from '../core/easings'\n\n/**\n * Link 2 off — it is switched off. VARIANT: the slash erases and pen-\n * redraws itself across the glyph exactly as `eye-off.tsx`'s does, while\n * the broken link gives ONE small defeated sag — down and a hair of tilt,\n * no bounce — and settles back, never a repeating shake.\n * Base geometry: Lucide `link-2-off` (ISC).\n */\nconst DUR = 0.9\n\nexport function Link2OffIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'link 2 off'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, 2.4, 0],\n            rotate: [0, 3, 0],\n            transition: { duration: DUR, times: [0, 0.4, 0.85], ease: [easeInCubic, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M9 17H7A5 5 0 0 1 7 7\" />\n        <path d=\"M15 7h2a5 5 0 0 1 4 8\" />\n        <line x1=\"8\" x2=\"12\" y1=\"12\" y2=\"12\" />\n      </motion.g>\n      <motion.line\n        x1=\"2\" x2=\"22\" y1=\"2\" y2=\"22\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.25, 0.4, 0.8], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'link-2-off',\n  gesture: 'it is switched off',\n  family: 'draw-on' as const,\n  section: 'Interface',\n  tags: ['disabled', 'off', 'link'],\n}\n\nexport default Link2OffIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/link-2-off.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

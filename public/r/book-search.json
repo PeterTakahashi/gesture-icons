@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "book-search",
+  "title": "book-search",
+  "description": "Semantic animated icon — it is inspected. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/book-search.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Book search — VARIANT(search): the lens (circle + handle) sweeps a small\n * scan arc over the book and settles, exactly as file-search.tsx and\n * folder-search.tsx do; the book itself holds still.\n * Base geometry: Lucide `book-search` (ISC).\n */\nconst DUR = 0.95\n\nexport function BookSearchIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'book search'}\n      {...hoverProps}\n    >\n      <path d=\"M11 22H5.5a1 1 0 0 1 0-5h4.501\" />\n      <path d=\"M3 19.5v-15A2.5 2.5 0 0 1 5.5 2H18a1 1 0 0 1 1 1v8\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '17px 18px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0, rotate: 0 },\n          animate: {\n            x: [0, -1.2, 1.2, 0],\n            y: [0, -1.2, 1.2, 0],\n            rotate: [0, -4, 4, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.66, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m21 22-1.879-1.878\" />\n        <circle cx=\"17\" cy=\"18\" r=\"3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'book-search',\n  gesture: 'it is inspected',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['find', 'book', 'search'],\n}\n\nexport default BookSearchIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/book-search.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

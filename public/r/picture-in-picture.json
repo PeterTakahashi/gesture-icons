@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "picture-in-picture",
+  "title": "picture-in-picture",
+  "description": "Semantic animated icon — the small screen docks. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/picture-in-picture.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Picture in picture — the small screen docks. It slides further into its\n * corner with a settleBack overshoot and holds there a beat — where it\n * belongs — then eases back out to the position Lucide drew it in, since\n * a gesture always finishes back on its resting frame. The big frame\n * never moves.\n * Base geometry: Lucide `picture-in-picture` (ISC).\n */\nconst DUR = 1.0\n\nexport function PictureInPictureIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'picture in picture'}\n      {...hoverProps}\n    >\n      <path d=\"M2 10h6V4\" />\n      <path d=\"m2 4 6 6\" />\n      <path d=\"M21 10V7a2 2 0 0 0-2-2h-7\" />\n      <path d=\"M3 14v2a2 2 0 0 0 2 2h3\" />\n      <motion.rect\n        x=\"12\" y=\"14\" width=\"10\" height=\"7\" rx=\"1\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, 1.4, 1.1, 0],\n            y: [0, 1.0, 0.8, 0],\n            transition: { duration: DUR, times: [0, 0.4, 0.75, 1], ease: [settleBack, 'linear', easeInOutCubic] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'picture-in-picture',\n  gesture: 'the small screen docks',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['pip', 'video', 'overlay', 'picture'],\n}\n\nexport default PictureInPictureIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/picture-in-picture.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

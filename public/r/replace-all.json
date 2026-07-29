@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "replace-all",
+  "title": "replace-all",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/replace-all.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Replace all — same swap as replace.tsx, but the target repeats: the\n * ghost slot recedes once, the arrow drops the value in, and BOTH target\n * boxes take the contact pop — the first on arrival, the second a beat\n * later — showing the replace propagating across the set, on one clock.\n * Base geometry: Lucide `replace-all` (ISC).\n */\nconst DUR = 1.0\n\nexport function ReplaceAllIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'replace all'}\n      {...hoverProps}\n    >\n      {/* the ghost slot recedes as its value leaves */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, 0, 0.7, 0],\n            y: [0, 0, -0.7, 0],\n            transition: { duration: DUR, times: [0, 0.15, 0.55, 0.9], ease: ['linear', easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M14 4a1 1 0 0 1 1-1\" />\n        <path d=\"M15 10a1 1 0 0 1-1-1\" />\n        <path d=\"M21 4a1 1 0 0 0-1-1\" />\n        <path d=\"M21 9a1 1 0 0 1-1 1\" />\n      </motion.g>\n      {/* the value drops down into place */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1, 2.2, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.55, 0.85], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"m3 7 3 3 3-3\" />\n        <path d=\"M6 10V5a2 2 0 0 1 2-2h2\" />\n      </motion.g>\n      {/* first target takes the pop on arrival */}\n      <motion.rect\n        x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1, 1.12, 1],\n            transition: { duration: DUR, times: [0, 0.5, 0.63, 0.9], ease: ['linear', easeOutQuart, easeOutQuart] },\n          },\n        }}\n      />\n      {/* the second target, standing in for \"all\", takes the pop a beat later */}\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '17.5px 17.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1, 1.12, 1],\n            transition: { duration: DUR, times: [0, 0.58, 0.71, 0.96], ease: ['linear', easeOutQuart, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M14 14a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1\" />\n        <path d=\"M19 14a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'replace-all',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['boolean', 'layers', 'combine', 'replace', 'all'],\n}\n\nexport default ReplaceAllIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/replace-all.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

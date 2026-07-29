@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "star-x",
+  "title": "star-x",
+  "description": "Semantic animated icon — it refuses. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/star-x.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Star x — it refuses. VARIANT(x): only the X shakes \"no\" — a decaying\n * rotation about its own center (18px, 18px, the midpoint of its two\n * diagonals) — while the star body holds perfectly still.\n * Base geometry: Lucide `star-x` (ISC).\n */\nconst DUR = 0.85\n\nexport function StarXIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'star x'}\n      {...hoverProps}\n    >\n      <path d=\"m20.063 11.525 1.777-1.731a.53.53 0 0 0-.294-.905l-5.166-.755a2.1 2.1 0 0 1-1.595-1.16l-2.31-4.68a.53.53 0 0 0-.95.001L9.216 6.974a2.1 2.1 0 0 1-1.597 1.16l-5.165.755a.53.53 0 0 0-.294.906l3.736 3.637a2.1 2.1 0 0 1 .611 1.879l-.88 5.139a.53.53 0 0 0 .769.56l4.617-2.428a2.1 2.1 0 0 1 .987-.243 2 2 0 0 1 .132.004\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '18px 18px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -10, 8, -5, 3, 0],\n            transition: { duration: DUR, times: [0, 0.18, 0.36, 0.56, 0.76, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m15.5 15.5 5 5\" />\n        <path d=\"m20.5 15.5-5 5\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'star-x',\n  gesture: 'it refuses',\n  family: 'rigid' as const,\n  section: 'Commerce & feedback',\n  tags: ['cancel', 'remove', 'star'],\n}\n\nexport default StarXIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/star-x.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

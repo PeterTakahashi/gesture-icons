@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hand-fist",
+  "title": "hand-fist",
+  "description": "Semantic animated icon — it clenches. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/hand-fist.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Hand fist — it clenches. The whole fist compresses about its own center\n * and springs slightly past its rest size, with a small shake right at the\n * tightest point — the grip finding its resolve.\n * Base geometry: Lucide `hand-fist` (ISC).\n */\nconst DUR = 0.8\n\nexport function HandFistIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'hand fist'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1, rotate: 0 },\n          animate: {\n            scale: [1, 0.94, 1.02, 1],\n            rotate: [0, 0, -2, 2, -1, 0, 0],\n            transition: {\n              duration: DUR,\n              scale: { times: [0, 0.32, 0.62, 1], ease: [easeInCubic, settleBack, easeInOutCubic] },\n              rotate: { times: [0, 0.32, 0.4, 0.48, 0.56, 0.64, 1], ease: easeInOutCubic },\n            },\n          },\n        }}\n      >\n        <path d=\"M12.035 17.012a3 3 0 0 0-3-3l-.311-.002a.72.72 0 0 1-.505-1.229l1.195-1.195A2 2 0 0 1 10.828 11H12a2 2 0 0 0 0-4H9.243a3 3 0 0 0-2.122.879l-2.707 2.707A4.83 4.83 0 0 0 3 14a8 8 0 0 0 8 8h2a8 8 0 0 0 8-8V7a2 2 0 1 0-4 0v2a2 2 0 1 0 4 0\" />\n        <path d=\"M13.888 9.662A2 2 0 0 0 17 8V5A2 2 0 1 0 13 5\" />\n        <path d=\"M9 5A2 2 0 1 0 5 5V10\" />\n        <path d=\"M9 7V4A2 2 0 1 1 13 4V7.268\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'hand-fist',\n  gesture: 'it clenches',\n  family: 'rigid' as const,\n  section: 'Hands',\n  tags: ['fist', 'power', 'solidarity', 'hand'],\n}\n\nexport default HandFistIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/hand-fist.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

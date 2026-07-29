@@ -1,6 +1,6 @@
 # gesture-icons
 
-Semantic animated icons for React — 500+ of them, searchable, with
+Semantic animated icons for React — 1000 of them, searchable, with
 shadcn-style CLI install and static Vue/HTML snippets. Each icon
 performs **the gesture it already means, happening once** — a bell rings, a
 key turns in its lock, a paper plane actually leaves the frame, an arm flexes.

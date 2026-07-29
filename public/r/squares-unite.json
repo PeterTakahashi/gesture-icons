@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "squares-unite",
+  "title": "squares-unite",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/squares-unite.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutQuart, pen } from '../core/easings'\n\n/**\n * Squares unite — it draws together. Lucide draws the union as a single\n * merged outline, so there are no two shapes left to move into each other —\n * the honest verb left is DRAW: the merged outline erases and pen-redraws,\n * standing in for the union completing.\n * Base geometry: Lucide `squares-unite` (ISC).\n */\nconst DUR = 0.95\n\nexport function SquaresUniteIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'squares unite'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 0 1 1h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-3a1 1 0 0 0-1-1z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.1, 0.4, 0.92], ease: [easeInOutQuart, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'squares-unite',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Shapes',\n  tags: ['boolean', 'layers', 'combine', 'squares', 'unite'],\n}\n\nexport default SquaresUniteIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/squares-unite.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

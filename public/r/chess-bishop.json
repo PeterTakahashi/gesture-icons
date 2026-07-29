@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chess-bishop",
+  "title": "chess-bishop",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/chess-bishop.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Chess bishop — the piece makes its diagonal slide and returns. The body\n * winds up a hair against the move, then glides diagonally up-right, and\n * settles back onto the base, which stays planted throughout.\n * Base geometry: Lucide `chess-bishop` (ISC).\n */\nconst DUR = 0.95\n\nexport function ChessBishopIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'chess bishop'}\n      {...hoverProps}\n    >\n      <path d=\"M5 20a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z\" />\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -0.5, 2, 0],\n            y: [0, 0.5, -2, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.6, 1], ease: [easeInOutCubic, easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M15 18c1.5-.615 3-2.461 3-4.923C18 8.769 14.5 4.462 12 2 9.5 4.462 6 8.77 6 13.077 6 15.539 7.5 17.385 9 18\" />\n        <path d=\"m16 7-2.5 2.5\" />\n        <path d=\"M9 2h6\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'chess-bishop',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Food & drink',\n  tags: ['chess', 'game', 'strategy', 'bishop'],\n}\n\nexport default ChessBishopIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/chess-bishop.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "user-cog-2",
+  "title": "user-cog-2",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/user-cog-2.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport type { Bezier } from '../core/easings'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * User cog 2 — it does what it means. VARIANT(user): the person holds\n * (nothing in this glyph gives an honest bow hinge) while the cog-2 badge\n * turns — wind-up then a drive, released back to rest rather than\n * free-landed, since the compound tooth paths don't give a confident\n * fold-symmetry to land on.\n * Base geometry: Lucide `user-cog-2` (ISC).\n */\nconst DUR = 0.9\nconst OVERSHOOT_TURN: Bezier = [0.5, 0, 0.3, 1.15]\n\nexport function UserCog2Icon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'user cog 2'}\n      {...hoverProps}\n    >\n      <path d=\"M2 21a8 8 0 0 1 10.434-7.62\" />\n      <circle cx=\"10\" cy=\"8\" r=\"5\" />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '18px 18px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -6, 22, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.6, 1], ease: [easeInOutCubic, OVERSHOOT_TURN, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"m14.305 19.53.923-.382\" />\n        <path d=\"m15.228 16.852-.923-.383\" />\n        <path d=\"m16.852 15.228-.383-.923\" />\n        <path d=\"m16.852 20.772-.383.924\" />\n        <path d=\"m19.148 15.228.383-.923\" />\n        <path d=\"m19.53 21.696-.382-.924\" />\n        <path d=\"m20.772 16.852.924-.383\" />\n        <path d=\"m20.772 19.148.924.383\" />\n        <circle cx=\"18\" cy=\"18\" r=\"3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'user-cog-2',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'People',\n  tags: ['user', 'member', 'cog'],\n}\n\nexport default UserCog2Icon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/user-cog-2.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

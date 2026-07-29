@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "book-text",
+  "title": "book-text",
+  "description": "Semantic animated icon — it opens to read. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/book-text.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, easeInOutCubic, easeInCubic, pen } from '../core/easings'\n\n/**\n * Book text — it opens to read. The cover tips back on its spine and swings\n * shut with a landing dip (book.tsx's beat); as it closes the two text\n * rules write themselves back on, top line first, so the page reads as\n * freshly set the instant the cover lands.\n * Base geometry: Lucide `book-text` (ISC).\n */\nconst DUR = 1.0\nconst LINES = ['M8 7h6', 'M8 11h8']\n\nexport function BookTextIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'book text'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20\"\n        style={{ transformBox: 'view-box', transformOrigin: '4px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, y: 0 },\n          animate: {\n            rotate: [0, -8, -8, 0],\n            y: [0, 0, 0, 1.3, 0],\n            transition: {\n              duration: DUR,\n              rotate: { times: [0, 0.32, 0.62, 0.88], ease: [easeOutQuart, 'linear', easeInOutCubic] },\n              y: { times: [0, 0.85, 0.9, 0.96, 1], ease: ['linear', easeInOutCubic, easeOutQuart] },\n            },\n          },\n        }}\n      />\n      {LINES.map((d, i) => (\n        <motion.path\n          key={d}\n          d={d}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { pathLength: 1 },\n            animate: {\n              pathLength: [1, 0.001, 0.001, 1],\n              transition: {\n                duration: 0.8,\n                delay: i * 0.1,\n                times: [0, 0.35, 0.5, 0.95],\n                ease: [easeInCubic, 'linear', pen],\n              },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'book-text',\n  gesture: 'it opens to read',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['book', 'read', 'text'],\n}\n\nexport default BookTextIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/book-text.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

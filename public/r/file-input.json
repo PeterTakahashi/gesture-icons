@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "file-input",
+  "title": "file-input",
+  "description": "Semantic animated icon — content is fed in. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/file-input.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * File input — content is fed in. VARIANT(file-text): the page holds still\n * except a small dip on the frame the arrow lands; the line-and-chevron\n * mark nudges rightward — into the page — wind-up first, then the drive,\n * then settles home.\n * Base geometry: Lucide `file-input` (ISC).\n */\nconst DUR = 1.0\n\nexport function FileInputIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'file input'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.5, 0.62, 0.85], ease: ['linear', easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M4 11V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-1\" />\n        <path d=\"M14 2v5a1 1 0 0 0 1 1h5\" />\n      </motion.g>\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -0.6, 1.2, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 0.85], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M2 15h10\" />\n        <path d=\"m9 18 3-3-3-3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'file-input',\n  gesture: 'content is fed in',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['file', 'document', 'input'],\n}\n\nexport default FileInputIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/file-input.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

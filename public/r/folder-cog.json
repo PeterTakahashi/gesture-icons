@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "folder-cog",
+  "title": "folder-cog",
+  "description": "Semantic animated icon — it configures itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/folder-cog.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, easeOutQuint } from '../core/easings'\n\n/**\n * Folder cog — it configures itself. VARIANT(folder): the folder dips on\n * the frame the cog lands; the cog badge is 8-fold symmetric (a tooth every\n * 45°), so — as in `cog.tsx` — its one-tooth turn is a free landing: wind\n * up, overshoot past the mark, settle on 45°, which reads identical to 0°.\n * Base geometry: Lucide `folder-cog` (ISC).\n */\nconst DUR = 0.9\n\nexport function FolderCogIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'folder cog'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M10.3 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.98a2 2 0 0 1 1.69.9l.66 1.2A2 2 0 0 0 12 6h8a2 2 0 0 1 2 2v3.3\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.6, -0.15, 0],\n            transition: { duration: DUR, times: [0, 0.55, 0.7, 0.85, 1], ease: ['linear', easeOutQuart, easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '18px 18px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          // free landing: 45° reads identical to 0° on this 8-fold cog\n          animate: {\n            rotate: [0, -8, 50, 45],\n            transition: { duration: DUR, times: [0, 0.18, 0.75, 1], ease: [easeInOutCubic, easeOutQuint, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"m14.305 19.53.923-.382\" />\n        <path d=\"m15.228 16.852-.923-.383\" />\n        <path d=\"m16.852 15.228-.383-.923\" />\n        <path d=\"m16.852 20.772-.383.924\" />\n        <path d=\"m19.148 15.228.383-.923\" />\n        <path d=\"m19.53 21.696-.382-.924\" />\n        <path d=\"m20.772 16.852.924-.383\" />\n        <path d=\"m20.772 19.148.924.383\" />\n        <circle cx=\"18\" cy=\"18\" r=\"3\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'folder-cog',\n  gesture: 'it configures itself',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['folder', 'cog'],\n}\n\nexport default FolderCogIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/folder-cog.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

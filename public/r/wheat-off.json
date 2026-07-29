@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "wheat-off",
+  "title": "wheat-off",
+  "description": "Semantic animated icon — it is switched off. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/wheat-off.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, pen } from '../core/easings'\n\n/**\n * Wheat off — it is switched off. The slash erases then pen-redraws across\n * the stalk (never a fade) while the whole plant gives one small defeated\n * sag-and-tilt about its base on the ground and settles — wilting, not\n * snapping.\n * Base geometry: Lucide `wheat-off` (ISC).\n */\nconst DUR = 0.95\n\nexport function WheatOffIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'wheat off'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '2px 22px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, 2, 0],\n            rotate: [0, 3, 0],\n            transition: { duration: DUR, times: [0, 0.5, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m2 22 10-10\" />\n        <path d=\"m16 8-1.17 1.17\" />\n        <path d=\"M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\" />\n        <path d=\"m8 8-.53.53a3.5 3.5 0 0 0 0 4.94L9 15l1.53-1.53c.55-.55.88-1.25.98-1.97\" />\n        <path d=\"M10.91 5.26c.15-.26.34-.51.56-.73L13 3l1.53 1.53a3.5 3.5 0 0 1 .28 4.62\" />\n        <path d=\"M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4Z\" />\n        <path d=\"M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z\" />\n        <path d=\"m16 16-.53.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.49 3.49 0 0 1 1.97-.98\" />\n        <path d=\"M18.74 13.09c.26-.15.51-.34.73-.56L21 11l-1.53-1.53a3.5 3.5 0 0 0-4.62-.28\" />\n      </motion.g>\n      <motion.line\n        x1=\"2\" y1=\"2\" x2=\"22\" y2=\"22\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.2, 0.35, 0.85], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'wheat-off',\n  gesture: 'it is switched off',\n  family: 'draw-on' as const,\n  section: 'Food & drink',\n  tags: ['disabled', 'off', 'wheat'],\n}\n\nexport default WheatOffIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/wheat-off.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

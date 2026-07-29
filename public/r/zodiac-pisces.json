@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "zodiac-pisces",
+  "title": "zodiac-pisces",
+  "description": "Semantic animated icon — pisces shimmers. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/zodiac-pisces.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuint, settleBack } from '../core/easings'\n\n/**\n * Zodiac Pisces — the constellation shimmers. The whole glyph gathers in\n * on an ease-in then blooms back past its own size before settling exactly\n * on the resting picture — small and quick, like a point of light catching\n * for a beat.\n * Base geometry: Lucide `zodiac-pisces` (ISC).\n */\nconst DUR = 0.8\n\nexport function ZodiacPiscesIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'zodiac pisces'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1, rotate: 0 },\n          animate: {\n            scale: [1, 0.85, 1.08, 1],\n            rotate: [0, -8, 3, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.35, 0.7, 1],\n              ease: [[0.55, 0, 0.7, 0.3], easeOutQuint, settleBack],\n            },\n          },\n        }}\n      >\n        <path d=\"M19 21a15 15 0 0 1 0-18\" />\n        <path d=\"M20 12H4\" />\n        <path d=\"M5 3a15 15 0 0 1 0 18\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'zodiac-pisces',\n  gesture: 'pisces shimmers',\n  family: 'rigid' as const,\n  section: 'Charts & math',\n  tags: ['zodiac', 'astrology', 'star', 'pisces'],\n}\n\nexport default ZodiacPiscesIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/zodiac-pisces.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

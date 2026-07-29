@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "blend",
+  "title": "blend",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/blend.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Blend — the two circles actually blend. They drift toward each other\n * along their shared diagonal, deepening the overlap for a beat, then\n * settle back to exactly the lens Lucide drew — the boolean read as a\n * breath, not a permanent merge.\n * Base geometry: Lucide `blend` (ISC).\n */\nconst DUR = 1.0\n\nexport function BlendIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'blend'}\n      {...hoverProps}\n    >\n      <motion.circle\n        r=\"7\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { cx: 9, cy: 9 },\n          animate: {\n            cx: [9, 9.9, 9],\n            cy: [9, 9.9, 9],\n            transition: { duration: DUR, times: [0, 0.55, 1], ease: [easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.circle\n        r=\"7\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { cx: 15, cy: 15 },\n          animate: {\n            cx: [15, 14.1, 15],\n            cy: [15, 14.1, 15],\n            transition: { duration: DUR, times: [0, 0.55, 1], ease: [easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'blend',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['boolean', 'layers', 'combine', 'blend'],\n}\n\nexport default BlendIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/blend.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

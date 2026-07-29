@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "webhook",
+  "title": "webhook",
+  "description": "Semantic animated icon — it wires itself up. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/webhook.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen } from '../core/easings'\n\n/**\n * Webhook — it wires itself up. The three hook arms erase then pen-redraw\n * in sequence, each starting before the last one finishes, so the chain\n * reads as being linked together rather than three lines appearing at once.\n * Base geometry: Lucide `webhook` (ISC).\n */\nconst SEG = 0.55\nconst STAGGER = 0.3\n\nconst link = (delay: number): Variants => ({\n  normal: { pathLength: 1 },\n  animate: {\n    pathLength: [1, 0.001, 0.001, 1],\n    transition: { duration: SEG, delay, times: [0, 0.25, 0.4, 0.85], ease: [easeInCubic, 'linear', pen] },\n  },\n})\n\nexport function WebhookIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'webhook'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M18 16.98h-5.99c-1.1 0-1.95.94-2.48 1.9A4 4 0 0 1 2 17c.01-.7.2-1.4.57-2\"\n        initial=\"normal\" animate={controls} variants={link(0)}\n      />\n      <motion.path\n        d=\"m6 17 3.13-5.78c.53-.97.1-2.18-.5-3.1a4 4 0 1 1 6.89-4.06\"\n        initial=\"normal\" animate={controls} variants={link(STAGGER)}\n      />\n      <motion.path\n        d=\"m12 6 3.13 5.73C15.66 12.7 16.9 13 18 13a4 4 0 0 1 0 8\"\n        initial=\"normal\" animate={controls} variants={link(2 * STAGGER)}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'webhook',\n  gesture: 'it wires itself up',\n  family: 'draw-on' as const,\n  section: 'Workspace',\n  tags: ['nodes', 'structure', 'webhook'],\n}\n\nexport default WebhookIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/webhook.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cuboid",
+  "title": "cuboid",
+  "description": "Semantic animated icon — it presents its face. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/cuboid.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Cuboid — it presents its face. A shallow tilt about the base shows the\n * box has depth, then squares back up. The hidden top-face edges are the\n * first thing a turning box reveals, so they lead the rotation by a hair —\n * the same ~3%-per-layer lag mechanics.md uses for impacts, run here as an\n * anticipation instead.\n * Base geometry: Lucide `cuboid` (ISC).\n */\nconst DUR = 0.9\n\nexport function CuboidIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'cuboid'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 22px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -4, 2, 0],\n            transition: { duration: DUR, times: [0, 0.27, 0.62, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M10 22v-8\" />\n        <path d=\"M2.336 8.89 10 14l11.715-7.029\" />\n      </motion.g>\n      <motion.path\n        d=\"M22 14a2 2 0 0 1-.971 1.715l-10 6a2 2 0 0 1-2.138-.05l-6-4A2 2 0 0 1 2 16v-6a2 2 0 0 1 .971-1.715l10-6a2 2 0 0 1 2.138.05l6 4A2 2 0 0 1 22 8z\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 22px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -4, 2, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.65, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'cuboid',\n  gesture: 'it presents its face',\n  family: 'rigid' as const,\n  section: 'Shapes',\n  tags: ['3d', 'box', 'geometry', 'cuboid'],\n}\n\nexport default CuboidIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/cuboid.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

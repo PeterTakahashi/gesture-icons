@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "save-plus",
+  "title": "save-plus",
+  "description": "Semantic animated icon — one more is added. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/save-plus.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Save plus — one more is added. The plus dips to almost nothing and pops\n * back past its own size before settling, and the save body takes a small\n * y dip exactly on that pop frame — a new save landing in the stack.\n * Everything else on the glyph holds still.\n * Base geometry: Lucide `save-plus` (ISC).\n */\nconst DUR = 1.0\n\nexport function SavePlusIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'save plus'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.5, 0],\n            transition: { duration: DUR, times: [0, 0.5, 0.55, 0.62], ease: ['linear', easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M12.5 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10.2a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V12\" />\n        <path d=\"M16 13H8a1 1 0 0 0-1 1v7\" />\n        <path d=\"M7 3v4a1 1 0 0 0 1 1h7\" />\n      </motion.g>\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '19px 19px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.6, 1.3, 1],\n            transition: { duration: DUR, times: [0, 0.25, 0.55, 0.85], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M19 22v-6\" />\n        <path d=\"M22 19h-6\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'save-plus',\n  gesture: 'one more is added',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['add', 'new', 'save', 'plus'],\n}\n\nexport default SavePlusIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/save-plus.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "popcorn",
+  "title": "popcorn",
+  "description": "Semantic animated icon — it pops. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/popcorn.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, easeOutQuint, gravity } from '../core/easings'\n\n/**\n * Popcorn — it pops. Two kernels (rest-hidden at scale 0.001, tucked just\n * inside the box mouth) pop up out of the box and fall back in with\n * gravity, 100ms apart. The box gives a small shiver on each impact — it\n * is the box's ink, not a fade, that shows they were never there at rest.\n * Base geometry: Lucide `popcorn` (ISC).\n */\nconst DUR = 1.0\n\nexport function PopcornIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const fillColor = color === 'currentColor' ? 'currentColor' : color\n  const kernel = (delay: number): Variants => ({\n    normal: { scale: 0.001, y: 0 },\n    animate: {\n      scale: [0.001, 1.2, 1, 1, 0.001],\n      y: [0, -4, -4, 2, 2],\n      transition: { duration: DUR, delay, times: [0, 0.25, 0.4, 0.7, 0.85], ease: [easeOutQuint, 'linear', gravity, easeOutQuart] },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'popcorn'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, 0, 0.6, 0, 0, 0.6, 0, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.25, 0.28, 0.32, 0.35, 0.38, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M18 8a2 2 0 0 0 0-4 2 2 0 0 0-4 0 2 2 0 0 0-4 0 2 2 0 0 0-4 0 2 2 0 0 0 0 4\" />\n        <path d=\"M10 22 9 8\" />\n        <path d=\"m14 22 1-14\" />\n        <path d=\"M20 8c.5 0 .9.4.8 1l-2.6 12c-.1.5-.7 1-1.2 1H7c-.6 0-1.1-.4-1.2-1L3.2 9c-.1-.6.3-1 .8-1Z\" />\n        <motion.circle cx=\"9\" cy=\"7\" r=\"1.1\" fill={fillColor} stroke=\"none\" style={{ transformBox: 'fill-box', transformOrigin: 'center' }} initial=\"normal\" animate={controls} variants={kernel(0)} />\n        <motion.circle cx=\"14\" cy=\"7\" r=\"1.1\" fill={fillColor} stroke=\"none\" style={{ transformBox: 'fill-box', transformOrigin: 'center' }} initial=\"normal\" animate={controls} variants={kernel(0.1)} />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'popcorn',\n  gesture: 'it pops',\n  family: 'secondary' as const,\n  section: 'Food & drink',\n  tags: ['movie', 'snack', 'popcorn'],\n}\n\nexport default PopcornIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/popcorn.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

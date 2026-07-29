@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pocket-knife",
+  "title": "pocket-knife",
+  "description": "Semantic animated icon — the blade folds out. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/pocket-knife.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Pocket knife — the blade folds out. The blade hinges at the rivet where\n * it meets the top of the handle, swings open further than its resting\n * angle, holds a beat as if inspected, then folds back with a firm click\n * stop. The handle casing and its grip texture never move.\n * Base geometry: Lucide `pocket-knife` (ISC).\n */\nconst DUR = 1.0\n\nexport function PocketKnifeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'pocket knife'}\n      {...hoverProps}\n    >\n      <path d=\"M3 2v1c0 1 2 1 2 2S3 6 3 7s2 1 2 2-2 1-2 2 2 1 2 2\" />\n      <path d=\"M18 6h.01\" />\n      <path d=\"M6 18h.01\" />\n      {/* the blade hinges at the rivet, (18,6) */}\n      <motion.path\n        d=\"M20.83 8.83a4 4 0 0 0-5.66-5.66l-12 12a4 4 0 1 0 5.66 5.66Z\"\n        style={{ transformBox: 'view-box', transformOrigin: '18px 6px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -25, -25, 0],\n            transition: { duration: DUR, times: [0, 0.3, 0.7, 1], ease: [easeInOutCubic, 'linear', easeOutQuart] },\n          },\n        }}\n      />\n      <path d=\"M18 11.66V22a4 4 0 0 0 4-4V6\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'pocket-knife',\n  gesture: 'the blade folds out',\n  family: 'rigid' as const,\n  section: 'Tools',\n  tags: ['knife', 'multi-tool', 'camp', 'pocket'],\n}\n\nexport default PocketKnifeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/pocket-knife.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

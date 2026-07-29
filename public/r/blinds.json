@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "blinds",
+  "title": "blinds",
+  "description": "Semantic animated icon — they tilt open. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/blinds.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Blinds — they tilt open. Each slat scales down to a sliver about its own\n * centerline, top slat first, each next one starting 5% later — light let\n * in for a beat — then every slat closes back to privacy.\n * Base geometry: Lucide `blinds` (ISC).\n */\nconst DUR = 1.0\nconst SLATS = [\n  { d: 'M20 7H8', origin: '14px 7px' },\n  { d: 'M20 11H8', origin: '14px 11px' },\n  { d: 'M8 15h12', origin: '14px 15px' },\n  { d: 'M10 19h10', origin: '15px 19px' },\n]\n\nexport function BlindsIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'blinds'}\n      {...hoverProps}\n    >\n      <path d=\"M3 3h18\" />\n      <path d=\"M4 3v14\" />\n      <circle cx=\"4\" cy=\"19\" r=\"2\" />\n      {SLATS.map((s, i) => (\n        <motion.path\n          key={s.d}\n          d={s.d}\n          style={{ transformBox: 'view-box', transformOrigin: s.origin }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { scaleY: 1 },\n            animate: {\n              scaleY: [1, 0.5, 1],\n              transition: { duration: DUR, delay: i * 0.05, times: [0, 0.4, 0.85], ease: easeInOutCubic },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'blinds',\n  gesture: 'they tilt open',\n  family: 'rigid' as const,\n  section: 'Home',\n  tags: ['window', 'shade', 'light', 'blinds'],\n}\n\nexport default BlindsIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/blinds.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

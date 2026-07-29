@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "file-box",
+  "title": "file-box",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/file-box.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, gravity } from '../core/easings'\n\n/**\n * File box — it draws itself. VARIANT(file-text): the page and its folded\n * corner hold still; the distinguishing parcel lifts clear, holds a beat,\n * then drops back with gravity — the page taking a small dip on the exact\n * frame the box lands, same handoff as file-check.tsx's tick.\n * Base geometry: Lucide `file-box` (ISC).\n */\nconst DUR = 1.0\n\nexport function FileBoxIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'file box'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.6, -0.15, 0],\n            transition: { duration: DUR, times: [0, 0.6, 0.74, 0.88, 1], ease: ['linear', easeOutQuart, 'linear'] },\n          },\n        }}\n      >\n        <path d=\"M14 2v5a1 1 0 001 1h5\" />\n        <path d=\"M14.692 22H18a2 2 0 002-2V8a2.4 2.4 0 00-.706-1.706l-3.588-3.588A2.4 2.4 0 0014 2H6a2 2 0 00-2 2v3.804\" />\n      </motion.g>\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '7px 17.5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -2, -2, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.6, 0.9], ease: [easeOutQuart, 'linear', gravity] },\n          },\n        }}\n      >\n        <path d=\"M2.264 13.752 7 16.5l4.737-2.748\" />\n        <path d=\"M2.995 13.014A2 2 0 002 14.744v3.516a2 2 0 00.996 1.73l3 1.74a2 2 0 002.008 0l3-1.74A2 2 0 0012 18.26v-3.517a2 2 0 00-.995-1.73l-3-1.742a2 2 0 00-1.892-.064z\" />\n        <path d=\"M7 16.5V22\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'file-box',\n  gesture: 'it draws itself',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['file', 'document', 'box'],\n}\n\nexport default FileBoxIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/file-box.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

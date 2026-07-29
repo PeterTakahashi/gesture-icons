@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "file-type",
+  "title": "file-type",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/file-type.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, easeInOutCubic, pen } from '../core/easings'\n\n/**\n * File type — it draws itself. The page holds, dipping once on the accent\n * frame; the serif T un-draws and pen-redraws in the order a hand would\n * write it — the cap, then the stem, then the base.\n * Base geometry: Lucide `file-type` (ISC).\n */\nconst DUR = 0.9\nconst STROKES = ['M9 13v-.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v.5', 'M12 12v6', 'M11 18h2']\n\nexport function FileTypeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'file type'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.4, 0],\n            transition: { duration: DUR, times: [0, 0.45, 0.6, 0.95], ease: [easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\" />\n        <path d=\"M14 2v5a1 1 0 0 0 1 1h5\" />\n      </motion.g>\n      {STROKES.map((d, i) => (\n        <motion.path\n          key={d}\n          d={d}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { pathLength: 1 },\n            animate: {\n              pathLength: [1, 0.001, 0.001, 1],\n              transition: {\n                duration: 0.75,\n                delay: i * 0.08,\n                times: [0, 0.3, 0.46, 0.95],\n                ease: [easeInCubic, 'linear', pen],\n              },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'file-type',\n  gesture: 'it draws itself',\n  family: 'draw-on' as const,\n  section: 'Files & time',\n  tags: ['file', 'document', 'type'],\n}\n\nexport default FileTypeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/file-type.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

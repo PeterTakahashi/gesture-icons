@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "fire-extinguisher",
+  "title": "fire-extinguisher",
+  "description": "Semantic animated icon — it is grabbed. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/fire-extinguisher.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Fire extinguisher — it is grabbed. A readiness shake: the whole canister\n * rocks about its own base twice while it lifts an inch off the shelf for a\n * quick weight check, then it is set back down — checked and charged.\n * Base geometry: Lucide `fire-extinguisher` (ISC).\n */\nconst DUR = 1.0\n\nexport function FireExtinguisherIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'fire extinguisher'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '13px 22px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0, y: 0 },\n          animate: {\n            rotate: [0, -3, 3, -3, 3, 0],\n            y: [0, -1, -1, -1, -1, 0],\n            transition: {\n              duration: DUR,\n              rotate: { times: [0, 0.15, 0.32, 0.5, 0.68, 0.85], ease: easeInOutCubic },\n              y: { times: [0, 0.1, 0.4, 0.7, 0.85, 1], ease: [easeOutQuart, 'linear', 'linear', easeInOutCubic] },\n            },\n          },\n        }}\n      >\n        <path d=\"M15 6.5V3a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v3.5\" />\n        <path d=\"M9 18h8\" />\n        <path d=\"M18 3h-3\" />\n        <path d=\"M11 3a6 6 0 0 0-6 6v11\" />\n        <path d=\"M5 13h4\" />\n        <path d=\"M17 10a4 4 0 0 0-8 0v10a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2Z\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'fire-extinguisher',\n  gesture: 'it is grabbed',\n  family: 'rigid' as const,\n  section: 'Security',\n  tags: ['safety', 'fire', 'emergency', 'extinguisher'],\n}\n\nexport default FireExtinguisherIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/fire-extinguisher.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "droplets",
+  "title": "droplets",
+  "description": "Semantic animated icon — they drip in turn. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/droplets.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Droplets — they drip in turn. VARIANT(droplet): the same surface-tension\n * stretch as the single droplet, run on each drop from its own hanging tip\n * — the bigger drop lets go first, the smaller one follows 10% later.\n * Base geometry: Lucide `droplets` (ISC).\n */\nconst DUR = 1.0\n\nexport function DropletsIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const drip = (delay: number) => ({\n    normal: { scaleY: 1 },\n    animate: {\n      scaleY: [1, 1.12, 0.94, 1.03, 1],\n      transition: { duration: DUR, delay, times: [0, 0.42, 0.66, 0.84, 1], ease: easeInOutCubic },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'droplets'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z\"\n        style={{ transformBox: 'view-box', transformOrigin: '7px 5.3px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={drip(0)}\n      />\n      <motion.path\n        d=\"M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97\"\n        style={{ transformBox: 'view-box', transformOrigin: '14px 3.02px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={drip(DUR * 0.1)}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'droplets',\n  gesture: 'they drip in turn',\n  family: 'rigid' as const,\n  section: 'Nature',\n  tags: ['water', 'wet', 'droplets'],\n}\n\nexport default DropletsIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/droplets.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

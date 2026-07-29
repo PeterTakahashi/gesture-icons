@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "parentheses",
+  "title": "parentheses",
+  "description": "Semantic animated icon — they enclose. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/parentheses.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Parentheses — they enclose. The two curves draw together, closing the\n * gap between them as if embracing whatever they wrap, then ease back\n * open to rest.\n * Base geometry: Lucide `parentheses` (ISC).\n */\nconst DUR = 0.8\n\nexport function ParenthesesIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'parentheses'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M8 21s-4-3-4-9 4-9 4-9\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, 1.2, 0],\n            transition: { duration: DUR, times: [0, 0.5, 1], ease: [easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M16 3s4 3 4 9-4 9-4 9\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -1.2, 0],\n            transition: { duration: DUR, times: [0, 0.5, 1], ease: [easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'parentheses',\n  gesture: 'they enclose',\n  family: 'rigid' as const,\n  section: 'Workspace',\n  tags: ['code', 'group', 'math', 'parentheses'],\n}\n\nexport default ParenthesesIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/parentheses.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

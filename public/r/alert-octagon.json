@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "alert-octagon",
+  "title": "alert-octagon",
+  "description": "Semantic animated icon — it signals. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/alert-octagon.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Alert octagon — it signals. The ! mark BLINKs twice, a true binary step\n * with no fade, then holds steady on; the octagon frame dips slightly on\n * the first blink — an alert landing in an octagon.\n * Base geometry: Lucide `alert-octagon` (ISC).\n */\nconst DUR = 1.0\n\nexport function AlertOctagonIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'alert octagon'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0.5, 0, 0],\n            transition: { duration: DUR, times: [0, 0.14, 0.3, 1], ease: [easeOutQuart, easeInOutCubic, 'linear'] },\n          },\n        }}\n      />\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { opacity: 1 },\n          animate: {\n            opacity: [1, 1, 0, 0, 1, 1, 0, 0, 1, 1],\n            transition: {\n              duration: DUR,\n              times: [0, 0.09, 0.1, 0.22, 0.23, 0.35, 0.36, 0.48, 0.49, 0.55],\n              ease: 'linear',\n            },\n          },\n        }}\n      >\n        <path d=\"M12 8v4\" />\n        <path d=\"M12 16h.01\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'alert-octagon',\n  gesture: 'it signals',\n  family: 'secondary' as const,\n  section: 'Files & time',\n  tags: ['warning', 'alert', 'octagon'],\n}\n\nexport default AlertOctagonIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/alert-octagon.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

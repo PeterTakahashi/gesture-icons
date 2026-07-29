@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "table-2",
+  "title": "table-2",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/table-2.tsx",
+      "content": "import { motion } from 'motion/react'\nimport type { Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Table 2 — data takes its places. Lucide draws this table's frame and both\n * dividers as one continuous path, so there is no single row to nudge\n * without cutting the geometry apart — the frame must hold still. The\n * honest stand-in: a small marker pops through each cell in reading order\n * and is gone.\n * Base geometry: Lucide `table-2` (ISC).\n */\nconst DUR = 0.95\nconst CELLS: Array<[number, number, number]> = [\n  [6, 5, 0],\n  [15, 5, 0.09],\n  [6, 19, 0.18],\n  [15, 19, 0.27],\n]\n\nfunction pop(delay: number): Variants {\n  return {\n    normal: { scale: 0.001 },\n    animate: {\n      scale: [0.001, 1.3, 1, 1, 0.001],\n      transition: { duration: DUR, delay, times: [0, 0.28, 0.42, 0.66, 0.8], ease: [settleBack, easeOutQuart, 'linear', easeOutQuart] },\n    },\n  }\n}\n\nexport function Table2Icon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'table 2'}\n      {...hoverProps}\n    >\n      <path d=\"M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18\" />\n      {CELLS.map(([cx, cy, delay]) => (\n        <motion.circle\n          key={`${cx}-${cy}`}\n          cx={cx} cy={cy} r={1.1}\n          fill={color === 'currentColor' ? 'currentColor' : color}\n          stroke=\"none\"\n          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n          initial=\"normal\"\n          animate={controls}\n          variants={pop(delay)}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'table-2',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['table', 'data', 'board'],\n}\n\nexport default Table2Icon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/table-2.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

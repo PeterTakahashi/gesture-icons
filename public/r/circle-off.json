@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "circle-off",
+  "title": "circle-off",
+  "description": "Semantic animated icon — it is switched off. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/circle-off.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, pen } from '../core/easings'\n\n/**\n * Circle off — it is switched off. The slash erases then pen-redraws\n * across the broken ring (never a fade) while the whole circle gives one\n * small defeated sag-and-tilt about its own center and settles.\n * Base geometry: Lucide `circle-off` (ISC).\n */\nconst DUR = 0.85\n\nexport function CircleOffIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'circle off'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0, rotate: 0 },\n          animate: {\n            y: [0, 2, 0],\n            rotate: [0, 3, 0],\n            transition: { duration: DUR, times: [0, 0.5, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M8.35 2.69A10 10 0 0 1 21.3 15.65\" />\n        <path d=\"M19.08 19.08A10 10 0 1 1 4.92 4.92\" />\n      </motion.g>\n      <motion.path\n        d=\"m2 2 20 20\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.2, 0.35, 0.85], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'circle-off',\n  gesture: 'it is switched off',\n  family: 'draw-on' as const,\n  section: 'Shapes',\n  tags: ['disabled', 'off', 'circle'],\n}\n\nexport default CircleOffIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/circle-off.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

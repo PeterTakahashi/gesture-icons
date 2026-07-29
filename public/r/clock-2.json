@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "clock-2",
+  "title": "clock-2",
+  "description": "Semantic animated icon — . Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/clock-2.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\n\n/**\n * Clock 2 — two o'clock. VARIANT(clock): the combined hour/minute hand\n * sweeps one full eased lap about the dial's center and lands exactly back\n * on 2 o'clock — the same clean-lap mechanic as clock.tsx and clock-4.tsx.\n * Base geometry: Lucide `clock-2` (ISC).\n */\nconst DUR = 1.1\nconst LAP_EASE: [number, number, number, number] = [0.4, 0, 0.3, 1]\n\nexport function Clock2Icon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'clock 2'}\n      {...hoverProps}\n    >\n      <circle cx=\"12\" cy=\"12\" r=\"10\" />\n      <motion.path\n        d=\"M12 6v6l4-2\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 360],\n            transition: { duration: DUR, ease: LAP_EASE },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'clock-2',\n  gesture: \"two o'clock\",\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['time', 'clock'],\n}\n\nexport default Clock2Icon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/clock-2.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chess-queen",
+  "title": "chess-queen",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/chess-queen.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuint } from '../core/easings'\n\n/**\n * Chess queen — a long, elegant glide across the board and back, the\n * farthest-reaching move of any piece. A light lean-back before she\n * commits, then a fast, clean travel and a settled return. The base stays\n * planted.\n * Base geometry: Lucide `chess-queen` (ISC).\n */\nconst DUR = 1.2\n\nexport function ChessQueenIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'chess queen'}\n      {...hoverProps}\n    >\n      <path d=\"M4 20a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z\" />\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -0.3, 1.4, 0],\n            y: [0, 0.5, -3, 0],\n            transition: { duration: DUR, times: [0, 0.15, 0.6, 1], ease: [easeInOutCubic, easeOutQuint, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"m12.474 5.943 1.567 5.34a1 1 0 0 0 1.75.328l2.616-3.402\" />\n        <path d=\"m20 9-3 9\" />\n        <path d=\"m5.594 8.209 2.615 3.403a1 1 0 0 0 1.75-.329l1.567-5.34\" />\n        <path d=\"M7 18 4 9\" />\n        <circle cx=\"12\" cy=\"4\" r=\"2\" />\n        <circle cx=\"20\" cy=\"7\" r=\"2\" />\n        <circle cx=\"4\" cy=\"7\" r=\"2\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'chess-queen',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Sport & games',\n  tags: ['chess', 'game', 'strategy', 'queen'],\n}\n\nexport default ChessQueenIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/chess-queen.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

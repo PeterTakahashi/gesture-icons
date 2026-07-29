@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "switch-camera",
+  "title": "switch-camera",
+  "description": "Semantic animated icon — it turns around. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/switch-camera.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Switch camera — it turns around. The two chevrons are not symmetric\n * enough to land invisibly on a quarter turn (unlike repeat.tsx's rails),\n * so instead of an off-frame wrap they chase 90° about the lens and come\n * back the way they went — a there-and-back still reads as the pair\n * swapping places once. The lens pops right on the swap.\n * Base geometry: Lucide `switch-camera` (ISC).\n */\nconst DUR = 1.0\n\nexport function SwitchCameraIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const chevron = {\n    normal: { rotate: 0 },\n    animate: {\n      rotate: [0, 95, 90, 0],\n      transition: { duration: DUR, times: [0, 0.42, 0.56, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n    },\n  }\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'switch camera'}\n      {...hoverProps}\n    >\n      <path d=\"M11 19H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5\" />\n      <path d=\"M13 5h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5\" />\n      <motion.circle\n        cx=\"12\" cy=\"12\" r=\"3\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1, 1.25, 1],\n            transition: { duration: DUR, times: [0, 0.42, 0.56, 0.72], ease: settleBack },\n          },\n        }}\n      />\n      <motion.path\n        d=\"m18 22-3-3 3-3\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={chevron}\n      />\n      <motion.path\n        d=\"m6 2 3 3-3 3\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={chevron}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'switch-camera',\n  gesture: 'it turns around',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['flip', 'selfie', 'camera', 'switch'],\n}\n\nexport default SwitchCameraIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/switch-camera.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

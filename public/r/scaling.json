@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scaling",
+  "title": "scaling",
+  "description": "Semantic animated icon — it makes its move. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/scaling.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Scaling — it makes its move. The top-right corner bracket — the one true\n * drag handle in this glyph, echoing maximize.tsx's corner treatment —\n * NUDGEs outward along its own diagonal: wind up in, drive out past the\n * mark, settle back home. The frame, the diagonal guide, and the small\n * proportion box are the interior marks; they hold still.\n * Base geometry: Lucide `scaling` (ISC).\n */\nconst DUR = 0.75\nconst D = 0.7071\nconst DRIVE = 2\nconst WIND = 0.55\n\nexport function ScalingIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'scaling'}\n      {...hoverProps}\n    >\n      <path d=\"M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7\" />\n      <path d=\"M14 15H9v-5\" />\n      <motion.path\n        d=\"M16 3h5v5\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -WIND * D, DRIVE * D, 0],\n            y: [0, WIND * D, -DRIVE * D, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n          },\n        }}\n      />\n      <path d=\"M21 3 9 15\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'scaling',\n  gesture: 'it makes its move',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['frame', 'select', 'scaling'],\n}\n\nexport default ScalingIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/scaling.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

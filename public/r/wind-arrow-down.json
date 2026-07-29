@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "wind-arrow-down",
+  "title": "wind-arrow-down",
+  "description": "Semantic animated icon — the gust lands. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/wind-arrow-down.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutExpo, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Wind arrow down — the gust lands. VARIANT(wind): the two stream lines\n * drain away and write themselves back on with an easeOutExpo curl, top\n * line first; as they finish, the arrow itself NUDGEs downward and settles\n * — the gust arriving where the arrow points.\n * Base geometry: Lucide `wind-arrow-down` (ISC).\n */\nconst DUR = 1.0\n\nexport function WindArrowDownIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'wind arrow down'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, -0.6, 1.2, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.55, 0.65, 0.82, 1],\n              ease: ['linear', easeInOutCubic, easeOutQuart, settleBack],\n            },\n          },\n        }}\n      >\n        <path d=\"M10 2v8\" />\n        <path d=\"m6 6 4 4 4-4\" />\n      </motion.g>\n      <motion.path\n        d=\"M12.8 21.6A2 2 0 1 0 14 18H2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: 0.55, times: [0, 0.32, 0.42, 1], ease: [easeInCubic, 'linear', easeOutExpo] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M17.5 10a2.5 2.5 0 1 1 2 4H2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: 0.55, delay: 0.06, times: [0, 0.32, 0.42, 1], ease: [easeInCubic, 'linear', easeOutExpo] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'wind-arrow-down',\n  gesture: 'the gust lands',\n  family: 'draw-on' as const,\n  section: 'Nature',\n  tags: ['weather', 'wind', 'arrow', 'down'],\n}\n\nexport default WindArrowDownIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/wind-arrow-down.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "between-horizonal-start",
+  "title": "between-horizonal-start",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/between-horizonal-start.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Between horizonal start — it does what it means. The separator arrow,\n * which points right, NUDGEs toward the direction it points and settles\n * back home; the two panels it sits between — the static rails — never\n * move.\n * Base geometry: Lucide `between-horizonal-start` (ISC).\n */\nconst DUR = 0.75\n\nexport function BetweenHorizonalStartIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'between horizonal start'}\n      {...hoverProps}\n    >\n      <rect width=\"13\" height=\"7\" x=\"8\" y=\"3\" rx=\"1\" />\n      <motion.path\n        d=\"m2 9 3 3-3 3\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -1, 2, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.62, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <rect width=\"13\" height=\"7\" x=\"8\" y=\"14\" rx=\"1\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'between-horizonal-start',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['layout', 'arrange', 'between', 'horizonal', 'start'],\n}\n\nexport default BetweenHorizonalStartIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/between-horizonal-start.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

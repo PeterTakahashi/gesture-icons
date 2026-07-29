@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "metronome",
+  "title": "metronome",
+  "description": "Semantic animated icon — it keeps time. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/metronome.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Metronome — it keeps time. The arm (the diagonal pendulum plus the small\n * tick that rides it) swings about the base of the frame, the pivot a real\n * metronome's arm hinges from. Even amplitude each excursion — no decay —\n * because a metronome does not tire, and it lands home on the beat.\n * Base geometry: Lucide `metronome` (ISC).\n */\nconst DUR = 1.0\n\nexport function MetronomeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'metronome'}\n      {...hoverProps}\n    >\n      {/* the arm hinges at its base (12,17) — even swings, no decay, strict tempo */}\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 17px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -15, 15, -15, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.45, 0.7, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"M12 11.4V9.1\" />\n        <path d=\"m12 17 6.59-6.59\" />\n      </motion.g>\n      <path d=\"m15.05 5.7-.218-.691a3 3 0 0 0-5.663 0L4.418 19.695A1 1 0 0 0 5.37 21h13.253a1 1 0 0 0 .951-1.31L18.45 16.2\" />\n      <circle cx=\"20\" cy=\"9\" r=\"2\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'metronome',\n  gesture: 'it keeps time',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['tempo', 'music', 'rhythm', 'metronome'],\n}\n\nexport default MetronomeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/metronome.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

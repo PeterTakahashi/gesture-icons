@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "images",
+  "title": "images",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/images.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Images — the stack fans. The front photo corner (foreground, bottom-left)\n * nudges 1.5 further toward the viewer along the stack's diagonal; the back\n * frame with its mountain and sun counter-nudges 0.8 away — then both\n * settle back to exactly the picture Lucide drew.\n * Base geometry: Lucide `images` (ISC).\n */\nconst DUR = 0.95\nconst D = 0.7071\n\nexport function ImagesIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'images'}\n      {...hoverProps}\n    >\n      {/* back frame (top-right), with its mountain + sun, counter-nudges away */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, 0.8 * D, 0],\n            y: [0, -0.8 * D, 0],\n            transition: { duration: DUR, times: [0, 0.4, 1], ease: [easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      >\n        <rect x=\"8\" y=\"2\" width=\"14\" height=\"14\" rx=\"2\" />\n        <path d=\"m22 11-1.296-1.296a2.4 2.4 0 0 0-3.408 0L11 16\" />\n        <circle cx=\"13\" cy=\"7\" r=\"1\" fill=\"currentColor\" />\n      </motion.g>\n      {/* front photo corner (bottom-left), in the foreground, nudges toward viewer */}\n      <motion.path\n        d=\"M4 8a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -1.5 * D, 0],\n            y: [0, 1.5 * D, 0],\n            transition: { duration: DUR, times: [0, 0.4, 1], ease: [easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'images',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['collection', 'stack', 'images'],\n}\n\nexport default ImagesIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/images.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mic-2",
+  "title": "mic-2",
+  "description": "Semantic animated icon — it leans in. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/mic-2.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Mic 2 — it leans in. This Lucide glyph is a full alternate handheld-mic\n * illustration (grip + capsule), not \"mic\" plus a literal \"2\" mark, so per\n * the template's menu the honest move is the base mic's own tilt beat\n * adapted to this geometry: the whole assembly winds back a touch then\n * leans toward the mouth about the point where the grip meets the hand,\n * settling back with a small overshoot.\n * Base geometry: Lucide `mic-2` (ISC).\n */\nconst DUR = 0.85\n\nexport function Mic2Icon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'mic 2'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '11px 19px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 3, -8, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.6, 1], ease: [easeInOutCubic, easeOutQuart, settleBack] },\n          },\n        }}\n      >\n        <path d=\"m11 7.601-5.994 8.19a1 1 0 0 0 .1 1.298l.817.818a1 1 0 0 0 1.314.087L15.09 12\" />\n        <path d=\"M16.5 21.174C15.5 20.5 14.372 20 13 20c-2.058 0-3.928 2.356-6 2-2.072-.356-2.775-3.369-1.5-4.5\" />\n        <circle cx=\"16\" cy=\"7\" r=\"5\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'mic-2',\n  gesture: 'it leans in',\n  family: 'rigid' as const,\n  section: 'Communication',\n  tags: ['media', 'mic'],\n}\n\nexport default Mic2Icon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/mic-2.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

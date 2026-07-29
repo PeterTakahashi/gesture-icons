@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "list-minus",
+  "title": "list-minus",
+  "description": "Semantic animated icon — one is removed. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/list-minus.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * List minus — one is removed. VARIANT: only the minus bar moves — a small\n * wind-up along its own horizontal axis, then nudged away as if escorted\n * out, settling back on its resting mark. The list lines hold still.\n * Base geometry: Lucide `list-minus` (ISC).\n */\nconst DUR = 0.9\n\nexport function ListMinusIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'list minus'}\n      {...hoverProps}\n    >\n      <path d=\"M16 5H3\" />\n      <path d=\"M11 12H3\" />\n      <path d=\"M16 19H3\" />\n      <motion.path\n        d=\"M21 12h-6\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -0.3, 1.5, 0],\n            transition: { duration: DUR, times: [0, 0.15, 0.5, 0.85], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'list-minus',\n  gesture: 'one is removed',\n  family: 'rigid' as const,\n  section: 'Text & editing',\n  tags: ['remove', 'list', 'minus'],\n}\n\nexport default ListMinusIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/list-minus.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

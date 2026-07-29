@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "octagon-pause",
+  "title": "octagon-pause",
+  "description": "Semantic animated icon — hold everything. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/octagon-pause.tsx",
+      "content": "import { motion, type Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Octagon pause — hold everything. VARIANT(pause): the two bars squeeze\n * toward each other and hold the squeeze — the same language as the bare\n * pause glyph — while the octagon itself, the formal authority making the\n * call, never moves.\n * Base geometry: Lucide `octagon-pause` (ISC).\n */\nconst DUR = 0.85\n\nexport function OctagonPauseIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  const bar = (dir: 1 | -1): Variants => ({\n    normal: { x: 0 },\n    animate: {\n      x: [0, 0.9 * dir, 0.9 * dir, 0],\n      transition: { duration: DUR, times: [0, 0.3, 0.6, 1], ease: [easeInOutCubic, 'linear', easeOutQuart] },\n    },\n  })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'octagon pause'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M10 15V9\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={bar(1)}\n      />\n      <motion.path\n        d=\"M14 15V9\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={bar(-1)}\n      />\n      <path d=\"M2.586 16.726A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2h6.624a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586z\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'octagon-pause',\n  gesture: 'hold everything',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['stop', 'pause', 'octagon'],\n}\n\nexport default OctagonPauseIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/octagon-pause.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

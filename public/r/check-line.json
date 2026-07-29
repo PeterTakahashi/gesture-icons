@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "check-line",
+  "title": "check-line",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/check-line.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, pen } from '../core/easings'\n\n/**\n * Check line — there is no frame to hold it, so the whole glyph draws\n * itself in stroke order: the short entry stroke, then the long tick, then\n * the baseline swept underneath, each erasing fast and pen-redrawing.\n * Two of the three paths are the same straight segments as Lucide's `d`\n * with their endpoints listed start-to-end instead of end-to-start — for a\n * straight line that changes nothing about the resting picture, only which\n * way the dash draws, so the pen can move the way a hand actually would.\n * Base geometry: Lucide `check-line` (ISC).\n */\nconst DUR = 1.0\n\nexport function CheckLineIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'check line'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M4 10L9 15\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.16, 0.3, 0.5], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M9 15L20 4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.16, 0.3, 0.68], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M3 19L21 19\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { pathLength: 1 },\n          animate: {\n            pathLength: [1, 0.001, 0.001, 1],\n            transition: { duration: DUR, times: [0, 0.16, 0.36, 0.92], ease: [easeInCubic, 'linear', pen] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'check-line',\n  gesture: 'it draws itself',\n  family: 'draw-on' as const,\n  section: 'Interface',\n  tags: ['frame', 'mark', 'check', 'line'],\n}\n\nexport default CheckLineIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/check-line.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

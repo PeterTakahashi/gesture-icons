@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "import",
+  "title": "import",
+  "description": "Semantic animated icon — it makes its move. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/import.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Import — the arrow drops into the tray it already points at. A small\n * wind-up up first, then the drive down past the mark and a settleBack —\n * and the open tray takes a 1-unit contact nudge right as the arrow arrives,\n * never a frame before.\n * Base geometry: Lucide `import` (ISC).\n */\nconst DUR = 0.9\n\nexport function ImportIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'import'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1, 1.6, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.55, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M12 3v12\" />\n        <path d=\"m8 11 4 4 4-4\" />\n      </motion.g>\n      {/* the tray takes the hit on the contact frame */}\n      <motion.path\n        d=\"M8 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.7, -0.2, 0],\n            transition: { duration: DUR, times: [0, 0.5, 0.63, 0.8, 1], ease: ['linear', easeOutQuart, easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'import',\n  gesture: 'it makes its move',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['navigate', 'step', 'import'],\n}\n\nexport default ImportIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/import.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

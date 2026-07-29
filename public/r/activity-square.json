@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "activity-square",
+  "title": "activity-square",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/activity-square.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Activity square — it does what it means. VARIANT(waves/audio-lines): the\n * activity trace is a single continuous zigzag, so it carries its own verb\n * as one rigid part — a pulse of amplitude about its own centerline, the\n * spike growing and settling like a live reading, frame still.\n * Base geometry: Lucide `activity-square` (ISC).\n */\nconst DUR = 0.9\n\nexport function ActivitySquareIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'activity square'}\n      {...hoverProps}\n    >\n      <rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" />\n      <motion.path\n        d=\"M17 12h-2l-2 5-2-10-2 5H7\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 1.35, 0.8, 1.15, 1],\n            transition: { duration: DUR, times: [0, 0.25, 0.5, 0.75, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'activity-square',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Charts & math',\n  tags: ['wave', 'signal', 'activity', 'square'],\n}\n\nexport default ActivitySquareIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/activity-square.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

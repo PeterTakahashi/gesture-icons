@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "equal-approximately",
+  "title": "equal-approximately",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/equal-approximately.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Equal approximately — there is no frame here, just the math mark itself,\n * so it takes the STAMP option from the frame-and-mark menu directly: the\n * whole glyph presses down a hair and pops back past its own size, the beat\n * of a mark being set down on the page.\n * Base geometry: Lucide `equal-approximately` (ISC).\n */\nconst DUR = 0.7\n\nexport function EqualApproximatelyIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'equal approximately'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.88, 1.14, 1],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M5 15a6.5 6.5 0 0 1 7 0 6.5 6.5 0 0 0 7 0\" />\n        <path d=\"M5 9a6.5 6.5 0 0 1 7 0 6.5 6.5 0 0 0 7 0\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'equal-approximately',\n  gesture: 'it draws itself',\n  family: 'rigid' as const,\n  section: 'Charts & math',\n  tags: ['frame', 'mark', 'equal', 'approximately'],\n}\n\nexport default EqualApproximatelyIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/equal-approximately.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

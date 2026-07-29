@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "squares-exclude",
+  "title": "squares-exclude",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/squares-exclude.tsx",
+      "content": "import { motion } from 'motion/react'\nimport type { Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Squares exclude — the two shapes part. Each XOR remainder nudges outward\n * along its own diagonal, away from the other, with a small wind-up back\n * toward it first — then settles exactly where it was drawn.\n * Base geometry: Lucide `squares-exclude` (ISC).\n */\nconst DUR = 0.9\n\nfunction part(dx: number, dy: number): Variants {\n  return {\n    normal: { x: 0, y: 0 },\n    animate: {\n      x: [0, -0.3 * Math.sign(dx), dx, 0],\n      y: [0, -0.3 * Math.sign(dy), dy, 0],\n      transition: { duration: DUR, times: [0, 0.2, 0.56, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n    },\n  }\n}\n\nexport function SquaresExcludeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'squares exclude'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0\"\n        initial=\"normal\" animate={controls} variants={part(1.06, 1.06)}\n      />\n      <motion.path\n        d=\"M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2\"\n        initial=\"normal\" animate={controls} variants={part(-1.06, -1.06)}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'squares-exclude',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Shapes',\n  tags: ['boolean', 'layers', 'combine', 'squares', 'exclude'],\n}\n\nexport default SquaresExcludeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/squares-exclude.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chess-king",
+  "title": "chess-king",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/chess-king.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Chess king — one dignified step: a measured lift, a short move forward\n * at the top of the step, a set-down, and a slower return home. No\n * overshoot — the king does not hurry. The base stays planted.\n * Base geometry: Lucide `chess-king` (ISC).\n */\nconst DUR = 1.15\n\nexport function ChessKingIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'chess king'}\n      {...hoverProps}\n    >\n      <path d=\"M4 20a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z\" />\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, 0, 1.1, 1.1, 0],\n            y: [0, -1, -1, 0, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.5, 0.75, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m6.7 18-1-1C4.35 15.682 3 14.09 3 12a5 5 0 0 1 4.95-5c1.584 0 2.7.455 4.05 1.818C13.35 7.455 14.466 7 16.05 7A5 5 0 0 1 21 12c0 2.082-1.359 3.673-2.7 5l-1 1\" />\n        <path d=\"M10 4h4\" />\n        <path d=\"M12 2v6.818\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'chess-king',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Sport & games',\n  tags: ['chess', 'game', 'strategy', 'king'],\n}\n\nexport default ChessKingIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/chess-king.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

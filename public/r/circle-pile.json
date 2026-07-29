@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "circle-pile",
+  "title": "circle-pile",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/circle-pile.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Circle pile — this glyph has no enclosing ring (it is six coins scattered\n * into a pile), so the \"still frame + inner verb\" template doesn't literally\n * apply; the honest read is the pile itself settling. Each coin gets a small\n * landing bounce, cascading bottom row first, then the middle pair, then the\n * lone coin on top — the order a pile actually stacks in. Every coin stays\n * visible at rest (r=1 scale) since these are the whole glyph, not a hidden\n * secondary mark.\n * Base geometry: Lucide `circle-pile` (ISC).\n */\nconst DUR = 0.9\nconst STAGGER = 0.065 * DUR\n\nconst COINS = [\n  { cx: 4, cy: 19, delay: 0 },\n  { cx: 12, cy: 19, delay: STAGGER },\n  { cx: 20, cy: 19, delay: STAGGER * 2 },\n  { cx: 8, cy: 12, delay: STAGGER * 3 },\n  { cx: 16, cy: 12, delay: STAGGER * 4 },\n  { cx: 12, cy: 5, delay: STAGGER * 5 },\n]\n\nexport function CirclePileIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'circle pile'}\n      {...hoverProps}\n    >\n      {COINS.map((c) => (\n        <motion.circle\n          key={`${c.cx}-${c.cy}`}\n          cx={c.cx} cy={c.cy} r=\"2\"\n          style={{ transformBox: 'view-box', transformOrigin: `${c.cx}px ${c.cy}px` }}\n          initial=\"normal\"\n          animate={controls}\n          variants={{\n            normal: { scale: 1 },\n            animate: {\n              scale: [1, 0.7, 1.25, 1],\n              transition: {\n                duration: DUR,\n                delay: c.delay,\n                times: [0, 0.3, 0.62, 1],\n                ease: [easeInCubic, settleBack, easeOutQuart],\n              },\n            },\n          }}\n        />\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'circle-pile',\n  gesture: 'it draws itself',\n  family: 'rigid' as const,\n  section: 'Shapes',\n  tags: ['circle', 'pile'],\n}\n\nexport default CirclePileIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/circle-pile.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

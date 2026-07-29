@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "roller-coaster",
+  "title": "roller-coaster",
+  "description": "Semantic animated icon — the car takes the drop. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/roller-coaster.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeOutQuart, gravity } from '../core/easings'\n\n/**\n * Roller coaster — the car takes the drop. Lucide's glyph has no separate\n * car mark, only the track line and its support poles, so the car is a\n * secondary dot: rest-hidden at scale 0.001 at the station, it pops in,\n * climbs the first rise, dips hard with gravity through the hollow, climbs\n * back out on an ease-out, then pops hidden again as it enters the loop.\n * The poles and track never move.\n * Base geometry: Lucide `roller-coaster` (ISC).\n */\nconst DUR = 1.0\n\nexport function RollerCoasterIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'roller coaster'}\n      {...hoverProps}\n    >\n      <path d=\"M6 19V5\" />\n      <path d=\"M10 19V6.8\" />\n      <path d=\"M14 19v-7.8\" />\n      <path d=\"M18 5v4\" />\n      <path d=\"M18 19v-6\" />\n      <path d=\"M22 19V9\" />\n      <path d=\"M2 19V9a4 4 0 0 1 4-4c2 0 4 1.33 6 4s4 4 6 4a4 4 0 1 0-3-6.65\" />\n      <motion.circle\n        r={1.3}\n        fill={color === 'currentColor' ? 'currentColor' : color}\n        stroke=\"none\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { cx: 2, cy: 19, scale: 0.001 },\n          animate: {\n            cx: [2, 2, 7, 11, 15, 15],\n            cy: [19, 19, 6, 8, 5, 5],\n            scale: [0.001, 1, 1, 1, 1, 0.001],\n            transition: {\n              duration: DUR,\n              times: [0, 0.1, 0.42, 0.58, 0.82, 1],\n              ease: [easeOutQuart, easeOutQuart, gravity, easeOutQuart, 'linear'],\n            },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'roller-coaster',\n  gesture: 'the car takes the drop',\n  family: 'rigid' as const,\n  section: 'Objects',\n  tags: ['ride', 'thrill', 'fair', 'roller', 'coaster'],\n}\n\nexport default RollerCoasterIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/roller-coaster.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

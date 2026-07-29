@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "globe",
+  "title": "globe",
+  "description": "Semantic animated icon — the world turns a little. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/globe.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack, easeOutQuart } from '../core/easings'\n\n/**\n * Globe — VARIANT(earth): the meridian and equator lines nudge together a\n * few degrees of longitude and settle back; the rim never moves — a planet\n * turning under a fixed horizon line, not a wheel.\n * Base geometry: Lucide `globe` (ISC).\n */\nconst DUR = 1.1\n\nexport function GlobeIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'globe'}\n      {...hoverProps}\n    >\n      <circle cx=\"12\" cy=\"12\" r=\"10\" />\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -0.4, 1.5, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.62, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\" />\n        <path d=\"M2 12h20\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'globe',\n  gesture: 'the world turns a little',\n  family: 'rigid' as const,\n  section: 'Transport',\n  tags: ['world', 'international', 'web', 'globe'],\n}\n\nexport default GlobeIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/globe.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ship-wheel",
+  "title": "ship-wheel",
+  "description": "Semantic animated icon — it steers to port. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/ship-wheel.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Ship wheel — it steers to port. The whole wheel turns about its hub, held\n * a beat at the correction, then brought back through center — a real helm\n * correction, not a spin. The spokes repeat often enough that the held pose\n * still reads as a wheel, but the gesture ends back at true center.\n * Base geometry: Lucide `ship-wheel` (ISC).\n */\nconst DUR = 1.1\n\nexport function ShipWheelIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'ship wheel'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 4, -45, -45, 0],\n            transition: { duration: DUR, times: [0, 0.1, 0.4, 0.75, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <circle cx=\"12\" cy=\"12\" r=\"8\" />\n        <path d=\"M12 2v7.5\" />\n        <path d=\"m19 5-5.23 5.23\" />\n        <path d=\"M22 12h-7.5\" />\n        <path d=\"m19 19-5.23-5.23\" />\n        <path d=\"M12 14.5V22\" />\n        <path d=\"M10.23 13.77 5 19\" />\n        <path d=\"M9.5 12H2\" />\n        <path d=\"M10.23 10.23 5 5\" />\n        <circle cx=\"12\" cy=\"12\" r=\"2.5\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'ship-wheel',\n  gesture: 'it steers to port',\n  family: 'rigid' as const,\n  section: 'Transport',\n  tags: ['helm', 'navigate', 'sail', 'ship', 'wheel'],\n}\n\nexport default ShipWheelIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/ship-wheel.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

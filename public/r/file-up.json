@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "file-up",
+  "title": "file-up",
+  "description": "Semantic animated icon — it urges upward. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/file-up.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * File up — it urges upward. NUDGE up: the arrow (shaft + chevron) winds\n * down 1 unit then drives up 2.5 with a settleBack overshoot before easing\n * home, the chevron running a hair ahead of the shaft the whole beat, same\n * handoff as arrow-up.tsx. The page and its folded corner never move.\n * Base geometry: Lucide `file-up` (ISC).\n */\nconst DUR = 0.75\n\nexport function FileUpIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'file up'}\n      {...hoverProps}\n    >\n      <path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\" />\n      <path d=\"M14 2v5a1 1 0 0 0 1 1h5\" />\n      <motion.path\n        d=\"m15 15-3-3-3 3\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 1, -2.5, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.59, 0.97], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M12 12v6\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 1, -2.5, 0],\n            transition: { duration: DUR, times: [0, 0.25, 0.62, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'file-up',\n  gesture: 'it urges upward',\n  family: 'rigid' as const,\n  section: 'Files & time',\n  tags: ['up', 'file'],\n}\n\nexport default FileUpIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/file-up.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

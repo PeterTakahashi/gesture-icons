@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mail-minus",
+  "title": "mail-minus",
+  "description": "Semantic animated icon — one is removed. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/mail-minus.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Mail minus — one is removed. VARIANT: only the minus bar moves — a small\n * wind-up toward the envelope, then escorted away and settled back to its\n * resting mark. The envelope itself holds still.\n * Base geometry: Lucide `mail-minus` (ISC).\n */\nconst DUR = 0.9\n\nexport function MailMinusIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'mail minus'}\n      {...hoverProps}\n    >\n      <path d=\"M22 15V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h8\" />\n      <path d=\"m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7\" />\n      <motion.path\n        d=\"M16 19h6\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -0.3, 1.5, 0],\n            transition: { duration: DUR, times: [0, 0.15, 0.5, 0.85], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'mail-minus',\n  gesture: 'one is removed',\n  family: 'rigid' as const,\n  section: 'Communication',\n  tags: ['remove', 'mail', 'minus'],\n}\n\nexport default MailMinusIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/mail-minus.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "folder-dot",
+  "title": "folder-dot",
+  "description": "Semantic animated icon — one thing waits. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/folder-dot.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, settleBack, easeOutQuart, easeInOutCubic } from '../core/easings'\n\n/**\n * Folder dot — one thing waits. VARIANT: the dot is the point of the icon,\n * so it carries the gesture — it pops to nothing and overshoots back,\n * per spec numbers; the folder answers with a 3%-late micro-dip, small\n * enough to read as a reaction, not the main event.\n * Base geometry: Lucide `folder-dot` (ISC).\n */\nconst DUR = 0.9\n\nexport function FolderDotIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'folder dot'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0, 0.4, -0.1, 0],\n            transition: { duration: DUR, delay: DUR * 0.03, times: [0, 0.32, 0.5, 0.68, 0.9], ease: ['linear', easeOutQuart, easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.circle\n        cx=\"12\" cy=\"13\" r=\"1\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.001, 1.4, 1],\n            transition: { duration: DUR, times: [0, 0.28, 0.6, 0.88], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'folder-dot',\n  gesture: 'one thing waits',\n  family: 'secondary' as const,\n  section: 'Files & time',\n  tags: ['indicator', 'unread', 'folder', 'dot'],\n}\n\nexport default FolderDotIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/folder-dot.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

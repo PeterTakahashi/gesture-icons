@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "computer",
+  "title": "computer",
+  "description": "Semantic animated icon — it boots. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/computer.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\n\n/**\n * Computer — it boots. VARIANT(monitor): a wake line hard-blinks in the\n * screen — never a fade, a monitor's backlight is on or off — and once it\n * settles the tower's status LED answers with a single blink of its own:\n * POST complete.\n * Base geometry: Lucide `computer` (ISC).\n */\nconst DUR = 1.0\n\nexport function ComputerIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'computer'}\n      {...hoverProps}\n    >\n      <rect width=\"14\" height=\"8\" x=\"5\" y=\"2\" rx=\"2\" />\n      <rect width=\"20\" height=\"8\" x=\"2\" y=\"14\" rx=\"2\" />\n      {/* wake line: not part of Lucide's glyph, hidden at rest, blinks twice */}\n      <motion.path\n        d=\"M9 6h6\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { opacity: 0 },\n          animate: {\n            opacity: [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],\n            transition: {\n              duration: DUR,\n              times: [0, 0.08, 0.09, 0.24, 0.25, 0.4, 0.41, 0.56, 0.57, 0.66],\n              ease: 'linear',\n            },\n          },\n        }}\n      />\n      {/* tower LED: a real glyph line, answers once after the screen wakes */}\n      <motion.path\n        d=\"M6 18h2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { opacity: 1 },\n          animate: {\n            opacity: [1, 1, 0, 0, 1, 1],\n            transition: { duration: DUR, times: [0, 0.68, 0.69, 0.82, 0.83, 1], ease: 'linear' },\n          },\n        }}\n      />\n      <path d=\"M12 18h6\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'computer',\n  gesture: 'it boots',\n  family: 'secondary' as const,\n  section: 'Devices',\n  tags: ['desktop', 'pc', 'computer'],\n}\n\nexport default ComputerIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/computer.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

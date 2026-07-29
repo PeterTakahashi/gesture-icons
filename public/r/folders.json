@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "folders",
+  "title": "folders",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/folders.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Folders — the stack fans. The front folder nudges further toward the\n * viewer along the stack's own diagonal while the back folder counter-nudges\n * deeper away, a smaller amount — then both settle back to the exact\n * picture Lucide drew. Plurality shown by the deck shuffling once.\n * Base geometry: Lucide `folders` (ISC).\n */\nconst DUR = 0.95\nconst D = 0.7071\n\nexport function FoldersIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'folders'}\n      {...hoverProps}\n    >\n      {/* front folder (top-right) nudges further up-right */}\n      <motion.path\n        d=\"M20 5a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2.5a1.5 1.5 0 0 1 1.2.6l.6.8a1.5 1.5 0 0 0 1.2.6z\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, 1.5 * D, 0],\n            y: [0, -1.5 * D, 0],\n            transition: { duration: DUR, times: [0, 0.4, 1], ease: [easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      />\n      {/* back folder (bottom-left) counter-nudges further down-left, less far */}\n      <motion.path\n        d=\"M3 8.268a2 2 0 0 0-1 1.738V19a2 2 0 0 0 2 2h11a2 2 0 0 0 1.732-1\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0, y: 0 },\n          animate: {\n            x: [0, -0.8 * D, 0],\n            y: [0, 0.8 * D, 0],\n            transition: { duration: DUR, times: [0, 0.4, 1], ease: [easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'folders',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Arrows',\n  tags: ['collection', 'stack', 'folders'],\n}\n\nexport default FoldersIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/folders.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

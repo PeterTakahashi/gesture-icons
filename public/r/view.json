@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "view",
+  "title": "view",
+  "description": "Semantic animated icon — the frame opens for a look. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/view.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * View — the frame opens for a look. The top and bottom brackets NUDGE\n * apart along their own edge: a small wind-up inward, a drive outward past\n * the mark, settleBack home — one clock, so the frame reads as widening\n * for a moment rather than one edge leading the other. The eye inside\n * holds still; it is what is being framed, not the frame.\n * Base geometry: Lucide `view` (ISC).\n */\nconst DUR = 0.75\nconst WIND = 0.5\nconst DRIVE = 1.6\n\nexport function ViewIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'view'}\n      {...hoverProps}\n    >\n      {/* bottom bracket nudges further down */}\n      <motion.path\n        d=\"M21 17v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -WIND, DRIVE, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n          },\n        }}\n      />\n      {/* top bracket nudges further up */}\n      <motion.path\n        d=\"M21 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, WIND, -DRIVE, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n          },\n        }}\n      />\n      <circle cx=\"12\" cy=\"12\" r=\"1\" />\n      <path d=\"M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'view',\n  gesture: 'the frame opens for a look',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['frame', 'select', 'view'],\n}\n\nexport default ViewIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/view.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

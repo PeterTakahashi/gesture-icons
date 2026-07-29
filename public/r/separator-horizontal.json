@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "separator-horizontal",
+  "title": "separator-horizontal",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/separator-horizontal.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Separator horizontal — it does what it means. The two grip chevrons are\n * the part a hand actually drags: each NUDGEs further away from the\n * divider along the vertical axis it already points — a small wind-up\n * toward the line, a drive out past the mark, a settleBack home. The\n * divider itself is the static rail; it never moves.\n * Base geometry: Lucide `separator-horizontal` (ISC).\n */\nconst DUR = 0.85\n\nexport function SeparatorHorizontalIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'separator horizontal'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"m8 8 4-4 4 4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, 0.6, -1.4, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <path d=\"M3 12h18\" />\n      <motion.path\n        d=\"m16 16-4 4-4-4\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -0.6, 1.4, 0],\n            transition: { duration: DUR, times: [0, 0.2, 0.55, 1], ease: [easeInOutCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'separator-horizontal',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Animals & nature',\n  tags: ['layout', 'arrange', 'separator', 'horizontal'],\n}\n\nexport default SeparatorHorizontalIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/separator-horizontal.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

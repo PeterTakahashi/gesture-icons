@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "moon-star",
+  "title": "moon-star",
+  "description": "Semantic animated icon — it drifts asleep. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/moon-star.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Moon star — it drifts asleep. The moon leans into its slow tilt and\n * holds at its furthest lean before straightening (moon.tsx's nod), while\n * the little star sparkles — stretching out along its own cross axis and\n * back — right as the moon settles into its lean.\n * Base geometry: Lucide `moon-star` (ISC).\n */\nconst DUR = 1.1\n\nexport function MoonStarIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'moon star'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, -14, -14, 0],\n            transition: { duration: DUR, times: [0, 0.35, 0.6, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '20px 5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.4, 1],\n            transition: { duration: 0.7, delay: 0.25, times: [0, 0.4, 1], ease: [easeOutQuart, easeInOutCubic] },\n          },\n        }}\n      >\n        <path d=\"M18 5h4\" />\n        <path d=\"M20 3v4\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'moon-star',\n  gesture: 'it drifts asleep',\n  family: 'rigid' as const,\n  section: 'Nature',\n  tags: ['weather', 'moon', 'star'],\n}\n\nexport default MoonStarIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/moon-star.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

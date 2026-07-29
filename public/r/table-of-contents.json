@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "table-of-contents",
+  "title": "table-of-contents",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/table-of-contents.tsx",
+      "content": "import { motion } from 'motion/react'\nimport type { Variants } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, settleBack } from '../core/easings'\n\n/**\n * Table of contents — the entries cascade. Each row and its page marker\n * nudge forward together, top to bottom with a slight stagger — entries\n * confirming themselves in order.\n * Base geometry: Lucide `table-of-contents` (ISC).\n */\nconst DUR = 0.9\nconst ROWS: Array<[string, string, number]> = [\n  ['M16 5H3', 'M21 5h.01', 0],\n  ['M16 12H3', 'M21 12h.01', 0.05],\n  ['M16 19H3', 'M21 19h.01', 0.1],\n]\n\nfunction row(delay: number): Variants {\n  return {\n    normal: { x: 0 },\n    animate: {\n      x: [0, -0.3, 1.2, 0],\n      transition: { duration: DUR, delay, times: [0, 0.2, 0.56, 1], ease: [easeInOutCubic, settleBack, easeInOutCubic] },\n    },\n  }\n}\n\nexport function TableOfContentsIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'table of contents'}\n      {...hoverProps}\n    >\n      {ROWS.map(([line, dot, delay]) => (\n        <motion.g key={line} initial=\"normal\" animate={controls} variants={row(delay)}>\n          <path d={line} />\n          <path d={dot} />\n        </motion.g>\n      ))}\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'table-of-contents',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Buildings',\n  tags: ['table', 'data', 'board', 'contents'],\n}\n\nexport default TableOfContentsIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/table-of-contents.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

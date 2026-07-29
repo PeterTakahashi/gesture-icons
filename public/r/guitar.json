@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "guitar",
+  "title": "guitar",
+  "description": "Semantic animated icon — it strums once. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/guitar.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Guitar — it strums once. The body takes a single decaying shake — the\n * resonance of the strum — while the small mark over the strings does a\n * quick vertical shiver, as if still moving; the neck and headstock, being\n * rigidly fretted, hold still.\n * Base geometry: Lucide `guitar` (ISC).\n */\nconst DUR = 0.55\n\nexport function GuitarIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'guitar'}\n      {...hoverProps}\n    >\n      <path d=\"m11.9 12.1 4.514-4.514\" />\n      <path d=\"M20.1 2.3a1 1 0 0 0-1.4 0l-1.114 1.114A2 2 0 0 0 17 4.828v1.344a2 2 0 0 1-.586 1.414A2 2 0 0 1 17.828 7h1.344a2 2 0 0 0 1.414-.586L21.7 5.3a1 1 0 0 0 0-1.4z\" />\n      <motion.path\n        d=\"m6 16 2 2\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scaleY: 1 },\n          animate: {\n            scaleY: [1, 1.04, 1],\n            transition: { duration: DUR, times: [0, 0.4, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M8.23 9.85A3 3 0 0 1 11 8a5 5 0 0 1 5 5 3 3 0 0 1-1.85 2.77l-.92.38A2 2 0 0 0 12 18a4 4 0 0 1-4 4 6 6 0 0 1-6-6 4 4 0 0 1 4-4 2 2 0 0 0 1.85-1.23z\"\n        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 1.5, -1.5, 0.6, 0],\n            transition: { duration: DUR, times: [0, 0.24, 0.5, 0.74, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'guitar',\n  gesture: 'it strums once',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['music', 'instrument', 'guitar'],\n}\n\nexport default GuitarIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/guitar.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

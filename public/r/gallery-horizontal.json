@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "gallery-horizontal",
+  "title": "gallery-horizontal",
+  "description": "Semantic animated icon — it does what it means. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/gallery-horizontal.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Gallery horizontal — the stack fans. The centered photo nudges 1.5 along\n * the horizontal stack direction; the two flanking edges (the neighbors in\n * the reel) counter-nudge 0.8 the other way, as one back layer — then both\n * settle back to the exact picture Lucide drew. Plurality shown by the deck\n * shuffling once.\n * Base geometry: Lucide `gallery-horizontal` (ISC).\n */\nconst DUR = 0.95\n\nexport function GalleryHorizontalIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'gallery horizontal'}\n      {...hoverProps}\n    >\n      {/* front photo nudges right, into the reel */}\n      <motion.rect\n        width=\"12\" height=\"18\" x=\"6\" y=\"3\" rx=\"2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: { x: [0, 1.5, 0], transition: { duration: DUR, times: [0, 0.4, 1], ease: [easeInOutCubic, easeOutQuart] } },\n        }}\n      />\n      {/* the neighboring edges counter-nudge left, a smaller amount */}\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: { x: [0, -0.8, 0], transition: { duration: DUR, times: [0, 0.4, 1], ease: [easeInOutCubic, easeOutQuart] } },\n        }}\n      >\n        <path d=\"M2 3v18\" />\n        <path d=\"M22 3v18\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'gallery-horizontal',\n  gesture: 'it does what it means',\n  family: 'rigid' as const,\n  section: 'Media',\n  tags: ['collection', 'stack', 'gallery', 'horizontal'],\n}\n\nexport default GalleryHorizontalIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/gallery-horizontal.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

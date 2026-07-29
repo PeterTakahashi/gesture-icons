@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "function-square",
+  "title": "function-square",
+  "description": "Semantic animated icon — it draws itself. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/function-square.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeInOutCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Function square — it draws itself. The inner mark performs its own verb\n * inside a still frame: the f-glyph (curl + crossbar) is a math mark, so it\n * STAMPs — presses down a hair, pops past its own size, and lands — while\n * the frame takes one soft breath around it.\n * Base geometry: Lucide `function-square` (ISC).\n */\nconst DUR = 0.75\n\nexport function FunctionSquareIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'function square'}\n      {...hoverProps}\n    >\n      <motion.rect\n        width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" ry=\"2\"\n        style={{ transformBox: 'view-box', transformOrigin: '12px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 1.03, 1],\n            transition: { duration: DUR, times: [0, 0.5, 1], ease: easeInOutCubic },\n          },\n        }}\n      />\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '11.9px 12px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { scale: 1 },\n          animate: {\n            scale: [1, 0.85, 1.15, 1],\n            transition: { duration: DUR, times: [0, 0.22, 0.55, 1], ease: [easeInCubic, settleBack, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M9 17c2 0 2.8-1 2.8-2.8V10c0-2 1-3.3 3.2-3\" />\n        <path d=\"M9 11.2h5.7\" />\n      </motion.g>\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'function-square',\n  gesture: 'it draws itself',\n  family: 'rigid' as const,\n  section: 'Workspace',\n  tags: ['frame', 'mark', 'function', 'square'],\n}\n\nexport default FunctionSquareIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/function-square.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

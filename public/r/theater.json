@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "theater",
+  "title": "theater",
+  "description": "Semantic animated icon — the curtain rises. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/theater.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic, easeOutQuart } from '../core/easings'\n\n/**\n * Theater — the curtain rises. The pediment roofline and its draped sides —\n * everything above the stage floor — lift together and settle back down.\n * The floor line and the column bases hold their ground.\n * Base geometry: Lucide `theater` (ISC).\n */\nconst DUR = 0.9\n\nexport function TheaterIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'theater'}\n      {...hoverProps}\n    >\n      <motion.g\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { y: 0 },\n          animate: {\n            y: [0, -1, -1, 0.2, 0],\n            transition: { duration: DUR, times: [0, 0.35, 0.6, 0.85, 1], ease: [easeOutQuart, 'linear', easeInOutCubic, easeOutQuart] },\n          },\n        }}\n      >\n        <path d=\"M2 10s3-3 3-8\" />\n        <path d=\"M22 10s-3-3-3-8\" />\n        <path d=\"M10 2c0 4.4-3.6 8-8 8\" />\n        <path d=\"M14 2c0 4.4 3.6 8 8 8\" />\n        <path d=\"M2 10s2 2 2 5\" />\n        <path d=\"M22 10s-2 2-2 5\" />\n      </motion.g>\n      <path d=\"M8 15h8\" />\n      <path d=\"M2 22v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1\" />\n      <path d=\"M14 22v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'theater',\n  gesture: 'the curtain rises',\n  family: 'rigid' as const,\n  section: 'Buildings',\n  tags: ['stage', 'drama', 'show', 'theater'],\n}\n\nexport default TheaterIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/theater.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

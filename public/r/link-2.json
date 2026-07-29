@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "link-2",
+  "title": "link-2",
+  "description": "Semantic animated icon — the link snaps in. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/link-2.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInCubic, easeOutQuart, settleBack } from '../core/easings'\n\n/**\n * Link 2 — VARIANT(link): same snap-together mechanic as `link.tsx`, but\n * this glyph's two hooks sit on a horizontal axis around a shared bar, so\n * the halves part left and right instead of along a diagonal, then snap\n * back with a pass-through overshoot — clicked.\n * Base geometry: Lucide `link-2` (ISC).\n */\nconst DUR = 1.0\n\nexport function Link2Icon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'link 2'}\n      {...hoverProps}\n    >\n      <motion.path\n        d=\"M9 17H7A5 5 0 0 1 7 7h2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, -2, -2, 0.4, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.31, 0.55, 1], ease: [easeInCubic, 'linear', settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <motion.path\n        d=\"M15 7h2a5 5 0 1 1 0 10h-2\"\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { x: 0 },\n          animate: {\n            x: [0, 2, 2, -0.4, 0],\n            transition: { duration: DUR, times: [0, 0.22, 0.31, 0.55, 1], ease: [easeInCubic, 'linear', settleBack, easeOutQuart] },\n          },\n        }}\n      />\n      <line x1=\"8\" x2=\"16\" y1=\"12\" y2=\"12\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'link-2',\n  gesture: 'the link snaps in',\n  family: 'rigid' as const,\n  section: 'Interface',\n  tags: ['url', 'chain', 'connect', 'link'],\n}\n\nexport default Link2Icon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/link-2.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

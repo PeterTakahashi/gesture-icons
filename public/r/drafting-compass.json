@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "drafting-compass",
+  "title": "drafting-compass",
+  "description": "Semantic animated icon — it sweeps an arc. Ends exactly on its resting picture.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "https://claude-code-icons.vercel.app/r/gesture-core.json"
+  ],
+  "files": [
+    {
+      "path": "src/lib/icons/drafting-compass.tsx",
+      "content": "import { motion } from 'motion/react'\nimport { useGesture } from '../core/useGesture'\nimport { svgDefaults, type GestureIconProps } from '../core/types'\nimport { easeInOutCubic } from '../core/easings'\n\n/**\n * Drafting compass — it sweeps an arc. The pivot leg stays planted; the\n * free leg swings open about their shared hinge, holds the wider span while\n * the radius is considered, and closes back to rest.\n * Base geometry: Lucide `drafting-compass` (ISC).\n */\nconst DUR = 1.0\n\nexport function DraftingCompassIcon({\n  size = 24, color = 'currentColor', strokeWidth = 2,\n  trigger, className, style, handleRef, ...rest\n}: GestureIconProps) {\n  const { controls, hoverProps } = useGesture({ trigger, handleRef })\n  return (\n    <svg\n      {...svgDefaults} width={size} height={size} stroke={color} strokeWidth={strokeWidth}\n      className={className} style={style} role=\"img\" aria-label={rest['aria-label'] ?? 'drafting compass'}\n      {...hoverProps}\n    >\n      <motion.g\n        style={{ transformBox: 'view-box', transformOrigin: '12px 5px' }}\n        initial=\"normal\"\n        animate={controls}\n        variants={{\n          normal: { rotate: 0 },\n          animate: {\n            rotate: [0, 14, 14, 0],\n            transition: { duration: DUR, times: [0, 0.28, 0.68, 1], ease: easeInOutCubic },\n          },\n        }}\n      >\n        <path d=\"m12.99 6.74 1.93 3.44\" />\n        <path d=\"m21 21-2.16-3.84\" />\n      </motion.g>\n      <path d=\"M19.136 12a10 10 0 0 1-14.271 0\" />\n      <path d=\"m3 21 8.02-14.26\" />\n      <circle cx=\"12\" cy=\"5\" r=\"2\" />\n    </svg>\n  )\n}\n\nexport const meta = {\n  name: 'drafting-compass',\n  gesture: 'it sweeps an arc',\n  family: 'rigid' as const,\n  section: 'Tools',\n  tags: ['geometry', 'draw', 'precision', 'drafting', 'compass'],\n}\n\nexport default DraftingCompassIcon\n",
+      "type": "registry:component",
+      "target": "components/gesture-icons/icons/drafting-compass.tsx"
+    }
+  ],
+  "type": "registry:component"
+}
