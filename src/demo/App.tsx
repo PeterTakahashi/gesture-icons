@@ -1,4 +1,4 @@
-import { createElement, useEffect, useMemo, useRef, useState, type ComponentType } from 'react'
+import { createElement, useCallback, useEffect, useMemo, useRef, useState, type ComponentType } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import type { GestureHandle } from '../lib/core/useGesture'
 import type { GestureIconProps } from '../lib/core/types'
@@ -221,7 +221,24 @@ export default function App() {
   const [section, setSection] = useState<string | null>(null)
   const [iconColor, setIconColor] = useState(DEFAULT_COLOR)
   const [auto, setAuto] = useState(true)
+  // 無限スクロール: 最初は120タイルだけマウントして初期表示とアニメ開始を速く。
+  // 500+ の motion コンポーネントを一度にマウントすると TTI が重くなる。
+  const [limit, setLimit] = useState(120)
+  const sentinelIo = useRef<IntersectionObserver | null>(null)
   const searchRef = useRef<HTMLInputElement>(null)
+
+  // callback ref: センチネルが付け外しされるたびに observer を張り直す
+  const sentinelRef = useCallback((el: HTMLDivElement | null) => {
+    sentinelIo.current?.disconnect()
+    sentinelIo.current = null
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setLimit((l) => Math.min(l + 180, ALL.length)) },
+      { rootMargin: '600px' },
+    )
+    io.observe(el)
+    sentinelIo.current = io
+  }, [])
 
   useEffect(() => {
     if (!auto) return
@@ -259,15 +276,25 @@ export default function App() {
     if (q) list = list.filter((e) => matches(e, q))
     return list
   }, [q, section])
+  // 絞り込みが変わったら読込済み件数をリセット
+  useEffect(() => { setLimit(120) }, [q, section])
+  const limited = useMemo(() => {
+    // セクション順に並べてから先頭 limit 件だけマウント
+    if (q) return filtered.slice(0, limit)
+    const order = new Map(sectionNames.map((s, i) => [s, i]))
+    return [...filtered]
+      .sort((a, b) => (order.get(a.section) ?? 99) - (order.get(b.section) ?? 99))
+      .slice(0, limit)
+  }, [q, filtered, limit, sectionNames])
   const grouped = useMemo(() => {
     if (q) return null
     const by = new Map<string, Entry[]>()
-    for (const e of filtered) {
+    for (const e of limited) {
       if (!by.has(e.section)) by.set(e.section, [])
       by.get(e.section)!.push(e)
     }
     return sectionNames.filter((s) => by.has(s)).map((s) => [s, by.get(s)!] as const)
-  }, [q, filtered, sectionNames])
+  }, [q, limited, sectionNames])
 
   return (
     <main>
@@ -326,7 +353,7 @@ export default function App() {
       {q || section ? (
         <section>
           <div className="grid">
-            {filtered.map((e) => <Tile key={e.name} entry={e} color={iconColor} onOpen={setOpen} />)}
+            {limited.map((e) => <Tile key={e.name} entry={e} color={iconColor} onOpen={setOpen} />)}
           </div>
           {filtered.length === 0 && (
             <p className="empty">No gesture for “{query}” yet — the skill in the repo shows how to make one.</p>
@@ -341,6 +368,9 @@ export default function App() {
             </div>
           </section>
         ))
+      )}
+      {limited.length < filtered.length && (
+        <div ref={sentinelRef} className="loadmore">loading more… ({limited.length}/{filtered.length})</div>
       )}
 
       <section>

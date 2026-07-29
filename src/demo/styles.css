@@ -68,7 +68,16 @@ h1 {
 
 .searchbar .count { font-size: 13px; color: var(--ink-soft); min-width: 30px; text-align: right; }
 
-.colorbar { margin-top: 10px; display: flex; align-items: center; gap: 12px; }
+.colorbar {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;       /* auto-play ボタン等は狭い画面で次の行へ折り返す */
+  row-gap: 10px;
+}
+
+.chip.autoplay { white-space: nowrap; max-width: 100%; }
 
 .swatchwrap input[type='color'] {
   width: 28px; height: 28px; padding: 0;
@@ -126,6 +135,13 @@ h2 {
 }
 
 .empty { margin-top: 24px; font-size: 14px; color: var(--ink-soft); }
+
+.loadmore {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
 
 /* ── detail modal ────────────────────────────────────────────────── */
 
@@ -232,7 +248,8 @@ footer a { color: inherit; }
   main { padding: 32px 14px 72px; }
 
   /* touch targets: color picker & chips */
-  .colorbar { gap: 14px; }
+  .colorbar { gap: 12px; }
+  .colorbar .spacer { display: none; }  /* スマホでは右寄せをやめて自然に折り返す */
   .swatchwrap input[type='color'] { width: 40px; height: 40px; }
   .presets { gap: 12px; }
   .preset { width: 26px; height: 26px; }
