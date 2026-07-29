@@ -249,7 +249,8 @@ footer a { color: inherit; }
 
   /* touch targets: color picker & chips */
   .colorbar { gap: 12px; }
-  .colorbar .spacer { display: none; }  /* スマホでは右寄せをやめて自然に折り返す */
+  .colorbar .spacer { display: none; }
+  .chip.autoplay { display: none; }  /* スマホでは常時 auto-play(デフォルトON)なのでボタン不要 */
   .swatchwrap input[type='color'] { width: 40px; height: 40px; }
   .presets { gap: 12px; }
   .preset { width: 26px; height: 26px; }
